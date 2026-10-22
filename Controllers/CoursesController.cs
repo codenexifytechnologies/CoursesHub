@@ -62,6 +62,22 @@ namespace CoursesHub.Controllers
             return View(reviews);
         }
 
+        // All trending courses (set by the admin); the home page shows the first 6
+        [Route("TrendingCourses")]
+        public ActionResult TrendingCourses()
+        {
+            var trending = new List<CourseDetails>();
+            try
+            {
+                trending = CourseFilterHelper.TrendingCourses(objCourseDetailsOperation.GetCourseDetails(new CourseDetails(), ""));
+            }
+            catch (Exception ex)
+            {
+                Common.errorlog(Convert.ToString(ex.Message) + " Inner Msg:" + Convert.ToString(ex.StackTrace), "TrendingCourses", "CoursesController");
+            }
+            return View(trending);
+        }
+
         // All featured courses (set by the admin); the home page shows the first 6
         [Route("FeaturedCourses")]
         public ActionResult FeaturedCourses()

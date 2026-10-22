@@ -2601,6 +2601,8 @@
     <Content Include="Views\Shared\_FindProviderModal.cshtml" />
     <Content Include="Views\Courses\FindProvider.cshtml" />
     <Content Include="Views\Courses\Categories.cshtml" />
+    <Content Include="Views\Courses\TrendingCourses.cshtml" />
+    <Content Include="Views\Courses\_TrendingCourseCard.cshtml" />
     <Content Include="Views\Newsletter\Unsubscribe.cshtml" />
     <Content Include="Areas\Admin\Views\NewsletterSubscribers\Index.cshtml" />
     <Content Include="Emails\Newsletter_Welcome.html" />

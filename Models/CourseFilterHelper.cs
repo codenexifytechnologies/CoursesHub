@@ -255,6 +255,19 @@ namespace CoursesHub.Models
 
         public static IEnumerable<string> FeaturedPriorityOptions { get { return FeaturedPriorities; } }
 
+        /// <summary>
+        /// Trending courses (TrendingCourse = "1"), one card per course: the same course from several providers is shown once.
+        /// Used by the home page section (first 6) and the Trending Courses page (all).
+        /// </summary>
+        public static List<CourseDetails> TrendingCourses(IEnumerable<CourseDetails> courses)
+        {
+            return (courses ?? Enumerable.Empty<CourseDetails>())
+                .Where(c => IsTrending(c.TrendingCourses))
+                .GroupBy(c => (CourseCode(c.CourseName) ?? CourseTitle(c.CourseName)).ToLowerInvariant())
+                .Select(g => g.First())
+                .ToList();
+        }
+
         /// <summary>Featured courses only: High first, then Medium, then Low; newest first within a priority.</summary>
         public static List<CourseDetails> FeaturedCourses(IEnumerable<CourseDetails> courses)
         {

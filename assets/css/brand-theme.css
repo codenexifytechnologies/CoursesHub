@@ -9621,3 +9621,181 @@ body.fp-open {
 .cd-page .course-sidebar .rbt-course-details-list-wrapper li {
     border-top: 0;
 }
+
+/* Home trending: "View All Trending Courses" orange on the dark background, teal on hover */
+.home-trending-more {
+    position: relative;
+    z-index: 1;
+    margin-top: 40px;
+}
+
+    .home-trending-more .bl-btn {
+        background: var(--accent-color);
+        color: var(--on-accent-color);
+        box-shadow: 0 12px 26px rgba(var(--accent-rgb), 0.35);
+    }
+
+        .home-trending-more .bl-btn:hover,
+        .home-trending-more .bl-btn:focus {
+            background: var(--primary-color);
+            color: #fff;
+            box-shadow: 0 12px 26px rgba(var(--primary-rgb), 0.35);
+        }
+
+/* ==========================================================================
+   Trending Courses page (Views/Courses/TrendingCourses.cshtml) - logo-based design
+   ========================================================================== */
+.trc-hero {
+    padding-bottom: 110px;
+}
+
+.trc-hero-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 300px;
+    align-items: center;
+    gap: 40px;
+}
+
+.trc-accent {
+    color: var(--accent-color);
+}
+
+/* CoursesHub logo badge with two spinning rings */
+.trc-logo-badge {
+    position: relative;
+    width: 260px;
+    height: 260px;
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.trc-logo-ring {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    border: 3px dashed rgba(var(--accent-rgb), 0.55);
+    animation: chSpin 22s linear infinite;
+}
+
+.trc-logo-ring-2 {
+    inset: 26px;
+    border: 2px solid rgba(255, 255, 255, 0.18);
+    border-top-color: var(--primary-color);
+    border-right-color: var(--accent-color);
+    animation-duration: 6s;
+    animation-direction: reverse;
+}
+
+.trc-logo-card {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    width: 170px;
+    padding: 22px 18px 18px;
+    border-radius: 22px;
+    background: #fff;
+    box-shadow: 0 20px 44px rgba(0, 0, 0, 0.25);
+    animation: hsFloat 4.5s ease-in-out infinite;
+}
+
+    .trc-logo-card img {
+        width: 130px;
+        height: auto;
+    }
+
+.trc-logo-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 12px;
+    border-radius: 999px;
+    background: var(--accent-color);
+    color: var(--on-accent-color);
+    font-size: 12px;
+    font-weight: 700;
+    animation: htGlow 2.6s ease-in-out infinite;
+}
+
+/* small floating sparkles in brand colours */
+.trc-spark {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    pointer-events: none;
+    animation: hsFloat 5s ease-in-out infinite;
+}
+
+.trc-spark-1 { left: 8%; top: 22%; background: rgba(var(--accent-rgb), 0.7); }
+.trc-spark-2 { left: 46%; bottom: 18%; width: 8px; height: 8px; background: rgba(255, 255, 255, 0.45); animation-delay: -1.6s; }
+.trc-spark-3 { right: 34%; top: 14%; width: 10px; height: 10px; background: rgba(var(--primary-rgb), 0.9); animation-delay: -3s; }
+
+/* card list: same cards as the home section, sliding in one after another */
+.trc-area {
+    position: relative;
+    z-index: 1;
+    margin-top: -60px;
+}
+
+.trc-list .ht-card {
+    border: 1px solid var(--border-color);
+    box-shadow: 0 18px 40px rgba(15, 63, 66, 0.12);
+    animation: blUp 0.6s calc(var(--ht-i, 0) * 0.08s) cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+    .trc-list .ht-card[hidden] {
+        display: none;
+    }
+
+@media (max-width: 991px) {
+    .trc-hero-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .trc-logo-badge {
+        display: none;
+    }
+}
+
+@media (max-width: 767px) {
+    .trc-hero {
+        padding-bottom: 90px;
+    }
+
+    .trc-area {
+        margin-top: -48px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .trc-logo-ring,
+    .trc-logo-card,
+    .trc-logo-tag,
+    .trc-spark,
+    .trc-list .ht-card {
+        animation: none;
+    }
+}
+
+/* All Courses sidebar: rounded panel (header and last group follow the corners) */
+.course-filter-panel {
+    border-radius: 22px;
+    box-shadow: 0 16px 40px rgba(var(--primary-rgb), 0.1);
+}
+
+    .course-filter-panel .course-filter-head {
+        border-radius: 21px 21px 0 0;
+    }
+
+    .course-filter-panel .course-filter-group:last-of-type {
+        border-radius: 0 0 21px 21px;
+    }
+
+.course-filter-toggle {
+    border-radius: 999px;
+}

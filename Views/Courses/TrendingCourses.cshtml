@@ -1,0 +1,99 @@
+﻿@model List<CoursesHub.Areas.Panel.Models.CourseDetails>
+@{
+    ViewBag.Title = "Trending Courses";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var courses = Model ?? new List<CoursesHub.Areas.Panel.Models.CourseDetails>();
+    int categoryCount = courses.Where(c => !string.IsNullOrWhiteSpace(c.CategoryName))
+                               .Select(c => c.CategoryName.Trim().ToLowerInvariant()).Distinct().Count();
+}
+
+@* Logo-based design: brand teal / orange, the CoursesHub logo badge and the dark trending background *@
+<section class="tp-hero trc-hero">
+    <span class="tp-blob tp-blob-1" aria-hidden="true"></span>
+    <span class="tp-blob tp-blob-2" aria-hidden="true"></span>
+    <span class="trc-spark trc-spark-1" aria-hidden="true"></span>
+    <span class="trc-spark trc-spark-2" aria-hidden="true"></span>
+    <span class="trc-spark trc-spark-3" aria-hidden="true"></span>
+    <div class="container">
+        <div class="trc-hero-grid">
+            <div class="trc-hero-text">
+                <ul class="page-list bl-crumbs">
+                    <li class="rbt-breadcrumb-item"><a href="@Url.Action("Index", "Index", new { area = "" })">Home</a></li>
+                    <li><div class="icon-right"><i class="feather-chevron-right"></i></div></li>
+                    <li class="rbt-breadcrumb-item active">Trending Courses</li>
+                </ul>
+                <span class="bl-eyebrow"><i class="feather-trending-up"></i> Top Trending Courses</span>
+                <h1 class="bl-hero-title">Get job-ready with these <span class="trc-accent">popular courses</span></h1>
+                <p class="bl-hero-text">Courses students are choosing right now: practical, job-ready skills that stay relevant in a changing workplace.</p>
+                <div class="bl-hero-meta">
+                    <span class="bl-pill"><i class="feather-trending-up"></i> @courses.Count Trending @(courses.Count == 1 ? "Course" : "Courses")</span>
+                    <span class="tp-pill-ghost"><i class="feather-grid"></i> @categoryCount @(categoryCount == 1 ? "Field of study" : "Fields of study")</span>
+                    @if (courses.Count > 1)
+                    {
+                        <label class="bl-search" for="trendingSearch">
+                            <i class="feather-search" aria-hidden="true"></i>
+                            <input id="trendingSearch" type="search" placeholder="Search trending courses..." autocomplete="off" aria-label="Search trending courses">
+                        </label>
+                    }
+                </div>
+            </div>
+            <div class="trc-logo-badge" aria-hidden="true">
+                <span class="trc-logo-ring"></span>
+                <span class="trc-logo-ring trc-logo-ring-2"></span>
+                <span class="trc-logo-card">
+                    <img src="~/assets/images/logo/logo.png" alt="">
+                    <span class="trc-logo-tag"><i class="feather-trending-up"></i> Trending now</span>
+                </span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="trc-area rbt-section-gapBottom">
+    <div class="container">
+        @if (courses.Count == 0)
+        {
+            <div class="bl-empty">
+                <span class="bl-empty-icon"><i class="feather-trending-up"></i></span>
+                <h4>No trending courses yet</h4>
+                <p>Trending courses will appear here once they are selected.</p>
+                <a class="bl-btn" href="@Url.Action("AllCourses", "Courses", new { area = "" })">Browse all courses <i class="feather-arrow-right"></i></a>
+            </div>
+        }
+        else
+        {
+            <div class="ht-list trc-list">
+                @for (int i = 0; i < courses.Count; i++)
+                {
+                    @Html.Partial("~/Views/Courses/_TrendingCourseCard.cshtml", courses[i], new ViewDataDictionary { { "Index", i } })
+                }
+            </div>
+            <div class="bl-empty trc-no-match" hidden>
+                <span class="bl-empty-icon"><i class="feather-search"></i></span>
+                <h4>No trending course matches your search</h4>
+                <p>Try a different word.</p>
+            </div>
+        }
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        (function () {
+            var input = document.getElementById('trendingSearch');
+            if (!input) return;
+            var cards = document.querySelectorAll('.trc-list .ht-card');
+            var empty = document.querySelector('.trc-no-match');
+            input.addEventListener('input', function () {
+                var q = input.value.trim().toLowerCase();
+                var shown = 0;
+                Array.prototype.forEach.call(cards, function (c) {
+                    var match = !q || (c.getAttribute('data-search') || '').indexOf(q) !== -1;
+                    c.hidden = !match;
+                    if (match) shown++;
+                });
+                if (empty) empty.hidden = shown !== 0;
+            });
+        })();
+    </script>
+}

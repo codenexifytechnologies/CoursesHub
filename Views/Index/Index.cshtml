@@ -399,13 +399,8 @@
         </div>
     </div>-->
     @{
-        // Up to 6 trending courses, one card per course (the same course from several providers is shown once)
-        var trending = (allCourses ?? new List<CoursesHub.Areas.Panel.Models.CourseDetails>())
-            .Where(x => CoursesHub.Models.CourseFilterHelper.IsTrending(x.TrendingCourses))
-            .GroupBy(x => (CoursesHub.Models.CourseFilterHelper.CourseCode(x.CourseName) ?? CoursesHub.Models.CourseFilterHelper.CourseTitle(x.CourseName)).ToLowerInvariant())
-            .Select(g => g.First())
-            .Take(6)
-            .ToList();
+        // Up to 6 trending courses on the home page (one card per course); all of them on the Trending Courses page
+        var trending = CoursesHub.Models.CourseFilterHelper.TrendingCourses(allCourses).Take(6).ToList();
     }
     @if (trending.Count > 0)
     {
@@ -422,68 +417,12 @@
             <div class="ht-list">
                 @for (int t = 0; t < trending.Count; t++)
                 {
-                    var item = trending[t];
-                    var tCode = CoursesHub.Models.CourseFilterHelper.CourseCode(item.CourseName);
-                    var tTitle = CoursesHub.Models.CourseFilterHelper.CourseTitle(item.CourseName);
-                    var tAbout = CoursesHub.Models.CourseFilterHelper.PlainText(item.AboutCourse, 420);
-                    var tCareers = CoursesHub.Models.CourseFilterHelper.CareerChips(item.CourseOutcomes);
-                    var tLevel = CoursesHub.Models.CourseFilterHelper.Qualification(item);
-                    var tDetailsUrl = Url.Action("CourseDetails", "Courses", new { CourseId = item.Id });
-                    // "Find a provider": compare every provider that offers this course
-                    var tProvidersUrl = Url.Action("FindProvider", "Courses", new { area = "", course = tCode ?? tTitle });
-
-                    <article class="ht-card" style="--ht-i:@t" data-sal="slide-up" data-sal-delay="@((t % 2) * 120 + (t / 2) * 80)" data-sal-duration="700">
-                        <div class="ht-main">
-                            <div class="ht-tags">
-                                @if (!string.IsNullOrEmpty(tCode))
-                                {
-                                    <span class="ht-code">@tCode</span>
-                                }
-                                @if (!string.IsNullOrEmpty(item.CategoryName))
-                                {
-                                    <span class="ht-cat">@item.CategoryName</span>
-                                }
-                            </div>
-                            <h3 class="ht-title"><a href="@tDetailsUrl">@tTitle</a></h3>
-                            @if (!string.IsNullOrEmpty(tAbout))
-                            {
-                                <p class="ht-about">@tAbout</p>
-                            }
-                            @if (tCareers.Count > 0)
-                            {
-                                <h4 class="ht-label">Career opportunities</h4>
-                                <ul class="ht-chips">
-                                    @foreach (var career in tCareers)
-                                    {
-                                        <li>@career</li>
-                                    }
-                                </ul>
-                            }
-                        </div>
-                        <aside class="ht-side">
-                            <dl class="ht-facts">
-                                <div>
-                                    <dt><i class="feather-clock"></i> Duration</dt>
-                                    <dd>@(string.IsNullOrWhiteSpace(item.CourseDuration) ? "Contact provider" : item.CourseDuration + " Weeks")</dd>
-                                </div>
-                                <div>
-                                    <dt><i class="feather-monitor"></i> Study mode</dt>
-                                    <dd>@(string.IsNullOrWhiteSpace(item.StudyMethod) ? "Contact provider" : item.StudyMethod)</dd>
-                                </div>
-                                @if (!string.IsNullOrWhiteSpace(tLevel))
-                                {
-                                    <div>
-                                        <dt><i class="feather-award"></i> Qualification</dt>
-                                        <dd>@tLevel</dd>
-                                    </div>
-                                }
-                            </dl>
-                            @* Opens the Find a provider questions; the link is the fallback without JavaScript *@
-                            <a class="ht-btn" href="@tProvidersUrl" data-find-provider="@(tCode ?? tTitle)" data-course-code="@tCode" data-course-title="@tTitle"><i class="feather-search"></i> Find a provider</a>
-                            <a class="ht-link" href="@tDetailsUrl">View course details <i class="feather-arrow-right"></i></a>
-                        </aside>
-                    </article>
+                    @Html.Partial("~/Views/Courses/_TrendingCourseCard.cshtml", trending[t], new ViewDataDictionary { { "Index", t }, { "UseSal", true } })
                 }
+            </div>
+
+            <div class="home-providers-more home-categories-more home-trending-more">
+                <a class="bl-btn" href="@Url.Action("TrendingCourses", "Courses", new { area = "" })">View All Trending Courses <i class="feather-arrow-right"></i></a>
             </div>
         </div>
     </div>
