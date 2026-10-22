@@ -1,0 +1,26 @@
+﻿@model CoursesHub.Areas.Panel.Models.Testimonial
+@* Student review card: home page "What Our Students Say" slider and the All Reviews page *@
+@{
+    string reviewer = (Model.Person_Name ?? "").Trim();
+    string initials = string.Concat(reviewer.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).Take(2).Select(w => char.ToUpperInvariant(w[0])));
+    int index = ViewData["Index"] is int ? (int)ViewData["Index"] : 0;
+    string extraClass = ViewData["CardClass"] as string ?? "";
+}
+<article class="hr-card @extraClass" style="--rv-i:@(index % 12)" data-search="@(((Model.Comment ?? "") + " " + reviewer + " " + (Model.CourseName ?? "")).ToLowerInvariant())">
+    <span class="hr-quote" aria-hidden="true">&ldquo;</span>
+    <p class="hr-text">@Model.Comment</p>
+    @if (!string.IsNullOrWhiteSpace(Model.CourseName))
+    {
+        <span class="hr-course"><i class="feather-book-open"></i> @Model.CourseName</span>
+    }
+    <div class="hr-person">
+        <span class="hr-avatar" aria-hidden="true">@(string.IsNullOrEmpty(initials) ? "?" : initials)</span>
+        <span class="hr-who">
+            <h5 class="hr-name">@Model.Person_Name</h5>
+            @if (!string.IsNullOrWhiteSpace(Model.Designation))
+            {
+                <span class="hr-role">@Model.Designation</span>
+            }
+        </span>
+    </div>
+</article>

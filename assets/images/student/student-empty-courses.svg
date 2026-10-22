@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 180" role="img" aria-label="No applied courses yet">
+  <defs>
+    <style>
+      .bob{animation:bob 4s ease-in-out infinite}
+      .look{transform-origin:168px 70px;animation:look 5s ease-in-out infinite}
+      @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+      @keyframes look{0%,100%{transform:rotate(-8deg)}50%{transform:rotate(8deg)}}
+      @media (prefers-reduced-motion: reduce){.bob,.look{animation:none}}
+    </style>
+  </defs>
+  <ellipse cx="120" cy="166" rx="90" ry="9" fill="#0E6B6A" fill-opacity="0.12"/>
+  <circle cx="120" cy="88" r="72" fill="#E8F4F4"/>
+  <g class="bob">
+    <rect x="62" y="56" width="96" height="96" rx="12" fill="#ffffff" stroke="#DCE8E8" stroke-width="2"/>
+    <rect x="62" y="56" width="96" height="24" rx="12" fill="#158887"/>
+    <rect x="62" y="68" width="96" height="12" fill="#158887"/>
+    <rect x="76" y="92" width="52" height="7" rx="3.5" fill="#BFDDDC"/>
+    <rect x="76" y="106" width="68" height="7" rx="3.5" fill="#BFDDDC"/>
+    <rect x="76" y="120" width="40" height="7" rx="3.5" fill="#BFDDDC"/>
+    <circle cx="80" cy="68" r="4" fill="#ffffff"/>
+    <circle cx="92" cy="68" r="4" fill="#F79646"/>
+  </g>
+  <g class="look">
+    <circle cx="168" cy="70" r="20" fill="none" stroke="#F79646" stroke-width="7"/>
+    <line x1="182" y1="85" x2="200" y2="104" stroke="#F79646" stroke-width="9" stroke-linecap="round"/>
+  </g>
+</svg>

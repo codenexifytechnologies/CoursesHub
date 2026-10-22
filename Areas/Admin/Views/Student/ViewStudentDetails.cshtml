@@ -1,0 +1,130 @@
+﻿@model CoursesHub.Models.StudentRegistration
+@using System.Configuration
+@{
+    ViewBag.Title = "Student Profile";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+
+    // ULTRA-SAFE INITIALS LOGIC
+    var firstInitial = !string.IsNullOrEmpty(Model?.FirstName) ? Model.FirstName.Trim().Substring(0, 1).ToUpper() : "S";
+    var lastInitial = !string.IsNullOrEmpty(Model?.LastName) ? Model.LastName.Trim().Substring(0, 1).ToUpper() : "P";
+}
+
+<link href="~/assets/css/toastr.min.css" rel="stylesheet" />
+<link href="@CoursesHub.AssetVersion.Url("~/assets/css/adminCustom.css")" rel="stylesheet" />
+
+<div class="container-fluid pt-3">
+    @if (Model == null)
+    {
+        <div class="alert alert-warning">No student record found.</div>
+    }
+    else
+    {
+        using (Html.BeginForm("ViewStudentDetails", "Student", FormMethod.Post, new { id = "Student" }))
+        {
+            @Html.HiddenFor(m => m.Id)
+            @Html.HiddenFor(m => m.FirstName)
+            @Html.HiddenFor(m => m.LastName)
+            @Html.HiddenFor(m => m.EmailId)
+            @Html.HiddenFor(m => m.Mobile)
+            @Html.HiddenFor(m => m.State)
+            @Html.HiddenFor(m => m.Country)
+            @Html.HiddenFor(m => m.Zipcode)
+            @Html.HiddenFor(m => m.isAustraliaResident)
+            @Html.HiddenFor(m => m.Area)
+            @Html.HiddenFor(m => m.MiddleName)
+
+            <div class="student-header">
+                <div class="row align-items-center">
+                    <div class="col-auto">
+                        <div class="avatar-circle">@firstInitial@lastInitial</div>
+                    </div>
+                    <div class="col">
+                        <h3 class="mb-0">@Model.FirstName @Model.LastName</h3>
+                        <small>@Model.EmailId</small>
+                    </div>
+                    <div class="col-auto">
+                        <button type="button" onclick="history.back()" class="btn btn-sm btn-outline-light"> <i class="fas fa-arrow-left mr-2"></i> Back to Students</button>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-md-12 detail-card" style="border-top: 4px solid var(--primary-color);">
+                <div class="profile-card">
+                    <h6 class="mb-4 text-primary font-weight-bold">Personal Details</h6>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label class="data-label">Full Name</label>
+                            <div class="data-value">@Model.FirstName @Model.MiddleName @Model.LastName</div>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="data-label">Mobile</label>
+                            <div class="data-value">@Model.Mobile</div>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="data-label">Email ID</label>
+                            <div class="data-value">@Model.EmailId</div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+
+            <div class="col-md-12 detail-card" style="border-top: 4px solid var(--primary-color);">
+                <div class="profile-card">
+                    <h6 class="mb-4 text-primary font-weight-bold">Location</h6>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label class="data-label">Country</label>
+                            <div class="data-value">
+                                @(Model.isAustraliaResident ? "Australia" : Model.Country)
+
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label class="data-label">State</label>
+                            <div class="data-value">@Model.State</div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label class="data-label">Postcode</label>
+                            <div class="data-value">@Model.Zipcode</div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="custom-control custom-switch">
+                                <label class="text-muted small text-uppercase font-weight-bold d-block mb-2">Residency Status</label>
+                                <span class="badge @(Model.isAustraliaResident ? "badge-success" : "badge-secondary") px-3 py-2 rounded-pill">
+                                    @(Model.isAustraliaResident ? "Australia Resident: Yes" : "Australia Resident: No")
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-12 detail-card" style="border-top: 4px solid var(--primary-color);">
+                <div class="profile-card">
+                    <h6 class="mb-3 text-primary font-weight-bold">Verification Status</h6>
+                    <div class="d-flex align-items-center justify-content-between bg-light p-3 rounded">
+                        <div>
+                            <strong>Enable Account</strong>
+                            <p class="small text-muted mb-0">Allow student to login and apply for courses.</p>
+                        </div>
+                        <div class="custom-control custom-switch">
+                            @Html.CheckBoxFor(m => m.IsActive, new { @class = "custom-control-input", id = "statusSwitch" })
+                            <label class="custom-control-label" for="statusSwitch">Active</label>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary mt-4 px-4">Save Changes</button>
+        }
+    }
+</div>
+
+<script src="~/plugins/jquery/jquery.min.js"></script>
+<script src="~/assets/js/toastr.min.js"></script>

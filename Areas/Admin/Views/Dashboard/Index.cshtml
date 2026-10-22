@@ -1,0 +1,321 @@
+﻿@model CoursesHub.Areas.Admin.Models.DashboardCount
+@{
+    ViewBag.Title = "Dashboard";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<link href="@CoursesHub.AssetVersion.Url("~/assets/css/adminCustom.css")" rel="stylesheet" />
+
+<div class="content-header pt-4 ad-head">
+    <div class="container-fluid">
+        <div class="row mb-3">
+            <div class="col-sm-6">
+                <span class="ad-greet"><i class="fas fa-hand-sparkles"></i> <span id="adGreeting">Welcome back</span></span>
+                <h1 class="m-0 font-weight-bold" style="color: #1a202c;">Dashboard Overview</h1>
+                <p class="text-muted">Analytics and system statistics</p>
+            </div>
+            <div class="col-sm-6 d-flex align-items-center justify-content-sm-end">
+                <span class="ad-date"><i class="far fa-calendar-alt"></i> @DateTime.Now.ToString("dddd, d MMMM yyyy")</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xl-4 col-md-6 mb-4 ad-rise" style="--ad-i:0">
+                <div class="card dashboard-card bg-gradient-mesh-info h-100 shadow">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <div>
+                                <div class="text-xs font-weight-bold text-uppercase text-white-50 mb-1">Training Providers</div>
+                                <div class="h1 mb-0 font-weight-bold text-white js-count" data-count="@Model.ObjUnivresityCount.UTotal">@Model.ObjUnivresityCount.UTotal</div>
+                            </div>
+                            <div class="icon-glass">
+                                <i class="fas fa-university fa-2x"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="stat-footer-glass">
+                        <div class="row text-center">
+                            <div class="col-6 border-right border-white-50">
+                                <div class="text-white-50 small">New</div>
+                                <div class="font-weight-bold text-white js-count" data-count="@Model.ObjUnivresityCount.UNew">@Model.ObjUnivresityCount.UNew</div>
+                            </div>
+                            <div class="col-6">
+                                <div class="text-white-50 small">Verified</div>
+                                <div class="font-weight-bold text-white js-count" data-count="@Model.ObjUnivresityCount.UVerified">@Model.ObjUnivresityCount.UVerified</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-4 col-md-6 mb-4 ad-rise" style="--ad-i:1">
+                <div class="card dashboard-card bg-gradient-mesh-success h-100 shadow">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <div>
+                                <div class="text-xs font-weight-bold text-uppercase text-white-50 mb-1">Active Courses</div>
+                                <div class="h1 mb-0 font-weight-bold text-white js-count" data-count="@Model.ObjCoursesCount.CTotal">@Model.ObjCoursesCount.CTotal</div>
+                            </div>
+                            <div class="icon-glass">
+                                <i class="fas fa-book-open fa-2x"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="stat-footer-glass">
+                        <div class="row text-center">
+                            <div class="col-6 border-right border-white-50">
+                                <div class="text-white-50 small">New</div>
+                                <div class="font-weight-bold text-white js-count" data-count="@Model.ObjCoursesCount.CNew">@Model.ObjCoursesCount.CNew</div>
+                            </div>
+                            <div class="col-6">
+                                <div class="text-white-50 small">Verified</div>
+                                <div class="font-weight-bold text-white js-count" data-count="@Model.ObjCoursesCount.CVerified">@Model.ObjCoursesCount.CVerified</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-4 col-md-6 mb-4 ad-rise" style="--ad-i:2">
+                <div class="card dashboard-card bg-gradient-mesh-primary h-100 shadow">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <div>
+                                <div class="text-xs font-weight-bold text-uppercase text-white-50 mb-1">User Feedback</div>
+                                <div class="h1 mb-0 font-weight-bold text-white js-count" data-count="@Model.ObjFeedbackCount.TTotal">@Model.ObjFeedbackCount.TTotal</div>
+                            </div>
+                            <div class="icon-glass">
+                                <i class="fas fa-comments fa-2x"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="stat-footer-glass">
+                        <div class="row text-center">
+                            <div class="col-6 border-right border-white-50">
+                                <div class="text-white-50 small">New</div>
+                                <div class="font-weight-bold text-white js-count" data-count="@Model.ObjFeedbackCount.TNew">@Model.ObjFeedbackCount.TNew</div>
+                            </div>
+                            <div class="col-6">
+                                <div class="text-white-50 small">Verified</div>
+                                <div class="font-weight-bold text-white js-count" data-count="@Model.ObjFeedbackCount.TVerified">@Model.ObjFeedbackCount.TVerified</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <hr class="my-4" style="opacity: 0.05;" />
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card chart-card ad-rise" style="--ad-i:3">
+                    <div class="card-header border-0 bg-white">
+                        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center">
+                            <h3 class="card-title mb-3 mb-md-0">
+                                <i class="far fa-chart-bar text-primary mr-2"></i>
+                                Monthly Leads Breakdown - @DateTime.Now.Year
+                            </h3>
+                            <div style="min-width: 250px;">
+                                @Html.DropDownList("UniversityId", (List<SelectListItem>)ViewBag.UniversityList, "-- All Training Providers --", new { @class = "form-control-modern w-100", id = "ddlUniversity" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="barChart" style="min-height: 300px; height: 300px; max-height: 350px; width: 100%;"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-4 col-md-6">
+                <div class="card chart-card ad-rise" style="--ad-i:4">
+                    <div class="card-header"><h3 class="card-title">Student Vs Country</h3></div>
+                    <div class="card-body">
+                        <canvas id="SVC" style="min-height: 250px; height: 250px;"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="card chart-card ad-rise" style="--ad-i:5">
+                    <div class="card-header"><h3 class="card-title">Student Vs States</h3></div>
+                    <div class="card-body">
+                        <canvas id="SVS" style="min-height: 250px; height: 250px;"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-12">
+                <div class="card chart-card ad-rise" style="--ad-i:6">
+                    <div class="card-header"><h3 class="card-title">Category Distribution</h3></div>
+                    <div class="card-body">
+                        <canvas id="pieChart" style="min-height: 250px; height: 250px;"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script src="~/plugins/jquery/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    // Dashboard animations: greeting, counting numbers and smoother chart entrances
+    var adReduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    (function () {
+        var h = new Date().getHours();
+        var el = document.getElementById('adGreeting');
+        if (el) el.textContent = h < 12 ? 'Good morning' : h < 17 ? 'Good afternoon' : 'Good evening';
+    })();
+
+    function adCountUp() {
+        $('.js-count').each(function (i, el) {
+            var target = parseInt(el.getAttribute('data-count'), 10);
+            if (isNaN(target) || adReduceMotion || target === 0) { return; }
+            var duration = 1200, start = null, delay = 150 + i * 60;
+            el.textContent = '0';
+            setTimeout(function () {
+                requestAnimationFrame(function step(ts) {
+                    if (start === null) start = ts;
+                    var p = Math.min((ts - start) / duration, 1);
+                    var eased = 1 - Math.pow(1 - p, 3);
+                    el.textContent = Math.round(target * eased).toLocaleString();
+                    if (p < 1) requestAnimationFrame(step); else el.textContent = target.toLocaleString();
+                });
+            }, delay);
+        });
+    }
+
+    if (window.Chart && Chart.defaults) {
+        Chart.defaults.font.family = "'Inter', 'Source Sans Pro', sans-serif";
+        Chart.defaults.color = '#4a5a5b';
+        Chart.defaults.animation = adReduceMotion ? false : { duration: 1200, easing: 'easeOutQuart' };
+        Chart.defaults.plugins.tooltip.backgroundColor = '#0F3F42';
+        Chart.defaults.plugins.tooltip.padding = 10;
+        Chart.defaults.plugins.tooltip.cornerRadius = 8;
+    }
+
+    // bars grow one after another
+    function adBarDelay(ctx) {
+        return (ctx.type === 'data' && ctx.mode === 'default' && !adReduceMotion) ? ctx.dataIndex * 70 + ctx.datasetIndex * 140 : 0;
+    }
+
+    $(document).ready(function () {
+        adCountUp();
+        loadBarChart(null);
+        loaddonutData();
+        loadpieChart();
+        $("#ddlUniversity").change(function () {
+            var universityId = $(this).val() == "" ? null : $(this).val();
+            loadBarChart(universityId);
+        });
+    });
+
+    var barChart;
+    var barChartCanvas = $('#barChart').get(0).getContext('2d');
+
+    function loadBarChart(universityId) {
+        $.ajax({
+            url: '/Admin/Dashboard/GetBarChartData',
+            type: 'GET',
+            data: { UniversityId: universityId },
+            success: function (response) {
+                var barChartData = {
+                    labels: response.Months,
+                    datasets: [
+                        {
+                            label: 'Premium Lead',
+                            backgroundColor: '#158887',
+                            data: response.PremiumLead,
+                            borderRadius: 5
+                        },
+                        {
+                            label: 'Normal Lead',
+                            backgroundColor: '#ecf0f1',
+                            data: response.NormalLead,
+                            borderRadius: 5
+                        }
+                    ]
+                };
+
+                if (barChart) { barChart.destroy(); }
+
+                barChart = new Chart(barChartCanvas, {
+                    type: 'bar',
+                    data: barChartData,
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        animation: { delay: adBarDelay },
+                        plugins: {
+                            legend: { display: true, position: 'bottom' }
+                        },
+                        scales: {
+                            y: { beginAtZero: true, ticks: { stepSize: 5, precision: 0 } },
+                            x: { grid: { display: false } }
+                        }
+                    }
+                });
+            }
+        });
+    }
+
+    var SVC = $('#SVC').get(0).getContext('2d');
+    var SVS = $('#SVS').get(0).getContext('2d');
+
+    function loaddonutData() {
+        $.ajax({
+            url: '/Admin/Dashboard/GetDonutData',
+            type: 'GET',
+            success: function (response) {
+                var donutOptions = {
+                    maintainAspectRatio: false,
+                    responsive: true,
+                    cutout: '62%',
+                    animation: { animateRotate: true, animateScale: true },
+                    plugins: { legend: { position: 'bottom' } }
+                }
+                new Chart(SVC, {
+                    type: 'doughnut',
+                    data: {
+                        labels: response.country,
+                        datasets: [{ data: response.countrystudentcount, backgroundColor: response.CColors }]
+                    },
+                    options: donutOptions
+                });
+                new Chart(SVS, {
+                    type: 'doughnut',
+                    data: {
+                        labels: response.state,
+                        datasets: [{ data: response.statestudentcount, backgroundColor: response.SColors }]
+                    },
+                    options: donutOptions
+                });
+            }
+        });
+    }
+
+    function loadpieChart() {
+        $.ajax({
+            url: '/Admin/Dashboard/GetPieData',
+            type: 'GET',
+            success: function (response) {
+                var pieChartCanvas = $('#pieChart').get(0).getContext('2d')
+                new Chart(pieChartCanvas, {
+                    type: 'pie',
+                    data: {
+                        labels: response.CategoryType,
+                        datasets: [{ data: response.CategoryTypeCount, backgroundColor: response.CColors }]
+                    },
+                    options: { maintainAspectRatio: false, responsive: true, animation: { animateRotate: true, animateScale: true }, plugins: { legend: { position: 'bottom' } } }
+                })
+            }
+        });
+    }
+</script>

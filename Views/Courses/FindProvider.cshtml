@@ -1,0 +1,78 @@
+﻿@model CoursesHub.Models.FindProviderResult
+@{
+    ViewBag.Title = "Compare providers" + (string.IsNullOrEmpty(Model.CourseTitle) ? "" : " for " + Model.CourseTitle);
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    int inAreaCount = Model.InArea.Count;
+    bool byArea = !string.IsNullOrEmpty(Model.State);
+    string where = Model.IsResident
+        ? (byArea ? "Postcode " + Model.Postcode + " \u00B7 " + Model.State : "Australian Citizen / Permanent Resident")
+        : "International student" + (string.IsNullOrEmpty(Model.Country) ? "" : " \u00B7 " + Model.Country);
+}
+
+<section class="tp-hero fp-hero">
+    <span class="tp-blob tp-blob-1" aria-hidden="true"></span>
+    <span class="tp-blob tp-blob-2" aria-hidden="true"></span>
+    <div class="container">
+        <div class="fp-answers">
+            <a class="fp-back-link" href="javascript:history.back()"><i class="feather-chevron-left"></i> Back</a>
+            <span class="fp-answer"><i class="feather-@(Model.IsResident ? "map-pin" : "globe")"></i> @where</span>
+            <a class="fp-change" href="#" data-find-provider="@Model.Course" data-course-code="@Model.CourseCode" data-course-title="@Model.CourseTitle" data-fp-change>Change</a>
+        </div>
+        @if (!string.IsNullOrEmpty(Model.CourseCode))
+        {
+            <span class="cd-code">@Model.CourseCode</span>
+        }
+        <h1 class="bl-hero-title">@Model.CourseTitle</h1>
+        <div class="bl-hero-meta">
+            <span class="bl-pill">
+                <i class="feather-home"></i>
+                @inAreaCount course @(inAreaCount == 1 ? "provider" : "providers") @(byArea ? "available in your area" : "available")
+            </span>
+            @if (Model.Elsewhere.Count > 0)
+            {
+                <span class="tp-pill-ghost"><i class="feather-map"></i> @Model.Elsewhere.Count in other states</span>
+            }
+        </div>
+    </div>
+</section>
+
+<div class="fp-area rbt-section-gapBottom">
+    <div class="container">
+        @if (inAreaCount == 0 && Model.Elsewhere.Count == 0)
+        {
+            <div class="bl-empty">
+                <span class="bl-empty-icon"><i class="feather-search"></i></span>
+                <h4>No providers found for this course yet</h4>
+                <p>Try another course, or browse all courses to compare similar options.</p>
+                <a class="ht-btn fp-empty-btn" href="@Url.Action("AllCourses", "Courses", new { area = "" })">Browse all courses</a>
+            </div>
+        }
+        else
+        {
+            if (inAreaCount == 0)
+            {
+                <div class="fp-note"><i class="feather-info"></i> No provider offers this course in @Model.State yet. These providers offer it in other states.</div>
+            }
+            else
+            {
+                <div class="fp-grid">
+                    @foreach (var item in Model.InArea)
+                    {
+                        @Html.Partial("_FindProviderCard", item)
+                    }
+                </div>
+            }
+
+            if (Model.Elsewhere.Count > 0)
+            {
+                <h2 class="fp-section-title">@(inAreaCount == 0 ? "Providers in other states" : "Also offered in other states")</h2>
+                <div class="fp-grid">
+                    @foreach (var item in Model.Elsewhere)
+                    {
+                        @Html.Partial("_FindProviderCard", item)
+                    }
+                </div>
+            }
+        }
+    </div>
+</div>

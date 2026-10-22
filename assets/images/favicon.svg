@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <title>CoursesHub</title>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1A9A98"/>
+      <stop offset="1" stop-color="#127A79"/>
+    </linearGradient>
+  </defs>
+
+  <!-- tile -->
+  <rect width="512" height="512" rx="112" fill="url(#bg)"/>
+
+  <!-- the "C" from the logo -->
+  <path d="M370.9 159.6 A150 150 0 1 0 370.9 352.4" fill="none" stroke="#FFFFFF" stroke-width="62"/>
+
+  <!-- graduation cap inside the C (as in the logo), in the logo orange -->
+  <g transform="translate(246 238)">
+    <path d="M-92 0 L0 -40 L92 0 L0 40 Z" fill="#F79646"/>
+    <path d="M-54 20 V58 C-54 84 54 84 54 58 V20 L0 40 Z" fill="#E07B2C"/>
+    <path d="M74 8 V64" stroke="#FFFFFF" stroke-width="10" stroke-linecap="round"/>
+    <circle cx="74" cy="72" r="12" fill="#FFFFFF"/>
+  </g>
+</svg>

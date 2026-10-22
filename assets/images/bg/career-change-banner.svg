@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 430" width="1600" height="430" preserveAspectRatio="xMidYMid slice">
+  <title>CoursesHub - Career change</title>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0F3F42"/>
+      <stop offset="0.55" stop-color="#13615F"/>
+      <stop offset="1" stop-color="#158887"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#3FA3A2" stop-opacity="0.55"/>
+      <stop offset="1" stop-color="#3FA3A2" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="bar" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FFFFFF" stop-opacity="0.95"/>
+      <stop offset="1" stop-color="#E8F4F4" stop-opacity="0.75"/>
+    </linearGradient>
+    <pattern id="dots" width="22" height="22" patternUnits="userSpaceOnUse">
+      <circle cx="3" cy="3" r="2.2" fill="#FFFFFF" fill-opacity="0.18"/>
+    </pattern>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1600" height="430" fill="url(#bg)"/>
+  <circle cx="1240" cy="215" r="300" fill="url(#glow)"/>
+  <circle cx="-40" cy="470" r="190" fill="none" stroke="#FFFFFF" stroke-opacity="0.07" stroke-width="40"/>
+  <circle cx="1560" cy="-30" r="150" fill="none" stroke="#F79646" stroke-opacity="0.18" stroke-width="26"/>
+  <rect x="640" y="40" width="132" height="88" fill="url(#dots)"/>
+  <rect x="1440" y="300" width="132" height="110" fill="url(#dots)"/>
+
+  <!-- Copy -->
+  <g font-family="'Euclid Circular', 'Segoe UI', Arial, Helvetica, sans-serif">
+    <text x="50" y="118" fill="#F79646" font-size="20" font-weight="700" letter-spacing="4">CAREER CHANGE</text>
+    <text x="50" y="184" fill="#FFFFFF" font-size="46" font-weight="700">Your next career</text>
+    <text x="50" y="240" fill="#FFFFFF" font-size="46" font-weight="700">starts <tspan fill="#F79646">here.</tspan></text>
+    <text x="50" y="286" fill="#FFFFFF" fill-opacity="0.82" font-size="19">Find and compare courses across Australia</text>
+    <rect x="50" y="314" width="310" height="44" rx="22" fill="#F79646"/>
+    <text x="74" y="342" fill="#0B3B3A" font-size="15" font-weight="700" letter-spacing="2">EXPLORE · COMPARE · ENROL</text>
+  </g>
+
+  <!-- Illustration: rising steps with a growth arrow and graduation cap -->
+  <g transform="translate(980 0)">
+    <ellipse cx="270" cy="392" rx="300" ry="16" fill="#0A2E30" fill-opacity="0.35"/>
+    <rect x="40"  y="300" width="96" height="92"  rx="14" fill="url(#bar)" fill-opacity="0.55"/>
+    <rect x="160" y="240" width="96" height="152" rx="14" fill="url(#bar)" fill-opacity="0.7"/>
+    <rect x="280" y="175" width="96" height="217" rx="14" fill="url(#bar)" fill-opacity="0.85"/>
+    <rect x="400" y="105" width="96" height="287" rx="14" fill="url(#bar)"/>
+
+    <!-- step icons -->
+    <g fill="none" stroke="#158887" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+      <!-- search -->
+      <circle cx="84" cy="340" r="14"/><path d="M95 351l11 11"/>
+      <!-- book -->
+      <path d="M186 282c12-6 24-6 22 0v30c-10-6-22-6-22 0zM230 282c-12-6-24-6-22 0v30c10-6 22-6 22 0z"/>
+      <!-- compare / check -->
+      <rect x="310" y="208" width="36" height="36" rx="7"/><path d="M318 226l8 8 14-16"/>
+      <!-- briefcase -->
+      <rect x="426" y="150" width="44" height="32" rx="6"/><path d="M439 150v-7h18v7M426 164h44"/>
+    </g>
+
+    <!-- growth arrow -->
+    <path d="M30 330 C 150 300, 230 250, 300 175 S 420 70, 520 40" fill="none" stroke="#F79646" stroke-width="9" stroke-linecap="round"/>
+    <path d="M492 30 L 532 34 L 516 70 Z" fill="#F79646"/>
+
+    <!-- graduation cap on top step -->
+    <g transform="translate(448 78)">
+      <path d="M-46 0 L0 -20 L46 0 L0 20 Z" fill="#0F3F42"/>
+      <path d="M-26 10 v16 c0 10 52 10 52 0 v-16 L0 20 Z" fill="#0F3F42"/>
+      <path d="M38 4 v22" stroke="#F79646" stroke-width="4" stroke-linecap="round"/>
+      <circle cx="38" cy="30" r="5" fill="#F79646"/>
+    </g>
+
+    <!-- sparkles -->
+    <g fill="#FFFFFF">
+      <path d="M90 150 l5 13 13 5 -13 5 -5 13 -5 -13 -13 -5 13 -5z" fill-opacity="0.85"/>
+      <path d="M560 210 l4 10 10 4 -10 4 -4 10 -4 -10 -10 -4 10 -4z" fill-opacity="0.6"/>
+      <circle cx="250" cy="110" r="5" fill="#F79646"/>
+      <circle cx="590" cy="320" r="4" fill-opacity="0.6"/>
+    </g>
+  </g>
+</svg>

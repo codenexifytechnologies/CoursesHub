@@ -1,0 +1,311 @@
+﻿@model List<CoursesHub.Areas.Panel.Models.CourseDetails>
+@{
+    ViewBag.Title = "ViewCourses";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="~/Areas/Admin/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+<link rel="stylesheet" href="~/Areas/Admin/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+<link rel="stylesheet" href="~/Areas/Admin/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+<script src="//code.jquery.com/jquery-2.2.4.min.js"></script>
+<script src="~/assets/js/toastr.min.js"></script>
+<link href="~/assets/css/toastr.min.css" rel="stylesheet" />
+@if (TempData["EditCourseDetailsMsg"] != null)
+{
+    <script>
+        $(document).ready(function () {
+            toastr.info('@TempData["EditCourseDetailsMsg"]');
+        });
+    </script>
+}
+
+<style>
+    /* Status Badge Styles */
+    .badge-soft-success {
+        background-color: #ecfdf5;
+        color: #059669;
+        padding: 5px 12px;
+        border-radius: 6px;
+        font-size: 0.75rem;
+        font-weight: 600;
+    }
+
+    .badge-soft-danger {
+        background-color: #fef2f2;
+        color: #dc2626;
+        padding: 5px 12px;
+        border-radius: 6px;
+        font-size: 0.75rem;
+        font-weight: 600;
+    }
+
+    .badge-soft-warning {
+        background-color: #fffbeb;
+        color: #d97706;
+        padding: 5px 12px;
+        border-radius: 6px;
+        font-size: 0.75rem;
+        font-weight: 600;
+    }
+
+    /* Trending / Featured pills */
+    .vc-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        min-width: 84px;
+        justify-content: center;
+        padding: 5px 12px;
+        border-radius: 999px;
+        border: 1px solid transparent;
+        font-size: 0.75rem;
+        font-weight: 700;
+        letter-spacing: 0.2px;
+        white-space: nowrap;
+    }
+
+    .vc-trend-yes {
+        background: linear-gradient(135deg, #158887, #0E6B6A);
+        color: #fff;
+        box-shadow: 0 4px 10px rgba(21, 136, 135, 0.25);
+    }
+
+        .vc-trend-yes i {
+            color: #FFD3A8;
+            animation: vcFlicker 1.8s ease-in-out infinite;
+        }
+
+    .vc-trend-no {
+        background: #f4f7f7;
+        border-color: #DCE8E8;
+        color: #7a8a8b;
+    }
+
+    .vc-feat-high {
+        background: #fff1e6;
+        border-color: #F79646;
+        color: #b4530f;
+    }
+
+        .vc-feat-high i {
+            color: #F79646;
+        }
+
+    .vc-feat-medium {
+        background: #e8f4f4;
+        border-color: #9fd0cf;
+        color: #0E6B6A;
+    }
+
+        .vc-feat-medium i {
+            color: #158887;
+        }
+
+    .vc-feat-low {
+        background: #f3f5f9;
+        border-color: #d5dbe5;
+        color: #4b5a70;
+    }
+
+    .vc-feat-none {
+        background: transparent;
+        border: 1px dashed #cfd8d8;
+        color: #9aa7a8;
+        font-weight: 600;
+    }
+
+    @@keyframes vcFlicker {
+        0%, 100% { transform: scale(1); opacity: 1; }
+        50% { transform: scale(1.15); opacity: 0.8; }
+    }
+
+    @@media (prefers-reduced-motion: reduce) {
+        .vc-trend-yes i { animation: none; }
+    }
+
+    /* Table and Avatar alignment */
+    .avatar-circle {
+        width: 40px;
+        height: 40px;
+        color: white;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+    }
+</style>
+
+@* Loading uses the shared Courses Hub loader (CHLoader, Views/Shared/_PageLoader.cshtml) *@
+
+<section class="content-header pt-4 px-4">
+    <div class="container-fluid">
+        <div class="row mb-3 align-items-center">
+            <div class="col-sm-6">
+                <h1 class="m-0 font-weight-bold text-dark" style="letter-spacing: -1px;">Course Management</h1>
+                <p class="text-muted mb-0">Review and verify courses provided by training partners.</p>
+            </div>
+            
+        </div>
+    </div>
+</section>
+
+<section class="content px-4 pb-4">
+    <div class="container-fluid">
+        <div class="card shadow-sm border-0" style="border-radius: 15px; overflow: hidden;">
+            <div class="card-body p-4">
+                <div class="table-responsive">
+                    <table id="example1" class="table table-hover mb-0" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th class="border-0 px-4 py-3">Training Provider</th>
+                                <th class="border-0 py-3">Course Name</th>
+                                <th class="border-0 py-3">Status</th>
+                                <th class="border-0 py-3 text-center">Trending</th>
+                                <th class="border-0 py-3 text-center">Featured</th>
+                                <th class="border-0 py-3 text-center">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td class="px-4 py-3">
+                                        <div class="d-flex align-items-center">
+                                            <div class="avatar-circle mr-3" style="background: linear-gradient(135deg, #6366f1, #a855f7); flex-shrink: 0;">
+                                                @item.UniversityName.Substring(0, 1)
+                                            </div>
+                                            <div class="font-weight-bold text-dark">@item.UniversityName</div>
+                                        </div>
+                                    </td>
+                                    <td class="py-3 text-secondary">@item.CourseName</td>
+                                    <td class="py-3">
+                                        @if (item.IsReject == true)
+                                        {
+                                            <span class="badge badge-soft-danger"><i class="fas fa-times-circle mr-1"></i>Rejected</span> }
+                                        else if (item.IsActive == true)
+                                        {
+                                            <span class="badge badge-soft-success"><i class="fas fa-check-circle mr-1"></i>Verified</span> }
+                                        else
+                                        {
+                                            <span class="badge badge-soft-warning"><i class="fas fa-clock mr-1"></i>Pending</span>}
+                                    </td>
+                                    @{
+                                        bool trending = CoursesHub.Models.CourseFilterHelper.IsTrending(item.TrendingCourses);
+                                        string featured = CoursesHub.Models.CourseFilterHelper.FeaturedPriority(item.FeaturedCourse);
+                                        int featuredOrder = featured == "High" ? 1 : featured == "Medium" ? 2 : featured == "Low" ? 3 : 4;
+                                    }
+                                    <td class="py-3 text-center" data-order="@(trending ? 0 : 1)">
+                                        @if (trending)
+                                        {
+                                            <span class="vc-pill vc-trend-yes" title="Shown in Top Trending Courses"><i class="fas fa-fire"></i>Yes</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="vc-pill vc-trend-no"><i class="far fa-circle"></i>No</span>
+                                        }
+                                    </td>
+                                    <td class="py-3 text-center" data-order="@featuredOrder">
+                                        @switch (featured)
+                                        {
+                                            case "High":
+                                                <span class="vc-pill vc-feat-high"><i class="fas fa-star"></i>High</span>
+                                                break;
+                                            case "Medium":
+                                                <span class="vc-pill vc-feat-medium"><i class="fas fa-star-half-alt"></i>Medium</span>
+                                                break;
+                                            case "Low":
+                                                <span class="vc-pill vc-feat-low"><i class="far fa-star"></i>Low</span>
+                                                break;
+                                            default:
+                                                <span class="vc-pill vc-feat-none">Not set</span>
+                                                break;
+                                        }
+                                    </td>
+                                    <td class="py-3 text-center">
+                                        <div class="d-flex justify-content-center">
+                                            <a href="@Url.Action("EditCourseDetails","Courses",new {Id=item.Id})"
+                                               class="btn-action mr-2" title="View">
+                                                <i class="fa fa-eye text-primary"></i>
+                                            </a>
+                                            <a href="#" class="btn-action delete-course"
+                                               data-url="@Url.Action("DeleteCourseDetails","Courses",new {Id=item.Id})" title="Delete">
+                                                <i class="fa fa-trash text-danger"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script src="~/plugins/jquery/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    $(document).ready(function () {
+        if (window.CHLoader) { CHLoader.show('Loading…'); }
+
+        var table = $("#example1").DataTable({
+            "destroy": true,
+            "responsive": true,
+            "lengthChange": false,
+            "autoWidth": false
+            //"buttons": [
+            //    {
+            //        extend: 'copy',
+            //        className: 'btn btn-sm btn-dark rounded-pill px-3 mr-1 shadow-sm',
+            //        exportOptions: { columns: ":visible" }
+            //    },
+            //    {
+            //        extend: 'csv',
+            //        className: 'btn btn-sm btn-dark rounded-pill px-3 mr-1 shadow-sm',
+            //        exportOptions: { columns: ":visible" }
+            //    },
+            //    {
+            //        extend: 'excel',
+            //        className: 'btn btn-sm btn-dark rounded-pill px-3 mr-1 shadow-sm',
+            //        exportOptions: { columns: ":visible" }
+            //    },
+            //    {
+            //        extend: 'pdf',
+            //        className: 'btn btn-sm btn-dark rounded-pill px-3 mr-1 shadow-sm',
+            //        exportOptions: { columns: ":visible" }
+            //    },
+            //    {
+            //        extend: 'print',
+            //        className: 'btn btn-sm btn-dark rounded-pill px-3 mr-1 shadow-sm',
+            //        exportOptions: { columns: ":visible" }
+            //    },
+            //]
+        });
+
+        // This ensures the buttons are placed in the top-left area of the table grid
+        table.buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+
+        if (window.CHLoader) { CHLoader.hide(); }
+    });
+</script>
+<script>
+    $(document).on('click', '.delete-course', function (e) {
+        e.preventDefault();
+        var url = $(this).data('url');
+        Swal.fire({
+            title: "Are you sure?",
+            text: "This will permanently delete the record!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#158887",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = url;
+            }
+        });
+    });
+</script>
+

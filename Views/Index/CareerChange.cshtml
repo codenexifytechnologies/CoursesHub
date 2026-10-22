@@ -1,0 +1,481 @@
+﻿@model CoursesHub.Models.CareerPage
+@{
+    ViewBag.Title = "CareerChange";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var levels = ViewBag.CourseLevel as List<SelectListItem>;
+}
+
+<a class="close_side_menu" href="javascript:void(0);"></a>
+<div class="rbt-page-banner-wrapper">
+    <!-- Start Banner BG Image  -->
+    <div class="rbt-banner-image"></div>
+    <!-- End Banner BG Image  -->
+</div>
+<!-- Start Card Style -->
+<div class="rbt-dashboard-area rbt-section-overlayping-top rbt-section-gapBottom">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <!-- Start Dashboard Top  -->
+                <div class="rbt-dashboard-content-wrapper">
+                    <div class="tutor-bg-photo bg_image bg_image--career height-350"></div>
+                </div>
+                <!-- End Dashboard Top  -->
+                <!-- careerchange -->
+                <div id="form-cc" class="form-flow">
+                    <div class="row g-5">
+                        <div class="col-lg-12 p-0">
+                            <div class="rbt-dashboard-content text-center text-white py-5 full-purple-bg">
+                                <!-- Progress -->
+                                <div class="d-flex justify-content-between align-items-center px-4 mb-4">
+                                    <button class="prev-link" onclick="careerPreviousStep()">← Previous</button>
+                                </div>
+
+                                <div class="custom-progress-container">
+                                    <span class="progress-title">Your Progress</span>
+                                    <div class="custom-progress-bar">
+                                        <div class="career-progress-step" data-step="1"></div>
+                                        <div class="career-progress-line"></div>
+                                        <div class="career-progress-step" data-step="2"></div>
+                                        <div class="career-progress-line"></div>
+                                        <div class="career-progress-step" data-step="3"></div>
+                                        <div class="career-progress-line"></div>
+                                        <div class="career-progress-step" data-step="4"></div>
+                                        <div class="career-progress-line"></div>
+                                        <div class="career-progress-step" data-step="5"></div>
+                                    </div>
+                                </div>
+
+                                <!-- FORM STEPS CONTINUE HERE (ALREADY INCLUDED) -->
+                                <!-- All updated IDs, names, and logic are already inside -->
+                                <!-- Step 1: Subject Selection -->
+                                <div id="career-step1" class="career-form-step">
+                                    <h2 class="mb-custom">What subject are you interested in studying?</h2>
+                                    <center>
+                                        <div class="rbt-modern-select bg-transparent height-45 col-md-6" >
+                                            @Html.DropDownListFor(m => m.objCareer.CourseCategory,
+                                                  new SelectList(ViewBag.CourseCategory, "Value", "Text"),
+                                                  "Select Category",
+                                                  new { @class = "form-control", @style= "font-size: 2rem !important;", id = "CourseCategory" })
+                                        </div>
+                                    </center>
+                                    <br />
+                                    <button class="btn-continue" onclick="careerNextStep(2)">Continue</button>
+                                </div>
+
+                                <!-- Step 2: Course Level -->
+                                <div id="career-step2" class="career-form-step" style="display:none;">
+                                    <h2 class="mb-custom">Which course level would you like to study?</h2>
+                                    <div class="checkbox-group-wrapper">
+                                        @if (levels != null)
+                                        {
+                                            foreach (var item in levels)
+                                            {
+                                                <label class="custom-checkbox">
+                                                    <input type="checkbox"
+                                                           name="SelectedCourseLevels"
+                                                           value="@item.Text" />
+                                                    <span class="checkmark"></span>
+                                                    @item.Text
+                                                </label>
+                                            }
+                                        }
+                                    </div>
+
+                                    <button class="btn-continue" onclick="careerNextStep(3)">Continue</button>
+                                </div>
+
+                                <!-- Step 3: Study Mode -->
+                                <div id="career-step3" class="career-form-step" style="display:none;">
+                                    <div class="info-wrapper">
+                                        <span class="question-title">How would you like to study?</span>
+                                        <div class="info-icon" onclick="toggleTooltip('career-tooltipBox1')">i</div>
+                                        <div class="tooltip-box" id="career-tooltipBox1">
+                                            This question helps us determine the level of education or experience you have,
+                                            so we can use this to show you similar courses. If you don't want to answer, no stress!
+                                            This question can be skipped.
+                                        </div>
+                                    </div>
+                                    <div class="card-select-group">
+                                        <label class="select-card">
+                                            <input type="checkbox" name="study_mode" value="Blended" />
+                                            <div class="card-content">
+                                                <img src="~/assets/images/icons/online.svg" alt="Blended" />
+                                                <span>Blended</span>
+                                            </div>
+                                        </label>
+                                        <label class="select-card">
+                                            <input type="checkbox" name="study_mode" value="Distance" />
+                                            <div class="card-content">
+                                                <img src="~/assets/images/icons/virtual.svg" alt="Distance" />
+                                                <span>Distance</span>
+                                            </div>
+                                        </label>
+                                        <label class="select-card">
+                                            <input type="checkbox" name="study_mode" value="FaceToFace" />
+                                            <div class="card-content">
+                                                <img src="~/assets/images/icons/virtual.svg" alt="FaceToFace" />
+                                                <span>FaceToFace</span>
+                                            </div>
+                                        </label>
+                                        <label class="select-card">
+                                            <input type="checkbox" name="study_mode" value="Online" />
+                                            <div class="card-content">
+                                                <img src="~/assets/images/icons/online.svg" alt="Online" />
+                                                <span>Online</span>
+                                            </div>
+                                        </label>
+                                    </div>
+                                    <button class="btn-continue" onclick="careerNextStep(4)">Continue</button>
+                                </div>
+
+                                <!-- Step 4: Education Level -->
+                                <div class="career-form-step" id="career-step4" style="display:none;">
+                                    <div class="info-wrapper">
+                                        <span class="question-title">What is your highest level of education?</span>
+                                        <div class="info-icon" onclick="toggleTooltip('career-tooltipBox2')">i</div>
+                                        <div class="tooltip-box" id="career-tooltipBox2">
+                                            This helps us recommend courses that suit your current education level.
+                                        </div>
+                                    </div>
+                                    <p style="text-align:center; margin-bottom: 20px;">
+                                        <a href="#" onclick="careerNextStep(5)" style="color: var(--primary-dark); text-decoration: underline;">Skip this question and continue ></a>
+                                    </p>
+                                    <div class="navigator-answers pb-5">
+                                        <label class="navigator-answer">
+                                            <input type="radio" name="education" />
+                                            <div class="answer-card">
+                                                <img src="~/assets/images/icons/secondary-school.svg" alt="Secondary School" />
+                                                <span>Secondary School</span>
+                                            </div>
+                                        </label>
+                                        <label class="navigator-answer">
+                                            <input type="radio" name="education" />
+                                            <div class="answer-card">
+                                                <img src="~/assets/images/icons/certificate.svg" alt="Certificate I-IV" />
+                                                <span>Certificate I-IV</span>
+                                            </div>
+                                        </label>
+                                        <label class="navigator-answer">
+                                            <input type="radio" name="education" />
+                                            <div class="answer-card">
+                                                <img src="~/assets/images/icons/diploma.svg" alt="Diploma" />
+                                                <span>Diploma</span>
+                                            </div>
+                                        </label>
+                                        <label class="navigator-answer">
+                                            <input type="radio" name="education" />
+                                            <div class="answer-card">
+                                                <img src="~/assets/images/icons/undergraduate.svg" alt="Undergraduate" />
+                                                <span>Undergraduate</span>
+                                            </div>
+                                        </label>
+                                        <label class="navigator-answer">
+                                            <input type="radio" name="education" />
+                                            <div class="answer-card">
+                                                <img src="~/assets/images/icons/postgraduate.svg" alt="Postgraduate" />
+                                                <span>Postgraduate</span>
+                                            </div>
+                                        </label>
+                                        <label class="navigator-answer">
+                                            <input type="radio" name="education" />
+                                            <div class="answer-card">
+                                                <img src="~/assets/images/icons/rather-not-say.svg" alt="Rather Not Say" />
+                                                <span>Rather Not Say</span>
+                                            </div>
+                                        </label>
+                                    </div>
+                                    <button class="btn-continue" onclick="careerNextStep(5)">Continue</button>
+                                </div>
+
+                                <!-- Step 5: Final Contact Form -->
+                                <div class="career-form-step" id="career-step5" style="display: none;">
+                                    <div class="custom-form-wrapper">
+                                        <!-- Left Panel -->
+                                        <div class="custom-form-left">
+                                            <div class="top-left-box">
+                                                @*<h1>12</h1>*@
+                                                <div>
+                                                    <h3 style="color:var(--accent-color)"> Matching Business Administration Courses</h3>
+                                                    <span class="view-preferences" onclick="careerToggleSummary()">View Preferences ▼</span>
+                                                    <div id="career-summaryPreferences" class="summary-preferences" style="display: none;">
+                                                        <ul style="font-size:medium">
+                                                            <li><strong>Subject:</strong> <span id="career-sum-subject">-</span></li>
+                                                            <li><strong>Level:</strong> <span id="career-sum-level">-</span></li>
+                                                            <li><strong>Method:</strong> <span id="career-sum-method">-</span></li>
+                                                            <li><strong>Education:</strong> <span id="career-sum-education">-</span></li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="bottom-left-box">
+                                                <p>Complete the form to see your courses and everything you need to know!</p>
+                                                <ul class="li-text-color">
+                                                    <li>➤ Pricing and Payment Options</li>
+                                                    <li>➤ Job Outcomes</li>
+                                                    <li>➤ Start Dates</li>
+                                                    <li>➤ Course Subjects</li>
+                                                    <li>➤ How to get help and contact information</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+
+                                        <!-- Right Panel -->
+                                        <div class="custom-form-right">
+                                            <h4>Fill out this simple form to view your personalised course list and receive it by email.</h4>
+                                            @using (Html.BeginForm("CareerChange", "Index", FormMethod.Post, new { id = "career-finalForm" }))
+                                            {
+                                                @Html.HiddenFor(m => m.objCareer.CourseCategory);
+                                                @Html.HiddenFor(m => m.objCareer.CourseCategoryName);
+                                                @Html.HiddenFor(m => m.objCareer.CourseLevel);
+                                                @Html.HiddenFor(m => m.objCareer.EducationLevel);
+                                                @Html.HiddenFor(m => m.objCareer.StudyMode);
+
+                                                @Html.TextBoxFor(m => m.objStudentRegistration.FirstName, new { @placeholder = "First Name", autocomplete = "off" })
+                                                @Html.TextBoxFor(m => m.objStudentRegistration.LastName, new { @placeholder = "Last Name", autocomplete = "off" })
+                                                @Html.TextBoxFor(m => m.objStudentRegistration.Mobile, new { @placeholder = "Phone", maxlength = "10", inputmode = "numeric", pattern = "[0-9]*", autocomplete = "off" })
+                                                @Html.TextBoxFor(m => m.objStudentRegistration.EmailId, new { @placeholder = "Email", type = "email", pattern = @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$", autocomplete = "off" })
+                                                <div class="col-lg-12">
+                                                    <div class="filter-select rbt-modern-select">
+                                                        @Html.HiddenFor(m => m.objStudentRegistration.Zipcode, new { id = "hiddenZipcode" })
+                                                        <select id="objStudentRegistration_Zipcode" class="selectpicker w-100"
+                                                                name="objStudentRegistration.Zipcode"
+                                                                data-live-search="true"
+                                                                title="Search Post Code"
+                                                                data-size="7"
+                                                                data-actions-box="true">
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <button type="submit">View Your Courses Now</button>
+                                                <p class="privacy">By submitting this enquiry I accept the <a href="#">Privacy Policy</a> and <a href="#">Terms of Use</a>.</p>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @section scripts{
+        <script src="~/assets/js/vendor/jquery.js"></script>
+        <script src="~/Plugins/jquery-validation/jquery.validate.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta3/dist/js/bootstrap-select.min.js"></script>
+
+        <script>
+            let careerCurrentStep = 1;
+
+            function careerShowStep(stepNumber) {
+                document.querySelectorAll('.career-form-step').forEach(step => {
+                    step.style.display = 'none';
+                });
+
+                const activeStep = document.getElementById('career-step' + stepNumber);
+                if (activeStep) {
+                    activeStep.style.display = 'block';
+
+                    if (stepNumber === 5) {
+                        activeStep.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                }
+
+                careerUpdateProgressBar(stepNumber);
+                careerCurrentStep = stepNumber;
+            }
+
+            function careerNextStep(stepNumber) {
+                if (careerCurrentStep === 1) {
+                    const subject = document.querySelector('#career-step1 select').options[document.querySelector('#career-step1 select').selectedIndex].text;
+                    document.getElementById('career-sum-subject').innerText = subject;
+                    $('#CourseCategoryName').val(subject);
+
+                    var valid = document.querySelector('#career-step1 select').options[document.querySelector('#career-step1 select').selectedIndex].value;
+                    $('#objCareer_CourseCategory').val(valid);
+                }
+
+                if (careerCurrentStep === 2) {
+                    const levels = Array.from(document.querySelectorAll('#career-step2 input[name="SelectedCourseLevels"]:checked'))
+                        .map(cb => cb.value)
+                        .join(', ');
+                    document.getElementById('career-sum-level').innerText = levels || 'Not selected';
+                    //$('#StudyMode').val(levels || 'Not selected');
+                    $('#objCareer_StudyMode').val(levels || 'Not selected');
+                }
+
+                if (careerCurrentStep === 3) {
+                    const methods = Array.from(document.querySelectorAll('#career-step3 input[name="study_mode"]:checked'))
+                        .map(cb => cb.value)
+                        .join(', ');
+                    document.getElementById('career-sum-method').innerText = methods || 'Not selected';
+                    $('#CourseLevel').val(methods || 'Not selected');
+                    $('#objCareer_CourseLevel').val(methods || 'Not selected');
+                }
+
+                if (careerCurrentStep === 4) {
+                    const education = document.querySelector('#career-step4 input[name="education"]:checked');
+                    if (education) {
+                        const label = education.closest('.navigator-answer').querySelector('span').textContent;
+                        document.getElementById('career-sum-education').innerText = label;
+                        //$('#EducationLevel').val(label);
+                        $('#objCareer_EducationLevel').val(label);
+                    } else {
+                        document.getElementById('career-sum-level').innerText = 'Not selected';
+                        //$('#EducationLevel').val('Not selected');
+                    }
+                }
+
+                careerShowStep(stepNumber);
+            }
+
+            function careerPreviousStep() {
+                if (careerCurrentStep > 1) {
+                    careerShowStep(careerCurrentStep - 1);
+                } else {
+                    window.location.href = "/Index/Index";
+                }
+            }
+
+            function careerUpdateProgressBar(stepNumber) {
+                const steps = document.querySelectorAll('.career-progress-step');
+                steps.forEach(step => {
+                    const stepNum = parseInt(step.getAttribute('data-step'));
+                    step.classList.remove('filled', 'active');
+
+                    if (stepNum < stepNumber) step.classList.add('filled');
+                    else if (stepNum === stepNumber) step.classList.add('active');
+                });
+
+                const score = stepNumber * 15;
+                const scoreElement = document.getElementById('career-matchConfidenceScore');
+                if (scoreElement) {
+                    scoreElement.textContent = score + '%';
+                }
+            }
+
+            function careerToggleSummary() {
+                const box = document.getElementById('career-summaryPreferences');
+                box.style.display = box.style.display === 'none' ? 'block' : 'none';
+
+                //document.getElementById('career-sum-subject').textContent = document.getElementById('career-pref-subject').textContent;
+                //document.getElementById('career-sum-level').textContent = document.getElementById('career-pref-level').textContent;
+                //document.getElementById('career-sum-method').textContent = document.getElementById('career-pref-method').textContent;
+                //document.getElementById('career-sum-education').textContent = document.getElementById('career-pref-education').textContent;
+            }
+
+            function careerToggleTooltip(id) {
+                const tooltip = document.getElementById(id);
+                tooltip.classList.toggle('active');
+            }
+
+            window.addEventListener('click', function (e) {
+                const allTooltips = document.querySelectorAll('.tooltip-box');
+                allTooltips.forEach(tip => {
+                    const icon = tip.previousElementSibling;
+                    if (!tip.contains(e.target) && !icon.contains(e.target)) {
+                        tip.classList.remove('active');
+                    }
+                });
+            });
+
+
+            $(document).on("input", ".bs-searchbox input", function () {
+
+                var search = $(this).val();
+
+                if (search.length < 3) return;
+
+                $.ajax({
+                    url: '/Registration/SearchAusZip',
+                    type: 'GET',
+                    data: { query: search },
+                    success: function (data) {
+                        var $ddl;
+                        $ddl = $("#objStudentRegistration_Zipcode");
+                        $ddl.empty();
+                        $.each(data, function (i, item) {
+                            $ddl.append(
+                                `<option value="${item.Postcode} - ${item.Suburb}">
+                                            ${item.Postcode} - ${item.Suburb}
+                                        </option>`
+                            );
+                        });
+                        $ddl.selectpicker('refresh');
+                    }
+                });
+            });
+
+
+            $.validator.addMethod("lettersonly", function (value, element) {
+                return this.optional(element) || /^[a-zA-Z]+$/.test(value);
+            }, "Please enter letters only.");
+
+
+            $(document).ready(function () {
+
+
+                $('#objStudentRegistration_Zipcode').on('changed.bs.select', function () {
+                    var selected = $(this).selectpicker('val');
+                    $('#hiddenZipcode').val(selected);
+                    $("#objStudentRegistration_Zipcode-error").remove();
+
+                });
+
+
+
+                $('#career-finalForm').validate({
+                    rules: {
+                        'objStudentRegistration.FirstName': {
+                            required: true,
+                            lettersonly: true
+                        },
+
+                        'objStudentRegistration.LastName': {
+                            required: true,
+                            lettersonly: true
+                        },
+                        'objStudentRegistration.EmailId': {
+                            required: true,
+                            email: true
+                        },
+                        'objStudentRegistration.Mobile': {
+                            required: true,
+                            digits: true,
+                            minlength: 10,
+                            maxlength: 15
+                        }
+
+                    },
+                    messages: {
+                        'objStudentRegistration.FirstName': "Please enter your first name",
+                        'objStudentRegistration.LastName': "Please enter your last name",
+                        'objStudentRegistration.EmailId': {
+                            required: "Please enter your email",
+                            email: "Please enter a valid email"
+                        },
+                        'objStudentRegistration.Mobile': {
+                            required: "Please enter your mobile number",
+                            digits: "Only digits allowed",
+                            minlength: "Mobile number must be at least 10 digits",
+                            maxlength: "Mobile number must not exceed 15 digits"
+                        }
+                    },
+                    errorElement: 'span',
+                    errorClass: 'text-danger',
+                    highlight: function (element) {
+                        $(element).addClass('is-invalid');
+                        $(".focus-border").removeClass('focus-border');
+                    },
+                    unhighlight: function (element) {
+                        $(element).removeClass('is-invalid');
+                        $(".focus-border").removeClass('focus-border');
+                    }
+                });
+            });
+        </script>
+    }

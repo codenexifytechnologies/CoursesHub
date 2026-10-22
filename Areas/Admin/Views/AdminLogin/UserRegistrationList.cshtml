@@ -1,0 +1,71 @@
+﻿@model CoursesHub.Models.User
+@{
+    ViewBag.Title = "User Registration";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<link rel="stylesheet" href="~/Areas/Admin/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+<link rel="stylesheet" href="~/Areas/Admin/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+<link rel="stylesheet" href="~/Areas/Admin/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+<script src="//code.jquery.com/jquery-2.2.4.min.js"></script>
+<script src="~/assets/js/toastr.min.js"></script>
+<link href="~/assets/css/toastr.min.css" rel="stylesheet" />
+<link href="@CoursesHub.AssetVersion.Url("~/assets/css/adminCustom.css")" rel="stylesheet" />
+
+@if (TempData["Message"] != null)
+{
+    <script>
+        $(document).ready(function () {
+            toastr.info('@TempData["Message"]');
+        });
+    </script>
+}
+
+@* Loading uses the shared Courses Hub loader (CHLoader, Views/Shared/_PageLoader.cshtml) *@
+
+<section class="content-header pt-4 px-4">
+    <div class="container-fluid">
+        <div class="row mb-3 align-items-center">
+            <div class="col-sm-10">
+                <h1 class="m-0 font-weight-bold text-dark" style="letter-spacing: -1px;">User Registration Details</h1>
+                <p class="text-muted mb-0">Manage and view all registered administrative accounts.</p>
+            </div>
+            <div class="col-sm-2 text-right">
+                @Html.ActionLink("Create New User", "UserRegistration", "AdminLogin", null, new { @class = "btn btn-primary rounded-pill px-4 shadow-sm font-weight-bold", @style = "text-decoration:none;" })
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="content px-4 pb-4">
+    <div class="container-fluid">
+        <div class="card shadow-sm border-0" style="border-radius: 15px;">
+            <div class="card-body p-4">
+                <div class="table-responsive">
+                    <table id="example1" class="table table-hover border-0" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th class="border-0 px-4 py-3">User Info</th>
+                                <th class="border-0 px-4 py-3">Email</th>
+                                <th class="border-0 px-4 py-3">Mobile No</th>
+                                <th class="border-0 px-4 py-3">Role</th>
+                                <th class="border-0 px-4 py-3">Status</th>
+                                <th class="border-0 px-4 py-3">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<script src="~/Areas/Admin/plugins/jquery/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="~/Areas/Admin/Scripts/UserRegistration.js"></script>
+

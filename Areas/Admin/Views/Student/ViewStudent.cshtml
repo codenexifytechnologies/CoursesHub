@@ -1,0 +1,174 @@
+﻿@model List<CoursesHub.Models.StudentRegistration>
+@{
+    ViewBag.Title = "ViewStudent";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="~/Areas/Admin/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+<link rel="stylesheet" href="~/Areas/Admin/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+<link rel="stylesheet" href="~/Areas/Admin/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+<link rel="stylesheet" href="~/Areas/Admin/dist/css/adminlte.min.css">
+<link href="~/assets/css/toastr.min.css" rel="stylesheet" />
+<link href="@CoursesHub.AssetVersion.Url("~/assets/css/adminCustom.css")" rel="stylesheet" />
+
+<style>
+</style>
+
+@if (TempData["EditStudentDetailsMsg"] != null)
+{
+    <script>
+        $(document).ready(function () {
+            toastr.info('@TempData["EditStudentDetailsMsg"]');
+        });
+    </script>
+}
+
+@* Loading uses the shared Courses Hub loader (CHLoader, Views/Shared/_PageLoader.cshtml) *@
+
+<section class="content-header pt-4 px-4">
+    <div class="container-fluid">
+        <div class="row align-items-center">
+            <div class="col-sm-6">
+                <h1 class="font-weight-bold text-dark" style="letter-spacing: -1px;">Student Management</h1>
+                <p class="text-muted">Manage and view all registered students in the system.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="content px-4">
+    <div class="container-fluid">
+        <div class="card student-card">
+            <div class="card-body p-4">
+                <div class="table-responsive">
+                    <table id="example1" class="table table-hover mb-0" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>Student Info</th>
+                                <th>Contact Number</th>
+                                <th>Status</th>
+                                <th class="text-center">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div class="avatar-circle mr-3">
+                                                @item.FirstName.Substring(0, 1)
+                                            </div>
+                                            <div>
+                                                <div class="font-weight-bold text-dark">@item.FirstName</div>
+                                                <small class="text-muted">@item.EmailId</small>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="text-secondary">
+                                            <i class="fas fa-phone-alt mr-2 text-muted small"></i>@item.Mobile
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="text-secondary">
+                                            @if (item.IsActive)
+                                            {
+                                                <span class="badge badge-soft-success"><i class="fas fa-check-circle mr-1"></i>Verified</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge badge-soft-danger"><i class="fas fa-times-circle mr-1"></i>Not Verified</span>
+                                            }
+                                        </span>
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="d-flex justify-content-center">
+                                            <a href="@Url.Action("ViewStudentDetails","Student",new {Id=item.Id})"
+                                               class="btn-action mr-2" title="View Details">
+                                                <i class="fa fa-eye text-primary"></i>
+                                            </a>
+                                            <a href="#" class="btn-action delete-course"
+                                               data-url="@Url.Action("DeleteStudent","Student",new {Id=item.Id})" title="Delete">
+                                                <i class="fa fa-trash text-danger"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script src="~/Areas/Admin/plugins/jquery/jquery.min.js"></script>
+<script src="~/Areas/Admin/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="~/Areas/Admin/plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="~/Areas/Admin/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+<script src="~/Areas/Admin/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+<script src="~/Areas/Admin/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+<script src="~/Areas/Admin/plugins/jszip/jszip.min.js"></script>
+<script src="~/Areas/Admin/plugins/pdfmake/pdfmake.min.js"></script>
+<script src="~/Areas/Admin/plugins/pdfmake/vfs_fonts.js"></script>
+<script src="~/Areas/Admin/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+<script src="~/Areas/Admin/plugins/datatables-buttons/js/buttons.print.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+    $(document).ready(function () {
+        var table = $("#example1").DataTable({
+            "responsive": true,
+            "lengthChange": false,
+            "autoWidth": false
+            //"dom": '<"row mb-3"<"col-md-6"B><"col-md-6 text-right"f>>t<"row mt-3"<"col-md-6"i><"col-md-6"p>>'
+            //"buttons": [
+            //    {
+            //        extend: 'copy',
+            //        className: 'btn btn-sm btn-dark px-3 mr-1 rounded-pill shadow-sm border-0',
+            //        exportOptions: { columns: ":visible" }
+            //    },
+            //    {
+            //        extend: 'csv',
+            //        className: 'btn btn-sm btn-dark px-3 mr-1 rounded-pill shadow-sm border-0',
+            //        exportOptions: { columns: ":visible" }
+            //    },
+            //    {
+            //        extend: 'excel',
+            //        className: 'btn btn-sm btn-dark px-3 mr-1 rounded-pill shadow-sm border-0',
+            //        exportOptions: { columns: ":visible" }
+            //    },
+            //    {
+            //        extend: 'pdf',
+            //        className: 'btn btn-sm btn-dark px-3 mr-1 rounded-pill shadow-sm border-0',
+            //        exportOptions: { columns: ":visible" }
+            //    },
+            //    {
+            //        extend: 'print',
+            //        className: 'btn btn-sm btn-dark px-3 mr-1 rounded-pill shadow-sm border-0',
+            //        exportOptions: { columns: ":visible" }
+            //    }
+            //]
+        });
+    });
+
+    $(document).on('click', '.delete-course', function (e) {
+        e.preventDefault();
+        var url = $(this).data('url');
+        Swal.fire({
+            title: "Are you sure?",
+            text: "This record will be permanently removed!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#158887",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = url;
+            }
+        });
+    });
+</script>

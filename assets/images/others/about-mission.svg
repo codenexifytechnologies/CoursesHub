@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 590 424" width="590" height="424">
+  <title>CoursesHub mission</title>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#E8F4F4"/>
+      <stop offset="1" stop-color="#FEF3EA"/>
+    </linearGradient>
+    <linearGradient id="road" x1="0" y1="1" x2="1" y2="0">
+      <stop offset="0" stop-color="#0F3F42"/>
+      <stop offset="1" stop-color="#158887"/>
+    </linearGradient>
+    <pattern id="dots" width="18" height="18" patternUnits="userSpaceOnUse">
+      <circle cx="3" cy="3" r="2" fill="#158887" fill-opacity="0.18"/>
+    </pattern>
+  </defs>
+
+  <rect width="590" height="424" fill="url(#bg)"/>
+  <circle cx="520" cy="60" r="120" fill="#158887" fill-opacity="0.08"/>
+  <circle cx="40" cy="400" r="110" fill="#F79646" fill-opacity="0.1"/>
+  <rect x="30" y="30" width="110" height="72" fill="url(#dots)"/>
+  <rect x="460" y="320" width="100" height="72" fill="url(#dots)"/>
+
+  <!-- winding path from start to goal -->
+  <path d="M40 424 C 120 330, 260 360, 300 280 S 380 170, 470 130" fill="none" stroke="url(#road)" stroke-width="34" stroke-linecap="round"/>
+  <path d="M40 424 C 120 330, 260 360, 300 280 S 380 170, 470 130" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-dasharray="14 12" stroke-linecap="round"/>
+
+  <!-- milestones along the path -->
+  <g>
+    <circle cx="128" cy="356" r="20" fill="#FFFFFF" stroke="#158887" stroke-width="4"/>
+    <circle cx="128" cy="352" r="6" fill="#158887"/>
+    <path d="M118 366 c0 -8 20 -8 20 0" fill="#158887"/>
+
+    <circle cx="380" cy="196" r="20" fill="#FFFFFF" stroke="#158887" stroke-width="4"/>
+    <g fill="none" stroke="#158887" stroke-width="3" stroke-linejoin="round">
+      <path d="M369 189 c5 -3 9 -3 11 0 v14 c-2 -3 -6 -3 -11 0 z"/>
+      <path d="M391 189 c-5 -3 -9 -3 -11 0 v14 c2 -3 6 -3 11 0 z"/>
+    </g>
+  </g>
+
+  <!-- goal: flag on target -->
+  <g transform="translate(482 118)">
+    <ellipse cx="0" cy="16" rx="44" ry="12" fill="#0F3F42" fill-opacity="0.15"/>
+    <circle r="40" fill="#FFFFFF"/>
+    <circle r="30" fill="#F79646"/>
+    <circle r="19" fill="#FFFFFF"/>
+    <circle r="9" fill="#158887"/>
+    <path d="M0 0 V -78" stroke="#0F3F42" stroke-width="5" stroke-linecap="round"/>
+    <path d="M2 -78 L 44 -64 L 2 -50 Z" fill="#F79646"/>
+  </g>
+
+  <!-- graduation cap near the start -->
+  <g transform="translate(92 70)">
+    <path d="M-38 0 L0 -17 L38 0 L0 17 Z" fill="#158887"/>
+    <path d="M-22 8 v14 c0 9 44 9 44 0 v-14 L0 17 Z" fill="#0F3F42"/>
+    <path d="M31 3 v19" stroke="#F79646" stroke-width="4" stroke-linecap="round"/>
+    <circle cx="31" cy="26" r="5" fill="#F79646"/>
+  </g>
+
+  <!-- sparkles -->
+  <g fill="#F79646">
+    <path d="M200 90 l5 13 13 5 -13 5 -5 13 -5 -13 -13 -5 13 -5z"/>
+    <path d="M540 230 l4 10 10 4 -10 4 -4 10 -4 -10 -10 -4 10 -4z" fill="#158887"/>
+    <circle cx="250" cy="200" r="4" fill="#158887" fill-opacity="0.6"/>
+  </g>
+</svg>

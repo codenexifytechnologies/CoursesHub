@@ -1,0 +1,808 @@
+﻿@model CoursesHub.Areas.Panel.Models.CourseDetails
+@{
+    ViewBag.Title = "AddCourse";
+    Layout = "~/Areas/Panel/Views/Shared/_Layout.cshtml";
+    var isRTO_IDpresent = Model.RTO_ID;
+}
+
+<script src="https://cdn.ckeditor.com/ckeditor5/41.1.0/classic/ckeditor.js"></script>
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+@if (TempData["Message"] != null)
+{
+    <script src="//code.jquery.com/jquery-2.2.4.min.js"></script>
+    <script src="~/assets/js/toastr.min.js"></script>
+
+    <link href="~/assets/css/toastr.min.css" rel="stylesheet" />
+    <script>
+        $(document).ready(function () {
+            toastr.info('@TempData["Message"]');
+        });
+    </script>
+}
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        overflow-x: hidden;
+    }
+
+    .section {
+        height: 33.33vh;
+        padding: 20px;
+    }
+
+    .first {
+        background-color: #f1f1f1;
+    }
+
+    .second {
+        position: fixed;
+        top: 33.33vh; /* Positioned over where the second div would be */
+        right: -100%;
+        width: 105%;
+        height: 33.33vh;
+        background-color: #333;
+        color: white;
+        transition: right 0.3s ease;
+        z-index: 1000;
+        padding: 20px;
+    }
+
+        .second.open {
+            right: 0;
+        }
+
+    .third {
+        background-color: #eaeaea;
+    }
+
+    .toggle-button {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        background-color: var(--primary-color);
+        color: white;
+        padding: 10px 15px;
+        border: none;
+        cursor: pointer;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden;
+    }
+
+    .slider {
+        position: fixed;
+        top: 0;
+        right: -300px; /* Start hidden */
+        width: 300px;
+        height: 100%;
+        background-color: #333;
+        color: white;
+        transition: right 0.3s ease;
+        box-shadow: -2px 0 5px rgba(0,0,0,0.5);
+        z-index: 1000;
+    }
+
+        .slider.open {
+            right: 0;
+        }
+
+    .toggle-button {
+        position: absolute;
+        top: 120px;
+        left: -50px; /* Move the button outside the slider */
+        background-color: var(--primary-color);
+        color: white;
+        padding: 10px 15px;
+        border: none;
+        cursor: pointer;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+
+    .ck-blurred {
+        height: 150px;
+    }
+
+    .ck-editor__editable {
+        height: 200px !important;
+        max-height: 200px !important;
+        overflow-y: auto !important;
+    }
+
+    .rbt-modern-select.bg-transparent .bootstrap-select button.btn-light {
+        box-shadow: none;
+        background-color: var(--color-white);
+        border: 1px solid var(--color-border);
+        box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+        margin-bottom: 4rem;
+        width: 100% !important;
+    }
+</style>
+
+<div class="sd-page pp-course-form">
+<div class="sd-card sd-reveal">
+<div class="sd-page-head">
+    <span class="sd-page-icon"><i class="feather-plus-square"></i></span>
+    <div>
+        <h4 class="sd-page-title">Add Course</h4>
+        <p class="sd-page-sub">Fill in each section below to list a new course on Courses Hub.</p>
+    </div>
+    <a class="sd-link" href="@Url.Action("ViewCourses", "Courses", new { area = "Panel" })"><i class="feather-arrow-left"></i> Back to courses</a>
+</div>
+<div class="rbt-create-course-area bg-color-white">
+    <div class="container">
+        <div class="row g-5">
+            <div class="col-lg-12">
+                <div class="rbt-accordion-style rbt-accordion-01 rbt-accordion-06 accordion">
+                    @*<div id="slider" class="slider">
+                        <button class="toggle-button" onclick="toggleSlider()"><i class="feather-info"></i></button>
+                        <div class="col-lg-12">
+                            <div class="rbt-create-course-sidebar course-sidebar sticky-top rbt-shadow-box rbt-gradient-border">
+                                <div class="inner">
+                                    <div class="section-title mb--30">
+                                        <h4 class="title">Course Upload Tips</h4>
+                                    </div>
+                                    <div class="rbt-course-upload-tips">
+                                        <ul class="rbt-list-style-1">
+                                            <li>
+                                                <i class="feather-check"></i> Set the Course Price option or make it free.
+                                            </li>
+                                            <li>
+                                                <i class="feather-check"></i> Standard size for the course thumbnail is
+                                                700x430.
+                                            </li>
+                                            <li>
+                                                <i class="feather-check"></i> Video section controls the course overview
+                                                video.
+                                            </li>
+                                            <li>
+                                                <i class="feather-check"></i> Course Builder is where you create & organize
+                                                a course.
+                                            </li>
+                                            <li>
+                                                <i class="feather-check"></i> Add Topics in the Course Builder section to
+                                                create lessons, quizzes, and assignments.
+                                            </li>
+                                            <li>
+                                                <i class="feather-check"></i> Prerequisites refers to the fundamental
+                                                courses to complete before taking this particular course.
+                                            </li>
+                                            <li>
+                                                <i class="feather-check"></i> Information from the Additional Data section
+                                                shows up on the course single page.
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>*@
+
+
+                    @using (Html.BeginForm("AddCourse", "Courses", FormMethod.Post, new { @class = "max-width-auto", @id = "AddCourse", enctype = "multipart/form-data" }))
+                    {
+                        @Html.HiddenFor(m => m.Id)
+                        <div class="accordion" id="accordionExample">
+                            <div class="accordion-item card">
+                                <h2 class="accordion-header card-header" id="headingOne">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne">
+                                        Course Info
+                                    </button>
+                                </h2>
+                                <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
+                                    <div class="accordion-body card-body">
+                                        <div class="rbt-course-field-wrapper rbt-default-form">
+                                            <div class="course-field mb--15">
+                                                <label for="field-2">RTO ID</label>
+                                                @if (string.IsNullOrEmpty(isRTO_IDpresent))
+                                                {
+                                                    @Html.TextBoxFor(m => m.RTO_ID, new { @placeholder = "RTO ID", @class = "form-control" })
+                                                }
+                                                else
+                                                {
+                                                    @Html.TextBoxFor(m => m.RTO_ID, new { @placeholder = "RTO ID", @class = "form-control", @readonly = "readonly" })
+                                                }
+                                            </div>
+                                            <div class="course-field mb--15">
+                                                <label for="field-1">Course  Name</label>
+                                                @Html.TextBoxFor(m => m.CourseName, new { @placeholder = "Course Name" })
+                                                <small class="d-block mt_dec--5">
+                                                    <i class="feather-info"></i> Name
+                                                    should be 30 charecter.
+                                                </small>
+                                            </div>
+                                            <div class="course-field mb--15">
+                                                <label for="field-2">Course Provider</label>
+                                                @Html.TextBoxFor(m => m.CourseProvider, new { @placeholder = "Course Provider" })
+                                            </div>
+                                            <div class="course-field mb--15">
+                                                <label for="aboutCourse">About Course</label>
+                                                @Html.HiddenFor(m => m.AboutCourse, new { @placeholder = "About Course" })
+                                                <div class="ckeditor-wrapper">
+                                                    <div id="editor_AboutCourse" class="editor"></div>
+                                                </div>
+                                            </div>
+                                            <div class="course-field mb--15">
+                                                @*<div class="form-check form-switch mb--15">
+                                                        @Html.CheckBoxFor(m => m.StudyMethod, new { @class = "form-check-input", @role = "switch", @id = "flexSwitchCheckDefault" })
+                                                        <label class="form-check-label d-inline-block" for="flexSwitchCheckDefault">
+                                                            Online
+                                                        </label>
+                                                    </div>*@
+                                                <div class="mb--15" id="studyMethodContainer">
+                                                    <label class="form-label d-block">Study Method</label>
+                                                    <div class="form-check form-check-inline">
+                                                        @Html.RadioButtonFor(m => m.StudyMethod, "Blended", new { @class = "form-check-input", id = "studyBlended" })
+                                                        <label class="form-check-label" for="studyBlended">Blended</label>
+                                                    </div>
+
+                                                    <div class="form-check form-check-inline">
+                                                        @Html.RadioButtonFor(m => m.StudyMethod, "Distance", new { @class = "form-check-input", id = "studyDistance" })
+                                                        <label class="form-check-label" for="studyDistance">Distance</label>
+                                                    </div>
+
+                                                    <div class="form-check form-check-inline">
+                                                        @Html.RadioButtonFor(m => m.StudyMethod, "FaceToFace", new { @class = "form-check-input", id = "studyFace" })
+                                                        <label class="form-check-label" for="studyFace">Face to Face</label>
+                                                    </div>
+
+                                                    <div class="form-check form-check-inline">
+                                                        @Html.RadioButtonFor(m => m.StudyMethod, "Online", new { @class = "form-check-input", id = "studyOnline" })
+                                                        <label class="form-check-label" for="studyOnline">Online</label>
+                                                    </div>
+                                                </div>
+
+                                                <div class="mb--15" id="governmentFundingContainer">
+                                                    <label class="form-label d-block">Government Funding</label>
+                                                    <div class="form-check form-check-inline">
+                                                        @Html.RadioButton("GovernmentFunding", "Yes", CoursesHub.Models.CourseFilterHelper.FundingFlag(Model == null ? null : Model.GovernmentFunding) == true, new { @class = "form-check-input", id = "governmentFundingYes" })
+                                                        <label class="form-check-label" for="governmentFundingYes">Yes (Government Funded)</label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline">
+                                                        @Html.RadioButton("GovernmentFunding", "No", CoursesHub.Models.CourseFilterHelper.FundingFlag(Model == null ? null : Model.GovernmentFunding) == false, new { @class = "form-check-input", id = "governmentFundingNo" })
+                                                        <label class="form-check-label" for="governmentFundingNo">No (Fee for Service)</label>
+                                                    </div>
+                                                </div>
+
+                                                <div class="mb--15" id="studentTypeContainer">
+                                                    <label class="form-label d-block">Student Type</label>
+                                                    <div class="form-check form-check-inline">
+                                                        @Html.RadioButton("StudentType", "Domestic", CoursesHub.Models.CourseFilterHelper.StudentTypeValue(Model == null ? null : Model.StudentType) == "Domestic", new { @class = "form-check-input", id = "studentTypeDomestic" })
+                                                        <label class="form-check-label" for="studentTypeDomestic">Domestic Student</label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline">
+                                                        @Html.RadioButton("StudentType", "International", CoursesHub.Models.CourseFilterHelper.StudentTypeValue(Model == null ? null : Model.StudentType) == "International", new { @class = "form-check-input", id = "studentTypeInternational" })
+                                                        <label class="form-check-label" for="studentTypeInternational">International Student</label>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                            <div class="course-field mb--20" id="courseCategoryContainer">
+                                                <h6>Choose Categories</h6>
+                                                <div class="rbt-modern-select bg-transparent height-45">
+                                                    @Html.DropDownListFor(m => m.CourseCategory,
+                                                    new SelectList(ViewBag.CourseCategory, "Value", "Text"),
+                                                    "Select Category",
+                                                    new { @class = "form-control", id = "CourseCategory" })
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                @* Trending / Featured are set by the admin (Admin > Edit Course Details) *@
+                                                <div class="col-md-6 col-lg-6 col-sm-6">
+                                                    <div class="course-field mb--20">
+                                                        <h6>Choose Course Level</h6>
+                                                        <div class="rbt-modern-select bg-transparent height-45 w-100 mb--10">
+                                                            @Html.DropDownListFor(m => m.CourseLevel,
+                                                            new SelectList(ViewBag.CourseLevel, "Value", "Text"),
+                                                            "Select Course Level",
+                                                            new { @class = "w-100 form-control", id = "CourseLevel" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="course-field mb--20">
+                                                <h6>Course Thumbnail</h6>
+                                                <input type="file" name="CoursePhoto" style="border:none;" />
+                                                @*<div class="rbt-create-course-thumbnail upload-area">
+                                                        <div class="upload-area">
+                                                            <div class="brows-file-wrapper" data-black-overlay="9">
+                                                                <input name="CoursePhoto" type="file" class="inputfile" />
+                                                                <img id="createfileImage" src="~/assets/images/others/thumbnail-placeholder.svg" alt="file image">
+                                                                <label class="d-flex" for="createinputfile" title="No File Choosen">
+                                                                    <i class="feather-upload"></i>
+                                                                    <span class="text-center">Choose a File</span>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>*@
+                                                <small>
+                                                    <i class="feather-info"></i> <b>Size:</b> 700x430 pixels,
+                                                    <b>
+                                                        File
+                                                        Support:
+                                                    </b> JPG, JPEG, PNG, GIF, WEBP
+                                                </small>
+                                            </div>
+                                            <div class="course-field mb--15">
+                                                <label for="videoUrl">Add Your Course Video URL</label>
+                                                @Html.TextBoxFor(m => m.CourseVideo, new { @placeholder = "Add Your Course URL here" })
+                                                <small class="d-block mt_dec--5">Example: <a>https://www.youtube.com/watch?v=yourvideoid</a></small>
+                                            </div>
+
+                                            <div class="course-field mb--15">
+                                                <label for="videoUrl">Add Your Course Video URL 2</label>
+                                                @Html.TextBoxFor(m => m.CourseVideo2, new { @placeholder = "Add Your Course URL here 2" })
+                                                <small class="d-block mt_dec--5">Example: <a>https://www.youtube.com/watch?v=yourvideoid</a></small>
+                                            </div>
+
+                                            <div class="course-field mb--15">
+                                                <label for="videoUrl">Add Your Course Video URL 3</label>
+                                                @Html.TextBoxFor(m => m.CourseVideo3, new { @placeholder = "Add Your Course URL here 3" })
+                                                <small class="d-block mt_dec--5">Example: <a>https://www.youtube.com/watch?v=yourvideoid</a></small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="accordion-item card">
+                                <h2 class="accordion-header card-header" id="headingTwo">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo">
+                                        Additional Information
+                                    </button>
+                                </h2>
+                                <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                                    <div class="accordion-body card-body rbt-course-field-wrapper rbt-default-form row row-15">
+                                        <div class="col-lg-6">
+                                            <div class="course-field mb--15">
+                                                <label for="startDate">Start Date</label>
+                                                @*@Html.TextBoxFor(m => m.CourseStartDate, new { @type = "date", @placeholder = "Start Date" })*@
+                                                @*<input type="date" id="startDate" name="startDate">*@
+                                                @Html.TextBoxFor(m => m.CourseStartDate,
+                                                "{0:dd/MM/yyyy}",
+                                                new
+                                                {
+                                                    @class = "form-control",
+                                                    placeholder = "dd/mm/yyyy",
+                                                    autocomplete = "off"
+                                                })
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="course-field mb--15">
+                                                <label>Course Duration</label>
+                                                <div class="row row--15">
+                                                    @Html.TextBoxFor(m => m.CourseDuration, new { @type = "number", @placeholder = "Course Duration" })
+                                                    <small class="d-block mt_dec--5">
+                                                        <i class="feather-info"></i> Weeks.
+                                                    </small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <label for="whatLearn">Course Overview</label>
+                                            <div class="course-field mb--15" style="height:300px;overflow:scroll">
+                                                @Html.HiddenFor(m => m.CourseOverview, new { @placeholder = "Course Overview" })
+                                                <div id="editor_CourseOverview" class="editor"></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <label for="description">Course Outcomes</label>
+                                            <div class="course-field mb--15" style="height:300px;overflow:scroll">
+                                                @Html.HiddenFor(m => m.CourseOutcomes, new { @placeholder = "Course Outcomes" })
+                                                <div id="editor_CourseOutcomes" class="editor"></div>
+                                            </div>
+                                        </div>
+                                        @*<div class="col-lg-6">
+                                                <div class="course-field mb--15">
+                                                    <label for="aboutCourse">What You will Learn</label>
+                                                    @Html.HiddenFor(m => m.CourseLearn, new { @placeholder = "What You will Learn" })
+                                                    <div id="editor_CourseLearn" class="editor"></div>
+                                                </div>
+                                            </div>*@
+                                    <div class="col-lg-6">
+                                        <label for="aboutCourse">Entry Requirements</label>
+                                        <div class="course-field mb--15" style="height:300px;overflow:scroll">
+                                            @Html.HiddenFor(m => m.CourseRequirements, new { @placeholder = "Entry Requirements" })
+                                            <div id="editor_CourseRequirements" class="editor"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <label for="aboutCourse">Work Placement</label>
+                                        <div class="course-field mb--15" style="height:300px;overflow:scroll">
+                                            @Html.HiddenFor(m => m.WorkPlacement, new { @placeholder = "Work Placement" })
+                                            <div id="editor_WorkPlacement" class="editor"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <label for="aboutCourse">RPL</label>
+                                        <div class="course-field mb--15" style="height:300px;overflow:scroll">
+                                            @Html.HiddenFor(m => m.RPL, new { @placeholder = "RPL" })
+                                            <div id="editor_RPL" class="editor"></div>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="accordion-item card">
+                                <h2 class="accordion-header card-header" id="headingThree">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree">
+                                        Other Information
+                                    </button>
+                                </h2>
+                              
+                                <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                                  
+                                    <div class="accordion-body card-body rbt-course-field-wrapper rbt-default-form">
+                                        <div class="course-field mb--15">
+                                            <label>Testimonials</label>
+                                        </div>
+                                        <div class="course-field mb--15">
+                                            <table class="rbt-table table table-borderless" id="testimonialTable">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Name</th>
+                                                        <th>Designation</th>
+                                                        <th>Message</th>
+                                                        <th></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @for (int i = 0; i < Model.Testimonials.Count; i++)
+                                                    {
+                                                        <tr>
+                                                            <td>@Html.TextBoxFor(m => m.Testimonials[i].Person_Name, new { @class = "form-control" })</td>
+                                                            <td>@Html.TextBoxFor(m => m.Testimonials[i].Designation, new { @class = "form-control" })</td>
+                                                            <td>@Html.TextAreaFor(m => m.Testimonials[i].Comment, new { @class = "form-control", rows = 2 })</td>
+                                                            <td><button type="button" class="btn btn-danger remove-row">X</button></td>
+                                                        </tr>
+                                                    }
+                                                </tbody>
+                                            </table>
+
+                                            <button type="button" id="addRow" class="btn btn-secondary">+ Add More</button>
+                                        </div>
+                                        <br />
+                                        <div class="course-field mb--15">
+                                            <label>Course Guide</label>
+                                            <input type="file" name="CourseGuide" style="border:none;" accept=".pdf" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="form-submit-group">
+                            <button type="submit" value="Save" name="submitButton" class="rbt-btn btn-md btn-gradient hover-icon-reverse w-100" onclick="return setHtmlBeforeSubmit();">
+                                <span class="icon-reverse-wrapper">
+                                    <span class="btn-text">Save</span>
+                                    <span class="btn-icon"><i class="feather-arrow-right"></i></span>
+                                    <span class="btn-icon"><i class="feather-arrow-right"></i></span>
+                                </span>
+                            </button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+@section scripts
+    {
+    <script src="~/assets/js/vendor/jquery.js"></script>
+    <script src="~/Plugins/jquery-validation/jquery.validate.min.js"></script>
+    @*<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>*@
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+    <script>
+        function toggleSlider() {
+            document.getElementById('slider').classList.toggle('open');
+        }
+        document.querySelectorAll('.accordion-collapse').forEach(function (el) {
+            el.addEventListener('shown.bs.collapse', function (event) {
+                const header = event.target.previousElementSibling; // header of opened accordion
+                const headerPosition = header.getBoundingClientRect().top + window.pageYOffset - 100; // 100px offset from top
+                window.scrollTo({ top: headerPosition, behavior: 'smooth' });
+            });
+        });
+        $(document).ready(function () {
+            $("input[name='StudyMethod']").on("change", function () {
+                $("#studyMethodContainer").removeClass("border border-danger rounded p-2");
+                $("#studyMethodContainer").find("span.text-danger").remove();
+                $("#AddCourse").validate().element(this);
+            });
+            $("#CourseCategory").on("change", function () {
+                $("#courseCategoryContainer").removeClass("border border-danger rounded p-2");
+                $("#courseCategoryContainer").find("span.text-danger").remove();
+                $("#AddCourse").validate().element(this);
+            });
+
+            $("#addRow").click(function () {
+                var index = $("#testimonialTable tbody tr").length;
+                var newRow = `
+                                                    <tr>
+                                                    <td><input class='form-control' name='Testimonials[` + index + `].Person_Name' /></td>
+                                                    <td><input class='form-control' name='Testimonials[` + index + `].Designation' /></td>
+                                                    <td><textarea class='form-control' rows='2' name='Testimonials[` + index + `].Comment'></textarea></td>
+                                                    <td><button type='button' class='btn btn-danger remove-row'>X</button></td>
+                                                    </tr>`;
+                $("#testimonialTable tbody").append(newRow);
+            });
+
+            $(document).on("click", ".remove-row", function () {
+                $(this).closest("tr").remove();
+            });
+
+            $('#CourseStartDate').datepicker({
+                dateFormat: "dd/mm/yy",
+                changeMonth: true,
+                changeYear: true,
+                minDate: 0,
+                onSelect: function () {
+                    // Remove validation error once date selected
+                    $(this).valid();
+                }
+            });
+
+            $("#CourseStartDate").on("change", function () {
+                $(this).valid();
+            });
+        });
+    </script>
+
+
+    <script>
+
+        var editors = {};   // store all editor instances
+
+        function initEditors() {
+
+            const editorIds = [
+                { editor: '#editor_AboutCourse', hidden: '#AboutCourse' },
+                { editor: '#editor_CourseOverview', hidden: '#CourseOverview' },
+                { editor: '#editor_CourseOutcomes', hidden: '#CourseOutcomes' },
+                //{ editor: '#editor_CourseLearn', hidden: '#CourseLearn' },
+                { editor: '#editor_CourseRequirements', hidden: '#CourseRequirements' },
+                { editor: '#editor_WorkPlacement', hidden: '#WorkPlacement' },
+                { editor: '#editor_RPL', hidden: '#RPL' }
+                // add more if needed
+            ];
+
+            editorIds.forEach(item => {
+                ClassicEditor
+                    .create(document.querySelector(item.editor), {
+                        removePlugins: [
+                            'Image',
+                            'ImageToolbar',
+                            'ImageCaption',
+                            'ImageStyle',
+                            'ImageUpload',
+                            'MediaEmbed',
+                            'CKFinderUploadAdapter',
+                            'CKFinder',
+                            'EasyImage'
+                        ]
+                    })
+                    .then(editor => {
+                        const editable = editor.ui.view.editable.element;
+                        editable.style.height = "200px";
+                        editable.style.maxHeight = "200px";
+                        editable.style.overflowY = "auto";
+
+                        editors[item.editor] = {
+                            instance: editor,
+                            hiddenInput: item.hidden
+                        };
+
+                        // Set data from hidden field
+                        if ($(item.hidden).val()) {
+                            editor.setData($(item.hidden).val());
+                        }
+                    })
+                    .catch(error => console.error(error));
+            });
+        }
+
+        initEditors();
+
+
+        function setHtmlBeforeSubmit() {
+            var isValid = true;
+
+            Object.keys(editors).forEach(key => {
+                var editorObj = editors[key];
+                var data = editorObj.instance.getData();
+                $(editorObj.hiddenInput).val(data);
+            });
+
+            return isValid;
+        }
+
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $("#AddCourse").validate({
+                ignore: [], // IMPORTANT for CKEditor hidden fields
+
+                rules: {
+                    CourseName: {
+                        required: true
+                    },
+                    CourseProvider: {
+                        required: true
+                    },
+                    AboutCourse: {
+                        required: true
+                    },
+                    StudyMethod: {
+                        required: true
+                    },
+                    GovernmentFunding: {
+                        required: true
+                    },
+                    StudentType: {
+                        required: true
+                    },
+                    CourseCategory: {
+                        required: true
+                    },
+                    CourseStartDate: {
+                        required: true
+                    },
+                    CourseDuration: {
+                        required: true,
+                        digits: true
+                    },
+                    CourseOverview: {
+                        required: true
+                    }
+                },
+
+                invalidHandler: function (event, validator) {
+
+                    if (validator.errorList.length) {
+
+                        var firstError = $(validator.errorList[0].element);
+
+                        // find the accordion section
+                        var accordionBody = firstError.closest(".accordion-collapse");
+
+                        if (accordionBody.length && !accordionBody.hasClass("show")) {
+
+                            // open accordion
+                            var collapse = new bootstrap.Collapse(accordionBody[0], {
+                                toggle: true
+                            });
+
+                            // wait for animation then focus
+                            accordionBody.on('shown.bs.collapse', function () {
+                                $('html, body').animate({
+                                    scrollTop: firstError.offset().top - 120
+                                }, 500);
+
+                                firstError.focus();
+                            });
+
+                        } else {
+
+                            $('html, body').animate({
+                                scrollTop: firstError.offset().top - 120
+                            }, 500);
+
+                            firstError.focus();
+                        }
+                    }
+                },
+
+                messages: {
+                    CourseName: "Please enter course name",
+                    CourseProvider: "Please enter course provider",
+                    AboutCourse: "Please enter about course",
+                    StudyMethod: "Please select study method",
+                    GovernmentFunding: "Please select government funding",
+                    StudentType: "Please select student type",
+                    CourseCategory: "Please select course category",
+                    CourseStartDate: "Please select start date",
+                    CourseDuration: {
+                        required: "Please enter course duration",
+                        digits: "Only numbers allowed."
+                    },
+                    CourseOverview: "Please enter course overview"
+                },
+
+                errorElement: 'span',
+                errorClass: 'text-danger',
+                highlight: function (element) {
+                    if (element.name === "StudyMethod") {
+                        $("#studyMethodContainer")
+                            .addClass("border border-danger rounded p-2");
+                    }
+                    else if (element.name === "GovernmentFunding") {
+                        $("#governmentFundingContainer")
+                            .addClass("border border-danger rounded p-2");
+                    }
+                    else if (element.name === "StudentType") {
+                        $("#studentTypeContainer")
+                            .addClass("border border-danger rounded p-2");
+                    }
+                    else {
+                        $(element).addClass('is-invalid');
+                        $(".focus-border").removeClass('focus-border');
+                    }
+                },
+                unhighlight: function (element) {
+                    if (element.name === "StudyMethod") {
+                        $("#studyMethodContainer")
+                            .removeClass("border border-danger rounded p-2");
+                    }
+                    else if (element.name === "GovernmentFunding") {
+                        $("#governmentFundingContainer")
+                            .removeClass("border border-danger rounded p-2");
+                    }
+                    else if (element.name === "StudentType") {
+                        $("#studentTypeContainer")
+                            .removeClass("border border-danger rounded p-2");
+                    }
+                    else {
+                        $(element).removeClass('is-invalid');
+                        $(".focus-border").removeClass('focus-border');
+                    }
+                },
+
+
+                errorPlacement: function (error, element) {
+                    // Radio buttons (Study Method)
+                    if (element[0].name === "StudyMethod") {
+                        error.insertAfter("#studyMethodContainer");
+                        return;
+                    }
+                    if (element[0].name === "GovernmentFunding") {
+                        error.insertAfter("#governmentFundingContainer");
+                        return;
+                    }
+                    if (element[0].name === "StudentType") {
+                        error.insertAfter("#studentTypeContainer");
+                        return;
+                    }
+                    if (element[0].name === "CourseCategory") {
+                        error.insertAfter("#courseCategoryContainer");
+                        return;
+                    }
+                        // CKEditor fields
+                    else if (element.attr("name") === "AboutCourse" ||
+                        element.attr("name") === "CourseOverview") {
+                        error.insertAfter(element.closest(".course-field").find(".ckeditor-wrapper"));
+                    }
+                    else {
+                        error.insertAfter(element);
+                    }
+                }
+            });
+
+
+            $('#CourseCategory').on('changed.bs.select', function () {
+                var selected = $(this).selectpicker('val');
+                //$('#hiddenZipcode').val(selected);
+                $("#CourseCategory-error").remove();
+            });
+
+        });
+
+
+    </script>
+
+}

@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 405 490" width="405" height="490">
+  <title>Excellence and empowerment</title>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FEF3EA"/>
+      <stop offset="1" stop-color="#FCE3CF"/>
+    </linearGradient>
+    <linearGradient id="bar" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#158887"/>
+      <stop offset="1" stop-color="#0F3F42"/>
+    </linearGradient>
+    <pattern id="dots" width="18" height="18" patternUnits="userSpaceOnUse">
+      <circle cx="3" cy="3" r="2" fill="#E07B2C" fill-opacity="0.25"/>
+    </pattern>
+  </defs>
+  <rect width="405" height="490" fill="url(#bg)"/>
+  <circle cx="30" cy="40" r="120" fill="#F79646" fill-opacity="0.12"/>
+  <rect x="300" y="380" width="90" height="90" fill="url(#dots)"/>
+
+  <!-- growth bars -->
+  <g transform="translate(0 0)">
+    <rect x="44"  y="340" width="62" height="110" rx="10" fill="url(#bar)" fill-opacity="0.55"/>
+    <rect x="124" y="290" width="62" height="160" rx="10" fill="url(#bar)" fill-opacity="0.7"/>
+    <rect x="204" y="236" width="62" height="214" rx="10" fill="url(#bar)" fill-opacity="0.85"/>
+    <rect x="284" y="180" width="62" height="270" rx="10" fill="url(#bar)"/>
+    <rect x="30" y="448" width="330" height="6" rx="3" fill="#0F3F42" fill-opacity="0.3"/>
+  </g>
+  <path d="M60 318 C 140 290, 180 240, 230 210 S 300 150, 330 120" fill="none" stroke="#F79646" stroke-width="7" stroke-linecap="round"/>
+  <path d="M314 110 L340 112 L330 136 Z" fill="#F79646"/>
+
+  <!-- trophy -->
+  <g transform="translate(140 130)">
+    <circle r="80" fill="#FFFFFF"/>
+    <path d="M-30 -36 H30 V-6 C30 18 16 30 0 30 C-16 30 -30 18 -30 -6 Z" fill="#F79646"/>
+    <path d="M-30 -28 C-52 -28 -52 4 -26 6" fill="none" stroke="#F79646" stroke-width="7" stroke-linecap="round"/>
+    <path d="M30 -28 C52 -28 52 4 26 6" fill="none" stroke="#F79646" stroke-width="7" stroke-linecap="round"/>
+    <rect x="-6" y="28" width="12" height="16" fill="#E07B2C"/>
+    <rect x="-24" y="44" width="48" height="12" rx="3" fill="#0F3F42"/>
+    <path d="M0 -24 l5 10 11 1.5 -8 7.5 2 11 -10 -5.5 -10 5.5 2 -11 -8 -7.5 11 -1.5z" fill="#FFFFFF"/>
+  </g>
+
+  <!-- sparkles -->
+  <g>
+    <path d="M300 60 l5 13 13 5 -13 5 -5 13 -5 -13 -13 -5 13 -5z" fill="#158887"/>
+    <path d="M250 150 l4 10 10 4 -10 4 -4 10 -4 -10 -10 -4 10 -4z" fill="#F79646"/>
+    <circle cx="370" cy="200" r="5" fill="#158887" fill-opacity="0.6"/>
+  </g>
+</svg>

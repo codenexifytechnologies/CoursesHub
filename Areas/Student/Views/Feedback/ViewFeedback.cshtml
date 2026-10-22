@@ -1,0 +1,144 @@
+﻿@model  List<CoursesHub.Areas.Panel.Models.Testimonial>
+@{
+    ViewBag.Title = "Viewfeedback";
+    Layout = "~/Areas/Student/Views/Shared/_Layout.cshtml";
+}
+<link rel="stylesheet" href="~/Areas/Admin/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+<link rel="stylesheet" href="~/Areas/Admin/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+<link rel="stylesheet" href="~/Areas/Admin/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+<script src="//code.jquery.com/jquery-2.2.4.min.js"></script>
+<script src="~/assets/js/toastr.min.js"></script>
+ <link href="~/assets/css/toastr.min.css" rel="stylesheet" />
+@if (TempData["EditTestimonialDetailsMsg"] != null)
+{
+    <script>
+        $(document).ready(function () {
+            toastr.info('@TempData["EditTestimonialDetailsMsg"]');
+        });
+    </script>
+}
+<div class="sd-page">
+    <div class="sd-card sd-reveal">
+        <div class="sd-page-head">
+            <span class="sd-page-icon sd-page-icon-accent"><i class="feather-message-square"></i></span>
+            <div>
+                <h4 class="sd-page-title">My Feedback</h4>
+                <p class="sd-page-sub">Feedback you have shared about your courses and training providers.</p>
+            </div>
+            @if (Model != null && Model.Count > 0)
+            {
+                <span class="sd-count-pill">@Model.Count Feedback</span>
+            }
+        </div>
+
+        @if (Model == null || Model.Count == 0)
+        {
+            <div class="sd-empty">
+                <img src="@CoursesHub.AssetVersion.Url("~/assets/images/student/student-empty-feedback.svg")" alt="" aria-hidden="true">
+                <h5>No Records Found</h5>
+                <p>Feedback you give on a course will appear here.</p>
+            </div>
+        }
+        else
+        {
+            <div class="sd-list">
+                @foreach (var item in Model)
+                {
+                    <article class="sd-item sd-feedback-item sd-reveal">
+                        <input type="hidden" class="deletecourse" value="@item.Id" />
+                        <span class="sd-item-icon sd-item-icon-accent"><i class="feather-star"></i></span>
+                        <div class="sd-item-main">
+                            <span class="sd-item-label">Course Name</span>
+                            <span class="sd-item-title">@item.CourseName</span>
+                            <span class="sd-item-sub"><i class="feather-home"></i> @item.Trading_Name</span>
+                        </div>
+                        <div class="sd-item-meta">
+                            <span class="sd-item-label">Person Name</span>
+                            <span class="sd-item-value">@item.Person_Name</span>
+                            <span class="sd-item-sub">@item.Designation</span>
+                        </div>
+                        <div class="sd-item-meta sd-item-status">
+                            <span class="sd-item-label">Verified</span>
+                            @if (item.IsActive)
+                            {
+                                <span class="sd-status sd-status-ok"><i class="feather-check-circle"></i> Verified</span>
+                            }
+                            else
+                            {
+                                <span class="sd-status sd-status-pending"><i class="feather-clock"></i> Pending</span>
+                            }
+                        </div>
+                        <div class="sd-item-actions">
+                            <a href="@Url.Action("EditFeedback", "Feedback", new { @TestimonialId = item.Id })" class="sd-icon-btn" title="Edit" aria-label="Edit feedback">
+                                <i class="feather-edit-2"></i>
+                            </a>
+                            <button type="button" class="sd-icon-btn sd-icon-btn-danger remove-row delete" title="Delete" aria-label="Delete feedback">
+                                <i class="feather-trash-2"></i>
+                            </button>
+                        </div>
+                    </article>
+                }
+            </div>
+        }
+    </div>
+</div>
+
+<script src="~/assets/js/vendor/jquery.js"></script>
+<script src="~/Plugins/jquery-validation/jquery.validate.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+     $(document).ready(function () {
+         $(document).on("click", ".delete", function () {
+         var row = $(this).closest(".sd-feedback-item");
+             var id = row.find('.deletecourse').val();
+
+         Swal.fire({
+             title: "Are you sure?",
+             text: "Do you really want to remove this Feedback?",
+             icon: "warning",
+             showCancelButton: true,
+             confirmButtonColor: "#158887",
+             cancelButtonColor: "#d33",
+             confirmButtonText: "Yes, remove it!",
+             cancelButtonText: "Cancel"
+         }).then((result) => {
+             if (result.isConfirmed)
+             {
+                   $.ajax({
+                     url: '@Url.Action("DeleteTestimonial", "Courses")',  // Controller Action
+                     type: 'POST',
+                     data: { id: id },
+                       success: function (response)
+                       {
+                           if (response.success) {
+                               row.remove(); // remove row only after confirmation
+                               Swal.fire({
+                                   title: "Removed!",
+                                   text: response.message,
+                                   icon: "success",
+                                   timer: 1200,
+                                   showConfirmButton: false
+                               });
+                           }
+                           else {
+                               Swal.fire({
+                                   title: "Information",
+                                   text: response.message,
+                                   icon: "info",
+                                   timer: 1200,
+                                   showConfirmButton: false
+                               });
+                           }
+                       },
+                       error: function ()
+                       {
+                           alert("Something went wrong!");
+                       }
+                   });
+             }
+         });
+     });
+ });
+</script>
+

@@ -1,0 +1,200 @@
+/* ==========================================================================
+   Courses Hub page loader (Views/Shared/_PageLoader.cshtml + assets/js/ch-loader.js)
+   Self-contained so it also works on the admin pages.
+   ========================================================================== */
+.ch-loader {
+    position: fixed;
+    inset: 0;
+    z-index: 100000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    background: rgba(232, 244, 244, 0.72);
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
+    font-family: "Euclid Circular", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+    .ch-loader.is-active {
+        display: flex;
+        animation: chFade 0.25s ease both;
+    }
+
+.ch-loader-card {
+    width: 260px;
+    max-width: 100%;
+    padding: 26px 24px 22px;
+    border-radius: 22px;
+    background: #fff;
+    border: 1px solid #DCE8E8;
+    box-shadow: 0 24px 60px rgba(15, 63, 66, 0.22);
+    text-align: center;
+    animation: chPop 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.ch-loader-art svg {
+    display: block;
+    margin: 0 auto 6px;
+}
+
+.ch-ring-teal,
+.ch-ring-orange {
+    transform-box: view-box;
+    transform-origin: 60px 60px;
+}
+
+.ch-ring-teal {
+    animation: chSpin 1.2s linear infinite;
+}
+
+.ch-ring-orange {
+    animation: chSpin 1.6s linear infinite reverse;
+}
+
+.ch-book {
+    transform-box: view-box;
+    transform-origin: 60px 64px;
+    animation: chBob 1.6s ease-in-out infinite;
+}
+
+.ch-page {
+    transform-box: view-box;
+    transform-origin: 60px 64px;
+    animation: chFlip 1.6s ease-in-out infinite;
+}
+
+.ch-cap {
+    transform-box: view-box;
+    transform-origin: 60px 33px;
+    animation: chCap 1.6s ease-in-out infinite;
+}
+
+.ch-loader-brand {
+    color: #158887;
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: 0.2px;
+}
+
+    .ch-loader-brand span {
+        color: #F79646;
+    }
+
+.ch-loader-text {
+    margin: 4px 0 14px;
+    color: #0F3F42;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.ch-loader-bar {
+    position: relative;
+    height: 5px;
+    border-radius: 5px;
+    background: #E8F4F4;
+    overflow: hidden;
+}
+
+    .ch-loader-bar span {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: -40%;
+        width: 40%;
+        border-radius: 5px;
+        background: linear-gradient(90deg, #158887, #F79646);
+        animation: chBar 1.3s ease-in-out infinite;
+    }
+
+body.ch-loading {
+    cursor: progress;
+}
+
+@keyframes chSpin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes chBob {
+    0%, 100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-3px);
+    }
+}
+
+@keyframes chFlip {
+    0%, 15% {
+        transform: scaleX(1);
+    }
+
+    50% {
+        transform: scaleX(-1);
+    }
+
+    85%, 100% {
+        transform: scaleX(1);
+    }
+}
+
+@keyframes chCap {
+    0%, 100% {
+        transform: translateY(0) rotate(0);
+    }
+
+    50% {
+        transform: translateY(-5px) rotate(-6deg);
+    }
+}
+
+@keyframes chBar {
+    0% {
+        left: -40%;
+    }
+
+    100% {
+        left: 100%;
+    }
+}
+
+@keyframes chFade {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes chPop {
+    from {
+        opacity: 0;
+        transform: scale(0.9) translateY(8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .ch-loader.is-active,
+    .ch-loader-card,
+    .ch-book,
+    .ch-page,
+    .ch-cap {
+        animation: none;
+    }
+
+    .ch-ring-teal,
+    .ch-ring-orange,
+    .ch-loader-bar span {
+        animation-duration: 3s;
+    }
+}

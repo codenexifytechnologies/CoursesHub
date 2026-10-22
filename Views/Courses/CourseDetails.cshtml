@@ -1,0 +1,703 @@
+﻿@model CoursesHub.Areas.Panel.Models.Testimonial
+@{
+    ViewBag.Title = "CourseDetails";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    CoursesHub.Models.Registration obj = (CoursesHub.Models.Registration)Session["Registration"];
+    string UserId = string.Empty; string LoginType = string.Empty;
+    if (obj != null)
+    {
+        UserId = obj.LoginType == "Student" ? obj.objStudentRegistration.Id.ToString() : obj.objUniversityRegistration.Id.ToString();
+        LoginType = obj.LoginType;
+    }
+    var Course = (CoursesHub.Areas.Panel.Models.CourseDetails)ViewBag.CourseDetails;
+    var SimilarCourses = (List<CoursesHub.Areas.Panel.Models.CourseDetails>)ViewBag.SameCourses;
+    var UniversityCourses = (List<CoursesHub.Areas.Panel.Models.CourseDetails>)ViewBag.SameUniversity;
+    bool isLoggedIn = obj != null && obj.objStudentRegistration != null && obj.objStudentRegistration.Id > 0;
+    // "CHC43015 Certificate IV in Ageing Support" -> highlighted code + separate title
+    var courseCode = CoursesHub.Models.CourseFilterHelper.CourseCode(Course.CourseName);
+    var courseTitle = CoursesHub.Models.CourseFilterHelper.CourseTitle(Course.CourseName);
+}
+
+@{
+    // read here, shown in the scripts section (toastr needs jQuery, which the layout loads at the bottom)
+    string toastMessage = Convert.ToString(TempData["Message"]);
+    string toastErrMessage = Convert.ToString(TempData["ErrMessage"]);
+}
+@if (!string.IsNullOrEmpty(toastMessage) || !string.IsNullOrEmpty(toastErrMessage))
+{
+    <link href="~/assets/css/toastr.min.css" rel="stylesheet" />
+}
+<style>
+    .custom-popup {
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.55);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 99999;
+    }
+
+        .custom-popup.show-popup {
+            display: flex;
+        }
+
+    .popup-content {
+        background: #fff;
+        padding: 25px 30px;
+        border-radius: 12px;
+        width: 350px;
+        text-align: center;
+        position: relative;
+    }
+
+    .popup-title {
+        margin-bottom: 15px;
+        font-size: 20px;
+        font-weight: 600;
+    }
+
+    .popup-msg {
+        font-size: 14px;
+        color: #444;
+        margin-bottom: 10px;
+    }
+
+    .popup-btn {
+        display: block;
+        width: 100%;
+        padding: 12px 0;
+        border-radius: 6px;
+        color: #fff;
+        text-decoration: none;
+        margin-bottom: 15px;
+        font-size: 15px;
+        font-weight: 500;
+    }
+
+    .login-btn {
+        background: var(--primary-color);
+    }
+
+    .register-btn {
+        background: #28a745;
+    }
+
+    .popup-separator {
+        display: flex;
+        align-items: center;
+        margin: 15px 0;
+        font-size: 13px;
+        color: #777;
+    }
+
+        .popup-separator::before,
+        .popup-separator::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background: #ccc;
+        }
+
+        .popup-separator span {
+            margin: 0 10px;
+            font-weight: 600;
+        }
+
+    .popup-close {
+        position: absolute;
+        top: 5px;
+        right: 8px;
+        background: none;
+        border: none;
+        font-size: 22px;
+        cursor: pointer;
+    }
+</style>
+
+<!--<div class="rbt-breadcrumb-default rbt-breadcrumb-style-3" style="padding: 40px 0px; min-height: 0px; !important">
+    <div class="breadcrumb-inner breadcrumb-dark">
+        <img src="~/assets/images/bg/bg-image-10.jpg" alt="Education Images">
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="content text-start">
+                    <ul class="page-list">
+                        <li class="rbt-breadcrumb-item"><a href="@Url.Action("Index","Index",new { area="" })">Home</a></li>
+                        <li>
+                            <div class="icon-right"><i class="feather-chevron-right"></i></div>
+                        </li>
+                        <li class="rbt-breadcrumb-item active">@Course.CategoryName</li>
+                    </ul>
+                    <h2 class="title">@Course.CourseName</h2>
+
+                    <div class="rbt-author-meta mb--20">
+                        <div class="rbt-avater">
+                            <a href="#">
+                                <img src="@Course.UniversityLogo" alt="Sophia Jaymes">
+                            </a>
+                        </div>
+                        <div class="rbt-author-info">
+                            By <a>@Course.CourseProvider</a>
+                        </div>
+                    </div>-->
+
+                    @*<ul class="rbt-meta">
+                            <li><i class="feather-calendar"></i>@Course.CourseStartDate</li>
+                            <li><i class="feather-globe"></i>@Course.StudyMethod</li>
+                        </ul>*@
+
+                <!--</div>
+            </div>
+        </div>
+    </div>
+</div>-->
+
+<div class="rbt-course-details-area pb--60 mt--60 mt_md--60 mt_sm--50 cd-page">
+    <div class="container">
+        <div class="course-details-content version-02 mb--80 mb_md--60 mb_sm--50">
+           
+            <div class="row align-items-center rbt-index-upper-2">
+                <div class="col-lg-8">
+                    @if (!string.IsNullOrEmpty(courseCode))
+                    {
+                        <span class="cd-code">@courseCode</span>
+                    }
+                    <h2 class="w-600 mb--10 color-white cd-title">@courseTitle</h2>
+                    <div class="cd-hero-intro cd-rich mb--20">@Html.Raw(CoursesHub.Models.CourseFilterHelper.CleanRichText(Course.AboutCourse))</div>
+                    <hr class="divider">
+                    <div class="d-flex align-items-center flex-wrap course-details-feature">
+
+                        <div class="feature-sin">
+                            <span class="icon">
+                                <i class="feather-user color-white"></i>
+                            </span>
+                            <h6 class="b3 w-400 mb--0 color-white"><span class="opacity-8">by</span> <a class="color-white" href="#">@Course.CourseProvider</a></h6>
+                        </div>
+
+                        <div class="feature-sin">
+                            <span class="icon">
+                                <i class="feather-calendar color-white"></i>
+                            </span>
+                            <span class="b3 color-white opacity-8">@Course.CourseStartDate</span>
+                        </div>
+
+                        @if (!string.IsNullOrEmpty(Course.CourseDuration))
+                        {
+                            <div class="feature-sin">
+                                <span class="icon">
+                                    <i class="feather-clock color-white"></i>
+                                </span>
+                                <span class="b3 color-white opacity-8">@Course.CourseDuration Weeks</span>
+                            </div>
+                        }
+
+                        @if (!string.IsNullOrEmpty(Course.StudyMethod))
+                        {
+                            <div class="feature-sin">
+                                <span class="icon">
+                                    <i class="feather-monitor color-white"></i>
+                                </span>
+                                <span class="b3 color-white opacity-8">@Course.StudyMethod</span>
+                            </div>
+                        }
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="d-flex justify-content-center mt_md--60 mt_sm--60">
+                        @if (!string.IsNullOrEmpty(Course.CourseVideo))
+                        {
+                            <a class="rbt-btn rounded-player-2 popup-video position-to-top rounded-player" href="@Course.CourseVideo">
+                                <span class="play-icon"></span>
+                            </a>
+                        }
+                        else if (!string.IsNullOrEmpty(Course.CourseVideo2))
+                        {
+                            <a class="rbt-btn rounded-player-2 popup-video position-to-top rounded-player" href="@Course.CourseVideo2">
+                                <span class="play-icon"></span>
+                            </a>
+                        }
+                        else if (!string.IsNullOrEmpty(Course.CourseVideo3))
+                        {
+                            <a class="rbt-btn rounded-player-2 popup-video position-to-top rounded-player" href="@Course.CourseVideo3">
+                                <span class="play-icon"></span>
+                            </a>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row g-5">
+            <div class="col-lg-8">
+                <div class="course-details-content">
+                    <div class="rbt-inner-onepage-navigation sticky-top mt--30">
+                        <nav class="mainmenu-nav onepagenav">
+                            <ul class="mainmenu">
+                                <li class="current">
+                                    <a href="#about">About</a>
+                                </li>
+                                <li>
+                                    <a href="#overview">Overview</a>
+                                </li>
+                                <li>
+                                    <a href="#workplacement">Work Placement</a>
+                                </li>
+                                <li>
+                                    <a href="#RPL">RPL</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                    <div class="rbt-course-feature-box overview-wrapper rbt-shadow-box mt--30 has-show-more" id="about">
+                        <div class="rbt-course-feature-inner has-show-more-inner-content">
+                            <div class="section-title">
+                                <h4 class="rbt-title-style-3"><i class="feather-info"></i>About</h4>
+                            </div>
+                            @if (!string.IsNullOrEmpty(CoursesHub.Models.CourseFilterHelper.CleanRichText(Course.AboutCourse)))
+                            {
+                                <div class="cd-rich">@Html.Raw(CoursesHub.Models.CourseFilterHelper.CleanRichText(Course.AboutCourse))</div>
+                            }
+                            else
+                            {
+                                <p>NA</p>
+                            }
+                        </div>
+                        <div class="rbt-show-more-btn">Show More</div>
+                    </div>
+                    <div class="rbt-course-feature-box overview-wrapper rbt-shadow-box mt--30" id="overview">
+                        <div class="rbt-course-feature-inner has-show-more-inner-content">
+                            <div class="section-title">
+                                <h4 class="rbt-title-style-3"><i class="feather-book-open"></i>Overview</h4>
+                            </div>
+
+                            @if (!string.IsNullOrEmpty(CoursesHub.Models.CourseFilterHelper.CleanRichText(Course.CourseOverview)))
+                            {
+                                <div class="cd-rich">@Html.Raw(CoursesHub.Models.CourseFilterHelper.CleanRichText(Course.CourseOverview))</div>
+                            }
+                            else
+                            {
+                                <p>NA</p>
+                            }
+                            <div class="row g-5 mb--30">
+                                <div class="col-lg-12">
+                                    <h4 class="rbt-title-style-3 mb--20"><i class="feather-check-square"></i>Requirements</h4>
+                                    @if (!string.IsNullOrEmpty(CoursesHub.Models.CourseFilterHelper.CleanRichText(Course.CourseRequirements)))
+                                    {
+                                        <div class="cd-rich">@Html.Raw(CoursesHub.Models.CourseFilterHelper.CleanRichText(Course.CourseRequirements))</div>
+                                    }
+                                    else
+                                    {
+                                        <p>NA</p>
+                                    }
+                                </div>
+                                <div class="col-lg-12">
+                                    <h4 class="rbt-title-style-3 mb--20"><i class="feather-award"></i>Outcome</h4>
+                                    @if (!string.IsNullOrEmpty(CoursesHub.Models.CourseFilterHelper.CleanRichText(Course.CourseOutcomes)))
+                                    {
+                                        <div class="cd-rich">@Html.Raw(CoursesHub.Models.CourseFilterHelper.CleanRichText(Course.CourseOutcomes))</div>
+                                    }
+                                    else
+                                    {
+                                        <p>NA</p>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="rbt-instructor rbt-shadow-box intructor-wrapper mt--30" id="workplacement">
+                        <div class="about-author border-0 pb--0 pt--0">
+                            <div class="section-title mb--30">
+                                <h4 class="rbt-title-style-3"><i class="feather-briefcase"></i>Work Placement</h4>
+                            </div>
+                            @if (!string.IsNullOrEmpty(CoursesHub.Models.CourseFilterHelper.CleanRichText(Course.WorkPlacement)))
+                            {
+                                <div class="cd-rich">@Html.Raw(CoursesHub.Models.CourseFilterHelper.CleanRichText(Course.WorkPlacement))</div>
+                            }
+                            else
+                            {
+                                <p>NA</p>
+                            }
+                        </div>
+                    </div>
+                    <div class="rbt-instructor rbt-shadow-box intructor-wrapper mt--30" id="RPL">
+                        <div class="about-author border-0 pb--0 pt--0">
+                            <div class="section-title mb--30">
+                                <h4 class="rbt-title-style-3"><i class="feather-layers"></i>RPL</h4>
+                            </div>
+                            @if (!string.IsNullOrEmpty(CoursesHub.Models.CourseFilterHelper.CleanRichText(Course.RPL)))
+                            {
+                                <div class="cd-rich">@Html.Raw(CoursesHub.Models.CourseFilterHelper.CleanRichText(Course.RPL))</div>
+                            }
+                            else
+                            {
+                                <p>NA</p>
+                            }
+                        </div>
+                    </div>
+                    @*<div class="row">
+                        <div class="col-6">
+                            @if (!string.IsNullOrEmpty(Course.CourseVideo2))
+                            {
+                                <div class="rbt-instructor rbt-shadow-box intructor-wrapper mt--30" id="CourseVid2">
+                                    <div class="about-author border-0 pb--0 pt--0">
+                                        <div class="section-title mb--30">
+                                            <h4 class="rbt-title-style-3">Course Video 2</h4>
+                                        </div>
+                                        <a href="@Course.CourseVideo2" target="_blank" class="video-popup-wrapper text-center mb--15">
+                                            <div class="video-content">
+                                                <img class="w-100 rbt-radius" src="~/assets/images/others/video-01.jpg" alt="Video Images">
+                                                <div class="position-to-top">
+                                                    <span class="rbt-btn rounded-player-2 with-animation">
+                                                        <span class="play-icon"></span>
+                                                    </span>
+                                                    <span class="play-view-text d-block color-white" style="width:400px !important;">
+                                                        <i class="feather-eye"></i> Preview
+                                                        this course
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                        <div class="col-6">
+                            @if (!string.IsNullOrEmpty(Course.CourseVideo3))
+                            {
+                                <div class="rbt-instructor rbt-shadow-box intructor-wrapper mt--30" id="CourseVid3">
+                                    <div class="about-author border-0 pb--0 pt--0">
+                                        <h4 class="rbt-title-style-3">Course Video 3</h4>
+                                        <a href="@Course.CourseVideo3" target="_blank" class="video-popup-wrapper text-center mb--15">
+                                            <div class="video-content">
+                                                <img class="w-100 rbt-radius" src="~/assets/images/others/video-01.jpg" alt="Video Images">
+                                                <div class="position-to-top">
+                                                    <span class="rbt-btn rounded-player-2 with-animation">
+                                                        <span class="play-icon"></span>
+                                                    </span>
+                                                    <span class="play-view-text d-block color-white" style="width:400px !important;">
+                                                        <i class="feather-eye"></i> Preview
+                                                        this course
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>*@
+
+                    @if (UserId != null && !string.IsNullOrEmpty(LoginType) && LoginType == "Student")
+                    {
+                        <div class="rbt-review-wrapper rbt-shadow-box review-wrapper mt--30" id="review">
+                            <div class="course-content">
+                                <div class="section-title">
+                                    <h4 class="rbt-title-style-3"><i class="feather-edit-3"></i>Your Review</h4>
+                                </div>
+
+                                @using (Html.BeginForm("SaveTestimonial", "Courses", FormMethod.Post, new { @class = "max-width-auto", @id = "SaveTestimonial" }))
+                                {
+                                    <div class="col-lg-12">
+                                        <div class="form-group">
+                                            @Html.TextAreaFor(m => m.Comment)
+                                            <label>Comment *</label>
+                                            <span class="focus-border"></span>
+                                        </div>
+                                        <div class="form-submit-group">
+                                            <button type="submit" class="rbt-btn btn-md btn-gradient hover-icon-reverse w-100">
+                                                <span class="icon-reverse-wrapper">
+                                                    <span class="btn-text">Submit</span>
+                                                    <span class="btn-icon"><i class="feather-arrow-right"></i></span>
+                                                    <span class="btn-icon"><i class="feather-arrow-right"></i></span>
+                                                </span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    }
+                    @if (Course.Testimonials != null && Course.Testimonials.Count > 0)
+                    {
+                        <div class="rbt-testimonial-area bg-color-white rbt-section-gap">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="section-title">
+                                            <h2 class="rbt-title-style-3"><i class="feather-message-circle"></i>Feedback</h2>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row g-5">
+                                    <div class="col-lg-12">
+                                        <div class="swiper testimonial-activation-1 rbt-dot-bottom-left pb--60">
+                                            <div class="swiper-wrapper">
+                                                @foreach (var item in Course.Testimonials)
+                                                {
+                                                    <div class="swiper-slide">
+                                                        <div class="rbt-testimonial-box no-box-shadow bg-gray-light">
+                                                            <div class="inner">
+                                                                <div class="clint-info-wrapper">
+                                                                    <div class="client-info">
+                                                                        <h5 class="title">@item.Person_Name</h5>
+                                                                        <span>@item.Designation</span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="description">
+                                                                    <p class="subtitle-3">
+                                                                        @item.Comment
+                                                                    </p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                }
+                                            </div>
+                                            <div class="rbt-swiper-pagination"></div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    }
+                </div>
+
+                @if (UniversityCourses.Count > 0)
+                {
+                    @* More courses from this provider: same animated card as "Hand-picked courses for you" (no Featured ribbon) *@
+                    var providerName = string.IsNullOrWhiteSpace(Course.UniversityName) ? Course.CourseProvider : Course.UniversityName;
+                    <div class="related-course cd-more mt--60">
+                        <div class="cd-more-head">
+                            <div class="section-title">
+                                <span class="subtitle bg-primary-opacity">Top Courses</span>
+                                <h4 class="title">More Courses by <span class="theme-gradient">@providerName</span></h4>
+                            </div>
+                            <a class="bl-btn cd-more-all" href="@Url.Action("AllCourses", "Courses", new { area = "", FilterType = "Provider", FilterValue = Course.UniversityName })">View All Courses <i class="feather-arrow-right"></i></a>
+                        </div>
+                        <div class="hf-grid cd-more-grid">
+                            @* first 4 here; "View All Courses" lists every course from this provider *@
+                            @for (int m = 0; m < Math.Min(4, UniversityCourses.Count); m++)
+                            {
+                                @Html.Partial("~/Views/Courses/_FeaturedCourseCard.cshtml", UniversityCourses[m], new ViewDataDictionary { { "Index", m }, { "ShowRibbon", false } })
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+
+            <div class="col-lg-4">
+                <div class="course-sidebar sticky-top rbt-shadow-box rbt-gradient-border">
+                    <div class="inner">
+                        <div class="cd-sidebar-thumb">
+                            <img src="@(string.IsNullOrEmpty(Course.CoursePhoto) ? "/assets/images/event/grid-type-01.jpg" : Course.CoursePhoto)" alt="@Course.CourseName" onerror="this.onerror=null;this.src='/assets/images/event/grid-type-01.jpg';">
+                            @if (!string.IsNullOrEmpty(Course.CategoryName))
+                            {
+                                <span class="cd-sidebar-tag">@Course.CategoryName</span>
+                            }
+                        </div>
+                        <div class="content-item-content">
+                            <h5 class="cd-glance-title"><span class="cd-glance-icon" aria-hidden="true"><i class="feather-eye"></i></span> Course at a glance</h5>
+
+                            <div class="add-to-card-button mt--15">
+                                @if (Convert.ToBoolean(ViewBag.isStudent))
+                                {
+                                    @* same button style as "Find a provider" / "View course" *@
+                                    <a class="hf-btn cd-connect" onclick="return checklogin();" href="@Url.Action("ConnectToUnivarsity", "Courses", new { area = "", @CourseId = @Course.Id, @UniversityId = Course.UniversityId })">
+                                        <i class="feather-send" aria-hidden="true"></i> Connect To Training Provider
+                                    </a>
+                                }
+                            </div>
+                            <div class="rbt-widget-details has-show-more">
+                                <ul class="has-show-more-inner-content rbt-course-details-list-wrapper">
+                                    <li>
+                                        <span><i class="feather-calendar"></i>Start Date</span><span class="rbt-feature-value rbt-badge-5">
+                                            @Course.CourseStartDate
+                                        </span>
+                                    </li>
+                                    <li>
+                                        <span><i class="feather-monitor"></i>Study Mode</span><span class="rbt-feature-value rbt-badge-5">
+                                            @Course.StudyMethod
+                                        </span>
+                                    </li>
+                                    <li>
+                                        <span><i class="feather-grid"></i>Category</span><span class="rbt-feature-value rbt-badge-5">
+                                            @Course.CategoryName
+                                        </span>
+                                    </li>
+                                    <li>
+                                        <span><i class="feather-clock"></i>Duration</span><span class="rbt-feature-value rbt-badge-5">
+                                            @Course.CourseDuration Weeks
+                                        </span>
+                                    </li>
+                                    <li>
+                                        <span><i class="feather-bar-chart-2"></i>Level</span><span class="rbt-feature-value rbt-badge-5">
+                                            @(string.IsNullOrEmpty(Course.CourseLevelName) ? "N/A" : Course.CourseLevelName)
+                                        </span>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="rbt-separator-mid">
+    <div class="container">
+        <hr class="rbt-separator m-0">
+    </div>
+</div>
+@if (SimilarCourses.Count > 0)
+{
+    @* Related courses: same animated card as "Hand-picked courses for you" (no Featured ribbon); first 6, the rest via View All *@
+    <div class="rbt-related-course-area bg-color-white pt--60 rbt-section-gapBottom cd-page cd-related">
+        <div class="container">
+            <div class="cd-more-head">
+                <div class="section-title">
+                    <span class="subtitle bg-primary-opacity">More Similar Courses</span>
+                    <h4 class="title">Related <span class="theme-gradient">Courses</span></h4>
+                </div>
+                <a class="bl-btn cd-more-all" href="@(string.IsNullOrWhiteSpace(Course.CourseCategory) ? Url.Action("AllCourses", "Courses", new { area = "" }) : Url.Action("AllCourses", "Courses", new { area = "", FilterType = "CategoryId", FilterValue = Course.CourseCategory }))">View All Courses <i class="feather-arrow-right"></i></a>
+            </div>
+            <div class="hf-grid">
+                @for (int r = 0; r < Math.Min(6, SimilarCourses.Count); r++)
+                {
+                    @Html.Partial("~/Views/Courses/_FeaturedCourseCard.cshtml", SimilarCourses[r], new ViewDataDictionary { { "Index", r }, { "ShowRibbon", false } })
+                }
+            </div>
+        </div>
+    </div>
+}
+<div class="rbt-course-action-bottom cd-action-bottom">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6 col-md-6">
+                <div class="section-title text-center text-md-start">
+                    <h5 class="title mb--0">@if (!string.IsNullOrEmpty(courseCode)) {<span class="cd-card-code">@courseCode</span>} @courseTitle</h5>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6 mt_sm--15">
+                <div class="course-action-bottom-right rbt-single-group">
+                    <div class="rbt-single-list action-btn">
+                        <a class="rbt-btn btn-gradient hover-icon-reverse btn-md" onclick="return checklogin();" href="@Url.Action("ConnectToUnivarsity", "Courses", new { area = "", @CourseId = @Course.Id, @UniversityId = Course.UniversityId })">
+                            <span class="icon-reverse-wrapper">
+                                <span class="btn-text">Connect To Training Provider</span>
+                                <span class="btn-icon"><i class="feather-arrow-right"></i></span>
+                                <span class="btn-icon"><i class="feather-arrow-right"></i></span>
+                            </span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="rbt-separator-mid">
+    <div class="container">
+        <hr class="rbt-separator m-0">
+    </div>
+</div>
+<div id="loginPopup" class="custom-popup cd-popup">
+    <div class="popup-content">
+
+        <h3 class="popup-title">You are not logged in</h3>
+
+        <!-- Login Section -->
+        <p class="popup-msg">Already have an account?</p>
+        <a href="@Url.Action("Login", "Login", new { area = "", type = "Student" })" class="popup-btn login-btn">Login</a>
+
+        <!-- Horizontal Line -->
+        <div class="popup-separator">
+            <span>OR</span>
+        </div>
+
+        <!-- Register Section -->
+        <p class="popup-msg">New user? Create your account</p>
+        <a href="@Url.Action("Registration","Registration", new { area = "", type = "Student" })" class="popup-btn register-btn">Register</a>
+
+        <button type="button" class="popup-close" onclick="closePopup()" aria-label="Close"><i class="feather-x"></i></button>
+    </div>
+</div>
+
+@section scripts{
+    <script src="@CoursesHub.AssetVersion.Url("~/assets/js/main.js")"></script>
+    @if (!string.IsNullOrEmpty(toastMessage) || !string.IsNullOrEmpty(toastErrMessage))
+    {
+        <script src="~/assets/js/toastr.min.js"></script>
+        <script>
+            $(document).ready(function () {
+                // Back/Forward and reload replay this page's HTML; the history entry remembers the toast was shown
+                if (history.state && history.state.toastShown) { return; }
+
+                toastr.options = { closeButton: true, progressBar: true, timeOut: 6000, extendedTimeOut: 2000, newestOnTop: true };
+                var msg = '@Html.Raw(HttpUtility.JavaScriptStringEncode(toastMessage))';
+                var errMsg = '@Html.Raw(HttpUtility.JavaScriptStringEncode(toastErrMessage))';
+                if (msg) { toastr.info(msg); }
+                if (errMsg) { toastr.error(errMsg); }
+
+                try { history.replaceState($.extend({}, history.state, { toastShown: true }), document.title); } catch (e) { }
+            });
+            // page restored from the back/forward cache: drop any toast frozen on screen
+            window.addEventListener('pageshow', function (e) {
+                if (e.persisted) { toastr.remove(); }
+            });
+        </script>
+    }
+    <script>
+        function checklogin() {
+            var isUserLoggedIn = @(isLoggedIn ? "true" : "false");
+            if (isUserLoggedIn == true) {
+                return true;
+            }
+            document.getElementById("loginPopup").classList.add("show-popup");
+            return false;
+        }
+        function closePopup() {
+            document.getElementById("loginPopup").classList.remove("show-popup");
+        }
+
+        $(document).ready(function () {
+            $('.video-popup-with-text').magnificPopup({
+                type: 'iframe'
+            });
+        });
+
+        // Fade content cards in as they scroll into view (skipped for reduced-motion users / old browsers)
+        (function () {
+            if (!('IntersectionObserver' in window) ||
+                (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches)) {
+                return;
+            }
+            var items = document.querySelectorAll('.cd-page .course-details-content .rbt-shadow-box, .cd-page .related-course .rbt-card, .cd-related .rbt-card');
+            var observerFired = false;
+            var observer = new IntersectionObserver(function (entries) {
+                observerFired = true;
+                entries.forEach(function (entry) {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('cd-in');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+            items.forEach(function (el) {
+                el.classList.add('cd-reveal');
+                observer.observe(el);
+            });
+            // safety net: never leave content hidden if the observer doesn't run
+            setTimeout(function () {
+                if (!observerFired) {
+                    items.forEach(function (el) { el.classList.add('cd-in'); });
+                    observer.disconnect();
+                }
+            }, 1500);
+        })();
+    </script>
+}

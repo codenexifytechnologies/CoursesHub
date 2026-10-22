@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 260" role="img" aria-label="Training provider presenting course growth">
+  <defs>
+    <style>
+      .bob{animation:bob 4s ease-in-out infinite}
+      .bob2{animation:bob 5s ease-in-out infinite .8s}
+      .line{stroke-dasharray:260;stroke-dashoffset:260;animation:draw 4s ease-in-out infinite}
+      .ping{transform-origin:286px 70px;transform-box:fill-box;animation:ping 2.4s ease-out infinite}
+      @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+      @keyframes draw{0%{stroke-dashoffset:260}50%,100%{stroke-dashoffset:0}}
+      @keyframes ping{0%{transform:scale(1);opacity:.7}100%{transform:scale(2.4);opacity:0}}
+      @media (prefers-reduced-motion: reduce){.bob,.bob2,.ping{animation:none}.line{animation:none;stroke-dashoffset:0}}
+    </style>
+  </defs>
+  <ellipse cx="180" cy="238" rx="150" ry="14" fill="#0E6B6A" fill-opacity="0.12"/>
+  <circle cx="190" cy="120" r="100" fill="#E8F4F4"/>
+  <!-- board -->
+  <rect x="150" y="44" width="170" height="120" rx="10" fill="#ffffff" stroke="#DCE8E8" stroke-width="2"/>
+  <rect x="150" y="44" width="170" height="24" rx="10" fill="#158887"/>
+  <rect x="150" y="58" width="170" height="10" fill="#158887"/>
+  <circle cx="164" cy="56" r="4" fill="#ffffff"/>
+  <circle cx="176" cy="56" r="4" fill="#F79646"/>
+  <path class="line" d="M166 146 L196 124 L220 132 L250 102 L282 112 L304 80" fill="none" stroke="#F79646" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  <g fill="#158887">
+    <circle cx="196" cy="124" r="4"/><circle cx="250" cy="102" r="4"/>
+  </g>
+  <circle class="ping" cx="304" cy="80" r="6" fill="#F79646"/>
+  <circle cx="304" cy="80" r="6" fill="#F79646"/>
+  <rect x="164" y="152" width="140" height="4" rx="2" fill="#DCE8E8"/>
+  <rect x="226" y="164" width="18" height="50" fill="#0F3F42"/>
+  <rect x="200" y="210" width="70" height="8" rx="4" fill="#0F3F42"/>
+  <!-- presenter -->
+  <g>
+    <rect x="70" y="140" width="58" height="76" rx="20" fill="#0E6B6A"/>
+    <path d="M90 140 l9 22 l9 -22 z" fill="#ffffff"/>
+    <path d="M99 160 l-4 10 l4 8 l4 -8 z" fill="#F79646"/>
+    <circle cx="99" cy="112" r="24" fill="#E7B48F"/>
+    <path d="M74 108 C74 84 124 82 124 108 C116 98 96 94 82 104 Z" fill="#0F3F42"/>
+    <path d="M124 156 C140 150 150 136 158 122" stroke="#E7B48F" stroke-width="10" stroke-linecap="round" fill="none"/>
+    <rect x="80" y="214" width="12" height="20" fill="#0F3F42"/>
+    <rect x="106" y="214" width="12" height="20" fill="#0F3F42"/>
+  </g>
+  <!-- floating badges -->
+  <g class="bob">
+    <rect x="18" y="58" width="78" height="40" rx="10" fill="#ffffff" stroke="#DCE8E8"/>
+    <circle cx="36" cy="78" r="9" fill="#F79646"/>
+    <path d="M31 78 l4 4 l7 -7" stroke="#fff" stroke-width="2.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="52" y="72" width="34" height="5" rx="2.5" fill="#158887"/>
+    <rect x="52" y="82" width="24" height="5" rx="2.5" fill="#BFDDDC"/>
+  </g>
+  <g class="bob2">
+    <circle cx="326" cy="196" r="22" fill="#158887"/>
+    <path d="M318 196 h16 M326 188 v16" stroke="#ffffff" stroke-width="4" stroke-linecap="round"/>
+  </g>
+</svg>

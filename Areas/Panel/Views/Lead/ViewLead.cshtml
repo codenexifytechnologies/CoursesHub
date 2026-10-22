@@ -1,0 +1,75 @@
+﻿@model List<CoursesHub.Areas.Admin.Models.Lead>
+@{
+    ViewBag.Title = "ViewCourses";
+    Layout = "~/Areas/Panel/Views/Shared/_Layout.cshtml";
+}
+<link rel="stylesheet" href="~/Areas/Admin/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+<link rel="stylesheet" href="~/Areas/Admin/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+<link rel="stylesheet" href="~/Areas/Admin/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+<script src="//code.jquery.com/jquery-2.2.4.min.js"></script>
+<script src="~/assets/js/toastr.min.js"></script>
+ <link href="~/assets/css/toastr.min.css" rel="stylesheet" />
+
+<div class="sd-page">
+    <div class="sd-card sd-reveal">
+        <div class="sd-page-head">
+            <span class="sd-page-icon sd-page-icon-accent"><i class="feather-users"></i></span>
+            <div>
+                <h4 class="sd-page-title">My Leads</h4>
+                <p class="sd-page-sub">Students who are interested in your courses. Premium leads are highlighted.</p>
+            </div>
+            @if (Model != null && Model.Count > 0)
+            {
+                <span class="sd-count-pill">@Model.Count @(Model.Count == 1 ? "Lead" : "Leads")</span>
+            }
+        </div>
+
+        @if (Model == null || Model.Count == 0)
+        {
+            <div class="sd-empty">
+                <img src="@CoursesHub.AssetVersion.Url("~/assets/images/provider/provider-empty-leads.svg")" alt="" aria-hidden="true">
+                <h5>No Records Found</h5>
+                <p>When students show interest in your courses they will appear here.</p>
+            </div>
+        }
+        else
+        {
+            <div class="sd-list">
+                @foreach (var item in Model)
+                {
+                    bool premium = item.LeadType == "Premium";
+                    <article class="sd-item pp-lead-item @(premium ? "premium-row" : "normal-row") sd-reveal">
+                        <span class="sd-item-icon @(premium ? "sd-item-icon-accent" : "")"><i class="@(premium ? "feather-award" : "feather-user")"></i></span>
+                        <div class="sd-item-main">
+                            <span class="sd-item-label">Lead Type</span>
+                            <span class="pp-lead-badge @(premium ? "is-premium" : "")">@item.LeadType</span>
+                            <span class="sd-item-label pp-lead-gap">Course Name</span>
+                            <span class="sd-item-title">@item.Course_Name</span>
+                            <span class="sd-item-sub"><i class="feather-tag"></i> @item.CourseCategory</span>
+                        </div>
+                        <div class="sd-item-meta">
+                            <span class="sd-item-label">Student Name</span>
+                            <span class="sd-item-value">@item.Student_Name</span>
+                        </div>
+                        <div class="sd-item-meta">
+                            <span class="sd-item-label">Student EmailId</span>
+                            @if (!string.IsNullOrEmpty(item.Student_EmailId))
+                            {
+                                <a class="sd-item-value" href="mailto:@item.Student_EmailId"><i class="feather-mail"></i> @item.Student_EmailId</a>
+                            }
+                            <span class="sd-item-label pp-lead-gap">Student Mobile</span>
+                            @if (!string.IsNullOrEmpty(item.Student_Mobile))
+                            {
+                                <a class="sd-item-value" href="tel:@item.Student_Mobile"><i class="feather-phone"></i> @item.Student_Mobile</a>
+                            }
+                        </div>
+                    </article>
+                }
+            </div>
+        }
+    </div>
+</div>
+
+<script src="~/assets/js/vendor/jquery.js"></script>
+<script src="~/Plugins/jquery-validation/jquery.validate.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

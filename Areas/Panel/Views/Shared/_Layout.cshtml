@@ -1,0 +1,197 @@
+﻿@using System.Configuration
+@{
+    CoursesHub.Models.UniversityRegistration obj = ((CoursesHub.Models.Registration)Session["Registration"]).objUniversityRegistration;
+    string LoginType = ((CoursesHub.Models.Registration)Session["Registration"]).LoginType;
+    string LoginName = obj.Legal_Name_Organisation;
+    string ProfileImage = string.IsNullOrEmpty(obj.Logo) == true ? "/assets/images/client/yourlogo.jpg" : obj.Logo;
+    string EmailId = obj.Email;
+    string Password = obj.Password;
+    string UserId = obj.Id.ToString();
+
+    bool HasLogo = !string.IsNullOrEmpty(obj.Logo);
+    string Initials = string.Concat((LoginName ?? "").Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).Take(2).Select(w => char.ToUpperInvariant(w[0])));
+    string CurrentAction = Convert.ToString(ViewContext.RouteData.Values["action"]);
+    Func<string[], string> NavActive = actions => actions.Any(a => string.Equals(a, CurrentAction, StringComparison.OrdinalIgnoreCase)) ? "active" : "";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="robots" content="index, follow">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="shortcut icon" type="image/x-icon" href="@CoursesHub.AssetVersion.Url("~/assets/images/favicon.png")">
+    <link rel="stylesheet" href="~/assets/css/vendor/bootstrap.min.css">
+    <link rel="stylesheet" href="~/assets/css/vendor/slick.css">
+    <link rel="stylesheet" href="~/assets/css/vendor/slick-theme.css">
+    <link rel="stylesheet" href="~/assets/css/plugins/sal.css">
+    <link rel="stylesheet" href="~/assets/css/plugins/feather.css">
+    <link rel="stylesheet" href="~/assets/css/plugins/fontawesome.min.css">
+    <link rel="stylesheet" href="~/assets/css/plugins/euclid-circulara.css">
+    <link rel="stylesheet" href="~/assets/css/plugins/swiper.css">
+    <link rel="stylesheet" href="~/assets/css/plugins/odometer.css">
+    <link rel="stylesheet" href="~/assets/css/plugins/animation.css">
+    <link rel="stylesheet" href="~/assets/css/plugins/bootstrap-select.min.css">
+    <link rel="stylesheet" href="~/assets/css/plugins/jquery-ui.css">
+    <link rel="stylesheet" href="~/assets/css/plugins/magnigy-popup.min.css">
+    <link rel="stylesheet" href="@CoursesHub.AssetVersion.Url("~/assets/css/styles.css")">
+    <link rel="stylesheet" href="@CoursesHub.AssetVersion.Url("~/assets/css/brand-theme.css")">
+</head>
+<body>
+    @Html.Partial("~/Views/Shared/_PageLoader.cshtml")
+    <header class="rbt-header rbt-header-10">
+        <div class="rbt-sticky-placeholder"></div>
+
+        <div class="rbt-header-wrapper header-space-betwween header-sticky">
+            <div class="container-fluid">
+                <div class="mainbar-row rbt-navigation-center align-items-center">
+                    <div class="header-left rbt-header-content">
+                        <div class="header-info">
+                            <div class="logo logo-dark">
+                                <a href="@Url.Action("Index","Index",new { area = "" })">
+                                    <img src="~/assets/images/logo/logo.png" alt="Education Logo Images">
+                                </a>
+                            </div>
+                            <div class="logo d-none logo-light">
+                                <a href="@Url.Action("Index","Index",new { area = "" })">
+                                    <img src="~/assets/images/dark/logo/logo-light.png" alt="Education Logo Images">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="header-right">
+                        <span class="name">Welcome, <b>@LoginName</b></span>
+                        <ul class="quick-access">
+                            @Html.Partial("~/Views/Shared/_HeaderAccountMenu.cshtml")
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <a class="rbt-close_side_menu" href="javascript:void(0);"></a>
+    </header>
+
+
+    <div class="rbt-page-banner-wrapper">
+        <div class="rbt-banner-image"></div>
+    </div>
+    <div class="rbt-dashboard-area rbt-section-overlayping-top rbt-section-gapBottom sd-area pp-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="sd-cover">
+                        <img class="sd-cover-art" src="@CoursesHub.AssetVersion.Url("~/assets/images/provider/provider-cover.svg")" alt="" aria-hidden="true">
+                        <div class="sd-cover-info">
+                            @if (HasLogo)
+                            {
+                                <span class="sd-cover-avatar sd-cover-logo"><img src="@ProfileImage" alt="@LoginName logo"></span>
+                            }
+                            else
+                            {
+                                <span class="sd-cover-avatar" aria-hidden="true">@Initials</span>
+                            }
+                            <div class="sd-cover-text">
+                                <span class="sd-cover-badge"><i class="feather-home"></i> Training Provider</span>
+                                <h5 class="sd-cover-name">@LoginName</h5>
+                                <span class="sd-cover-email"><i class="feather-mail"></i> @EmailId</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row g-5">
+                        <div class="col-lg-3">
+                            <aside class="sd-sidebar sticky-top" aria-label="Training provider menu">
+                                <div class="sd-sidebar-head">
+                                    <span class="sd-sidebar-hello">Welcome,</span>
+                                    <span class="sd-sidebar-name">@LoginName</span>
+                                </div>
+                                <nav>
+                                    <span class="sd-nav-title">Overview</span>
+                                    <ul class="sd-nav">
+                                        <li><a class="@NavActive(new[] { "UniversityDashboard", "Index" })" href="@Url.Action("UniversityDashboard", "University", new { area = "Panel" })"><i class="feather-grid"></i><span>Dashboard</span></a></li>
+                                    </ul>
+                                    <span class="sd-nav-title">Courses</span>
+                                    <ul class="sd-nav">
+                                        <li><a class="@NavActive(new[] { "ViewCourses", "EditCourse" })" href="@Url.Action("ViewCourses", "Courses", new { area = "Panel" })"><i class="feather-book-open"></i><span>View Course</span></a></li>
+                                        <li><a class="@NavActive(new[] { "AddCourse" })" href="@Url.Action("AddCourse", "Courses", new { area = "Panel" })"><i class="feather-plus-square"></i><span>Add Course</span></a></li>
+                                    </ul>
+                                    <span class="sd-nav-title">Leads</span>
+                                    <ul class="sd-nav">
+                                        <li><a class="@NavActive(new[] { "ViewLead" })" href="@Url.Action("ViewLead", "Lead", new { area = "Panel" })"><i class="feather-users"></i><span>View Leads</span></a></li>
+                                    </ul>
+                                    <span class="sd-nav-title">User</span>
+                                    <ul class="sd-nav">
+                                        <li><a class="@NavActive(new[] { "ViewProfile" })" href="@Url.Action("ViewProfile", "University", new { area = "Panel", Id = UserId })"><i class="feather-user"></i><span>Profile</span></a></li>
+                                        <li><a class="@NavActive(new[] { "ChangePassword" })" href="@Url.Action("ChangePassword", "University", new { area = "Panel", Id = UserId })"><i class="feather-lock"></i><span>Change Password</span></a></li>
+                                        <li><a class="sd-nav-logout" href="@Url.Action("LogOff", "Login", new { area = "" })"><i class="feather-log-out"></i><span>Logout</span></a></li>
+                                    </ul>
+                                </nav>
+                            </aside>
+                        </div>
+                        <div class="col-lg-9 sd-main">
+                            @RenderBody()
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @Html.Partial("~/Views/Shared/_SiteFooter.cshtml")
+    <div class="rbt-progress-parent">
+        <svg class="rbt-back-circle svg-inner" width="100%" height="100%" viewBox="-1 -1 102 102">
+            <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98" />
+        </svg>
+    </div>
+
+    <script src="~/assets/js/vendor/modernizr.min.js"></script>
+    <script src="~/assets/js/vendor/jquery.js"></script>
+    <script src="~/assets/js/vendor/bootstrap.min.js"></script>
+    <script src="~/assets/js/vendor/sal.js"></script>
+    <script src="~/assets/js/vendor/js.cookie.js"></script>
+    <script src="~/assets/js/vendor/jquery.style.switcher.js"></script>
+    <script src="~/assets/js/vendor/swiper.js"></script>
+    <script src="~/assets/js/vendor/jquery-appear.js"></script>
+    <script src="~/assets/js/vendor/odometer.js"></script>
+    <script src="~/assets/js/vendor/backtotop.js"></script>
+    <script src="~/assets/js/vendor/isotop.js"></script>
+    <script src="~/assets/js/vendor/imageloaded.js"></script>
+    <script src="~/assets/js/vendor/wow.js"></script>
+    <script src="~/assets/js/vendor/waypoint.min.js"></script>
+    <script src="~/assets/js/vendor/easypie.js"></script>
+    <script src="~/assets/js/vendor/text-type.js"></script>
+    <script src="~/assets/js/vendor/jquery-one-page-nav.js"></script>
+    <script src="~/assets/js/vendor/bootstrap-select.min.js"></script>
+    <script src="~/assets/js/vendor/jquery-ui.js"></script>
+    <script src="~/assets/js/vendor/magnify-popup.min.js"></script>
+    <script src="~/assets/js/vendor/paralax-scroll.js"></script>
+    <script src="~/assets/js/vendor/paralax.min.js"></script>
+    <script src="~/assets/js/vendor/countdown.js"></script>
+    <script src="@CoursesHub.AssetVersion.Url("~/assets/js/main.js")"></script>
+    <script>
+        $(document).ready(function () {
+            localStorage.setItem("EmailId", "@EmailId");
+localStorage.setItem("Password", "@Password");
+localStorage.setItem("LoginType", "@LoginType");
+            setInterval(function () {
+                $.ajax({
+                    url: '/Index/SetSessionValues',
+                    type: 'Post',
+                    data: {
+                        EmailId: localStorage.getItem("EmailId"),
+                        Password: localStorage.getItem("Password"),
+                        LoginType: localStorage.getItem("LoginType")
+                    },
+                    success: function (response) {
+                        console.log('Repeated AJAX success:', response);
+                    },
+                    error: function (error) {
+                        console.log('Error:', error);
+                    }
+                });
+            }, 60000);
+        });
+    </script>
+    @RenderSection("scripts", required: false)
+</body>
+</html>

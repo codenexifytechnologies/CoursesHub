@@ -1,0 +1,264 @@
+﻿@model CoursesHub.Models.UniversityRegistration
+@using System.Configuration
+@{
+    ViewBag.Title = "Provider Profile";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    var baseUrl = ConfigurationManager.AppSettings["BaseURL"];
+    var Signature = string.IsNullOrEmpty(Model.Signature) ? System.Configuration.ConfigurationManager.AppSettings["BaseURL"].ToString() + "Uploads/NoImage.jpg" : Model.Signature;
+    var Logo = string.IsNullOrEmpty(Model.Logo) ? System.Configuration.ConfigurationManager.AppSettings["BaseURL"].ToString() + "Uploads/NoImage.jpg" : Model.Logo;
+}
+
+<link href="~/assets/css/toastr.min.css" rel="stylesheet" />
+<link href="@CoursesHub.AssetVersion.Url("~/assets/css/adminCustom.css")" rel="stylesheet" />
+
+@if (TempData["EditUniversityDetailsMsg"] != null)
+{
+    <script>
+        $(document).ready(function () { toastr.info('@TempData["EditUniversityDetailsMsg"]'); });
+    </script>
+}
+
+<div class="container-fluid pt-4 px-4">
+    <div class="profile-header">
+        <div class="row align-items-center">
+            <div class="col-auto">
+                <div class="provider-logo-box">
+                    <img src="@($"{Logo}")" alt="Logo" />
+                </div>
+            </div>
+            <div class="col">
+                <span class="badge badge-soft-light mb-2" style="background: rgba(255,255,255,0.2); color: white;">RTO ID: #@Model.RTO_ID</span>
+                <h2 class="font-weight-bold mb-1">@Model.Legal_Name_Organisation</h2>
+                <p class="mb-0 text-white-50"><i class="fas fa-globe mr-2"></i>@Model.Website</p>
+            </div>
+            <div class="col-auto">
+                <a href="/Admin/University/ViewUniversity" class="btn btn-outline-light rounded-pill px-4 btn-sm">
+                    <i class="fas fa-arrow-left mr-2"></i> Back to Providers
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div style="padding-top: 80px;">
+        @using (Html.BeginForm("ViewUniversityDetails", "University", FormMethod.Post, new { id = "University", enctype = "multipart/form-data" }))
+        {
+            @Html.HiddenFor(model => model.Id)
+
+            <div class="row">
+                <div class="col-lg-12">
+
+                    <div class="detail-card" style="border-top: 4px solid var(--primary-color);">
+                        <span class="section-title"><i class="fas fa-university mr-2"></i>Organisation Details</span>
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label>RTO ID</label>
+                                @Html.TextBoxFor(m => m.RTO_ID, new { @class = "form-control-plaintext", @readonly = "readonly" })
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label>CRICOS Code</label>
+                                @Html.TextBoxFor(m => m.CRICOS_Code, new { @class = "form-control-plaintext", @readonly = "readonly" })
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label>ABN / ACN</label>
+                                @Html.TextBoxFor(m => m.ABN_ACN, new { @class = "form-control-plaintext", @readonly = "readonly" })
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label>Legal Name</label>
+                                @Html.TextBoxFor(m => m.Legal_Name_Organisation, new { @class = "form-control-plaintext", @readonly = "readonly" })
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label>Trading Name</label>
+                                @Html.TextBoxFor(m => m.Trading_Name, new { @class = "form-control-plaintext", @readonly = "readonly" })
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label>General Contact Number</label>
+                                @Html.TextBoxFor(m => m.Contact_Number, new { @class = "form-control-plaintext", @readonly = "readonly" })
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label>General Contact Email</label>
+                                @Html.TextBoxFor(m => m.General_Contact_Email, new { @class = "form-control-plaintext", @readonly = "readonly" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="detail-card" style="border-top: 4px solid var(--primary-color);">
+                        <span class="section-title"><i class="fas fa-user-tie mr-2"></i>Primary Contact Person</span>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label>Full Name</label>
+                                @Html.TextBoxFor(m => m.Full_Name, new { @class = "form-control-plaintext", @readonly = "readonly" })
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label>Position</label>
+                                @Html.TextBoxFor(m => m.Position, new { @class = "form-control-plaintext", @readonly = "readonly" })
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label>Direct Phone</label>
+                                @Html.TextBoxFor(m => m.Direct_Phone, new { @class = "form-control-plaintext", @readonly = "readonly" })
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label>Direct Email</label>
+                                @Html.TextBoxFor(m => m.Email, new { @class = "form-control-plaintext", @readonly = "readonly" })
+                            </div>
+                        </div>
+                        <div class="row mt-3 align-items-center">
+                            <div class="col-md-6">
+                                <label>Authorized Signature</label>
+                                <div class="bg-light p-3 border rounded text-center">
+                                    <img src="@($"{Signature}")" style="max-height: 70px; width: auto;" alt="Signature" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="detail-card" style="border-top: 4px solid var(--primary-color);">
+                        <span class="section-title"><i class="fas fa-book mr-2"></i>Scope of Registration (Relevant Courses)</span>
+                        <div class="form-group">
+                            @Html.TextAreaFor(m => m.Relevant_Courses_String, new { @class = "form-control-plaintext", @readonly = "readonly", rows = "4" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-12">
+                    <div class="detail-card shadow-sm" style="border-top: 4px solid var(--primary-color);">
+                        <span class="section-title"><i class="fas fa-map-marked-alt mr-2"></i>Location Details</span>
+                        <div class="mb-3">
+                            <label>Business Address</label>
+                            @Html.TextAreaFor(m => m.Business_Address, new { @class = "form-control-plaintext", @readonly = "readonly", rows = "3" })
+                        </div>
+                        <div class="mb-3">
+                            <label>Postal Address</label>
+                            @Html.TextAreaFor(m => m.Postal_Address, new { @class = "form-control-plaintext", @readonly = "readonly", rows = "3" })
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <label>State</label>
+                                @Html.TextBoxFor(m => m.State, new { @class = "form-control-plaintext", @readonly = "readonly" })
+                            </div>
+                            <div class="col-6">
+                                <label>Postcode</label>
+                                @Html.TextBoxFor(m => m.Zipcode, new { @class = "form-control-plaintext", @readonly = "readonly" })
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+            <div class="row">
+                @if (!Model.IsActive)
+                {
+                    <div class="col-sm-3">
+                        <button type="submit" name="action" class="btn btn-primary btn-block btn-lg shadow-sm mb-3" style="border-radius: 12px;" value="btnVerified">
+                            <i class="fas fa-thumbs-up mr-2"></i> Verify
+                        </button>
+                    </div>
+                    <div class="col-sm-3">
+                        <button type="button" name="btn" class="btn btn-danger btn-block btn-lg shadow-sm mb-3" style="border-radius: 12px;" id="btnReject">
+                            <i class="fas fa-thumbs-down mr-2"></i> Reject
+                        </button>
+                    </div>
+
+                    @*<button type="submit" name="action" class="btn btn-primary btn-block btn-lg shadow-sm mb-3" style="border-radius: 12px; font-weight: 700;" value="btnVerified"><i class="fas fa-save mr-2"></i> Verified</button>
+                        <button type="button" name="btn" class="btn btn-danger" id="btnReject">Reject</button>*@
+                }
+                else
+                {
+                    if (Model.isUniversityActive == false)
+                    {
+                        <div class="col-sm-3">
+                            <button type="submit" name="action" class="btn btn-info btn-block btn-lg shadow-sm mb-3" style="border-radius: 12px;" value="btnActive">
+                                <i class="fas fa-check-circle mr-2"></i> Active
+                            </button>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="col-sm-3">
+                            <button type="submit" name="action" class="btn btn-warning btn-block btn-lg shadow-sm mb-3" style="border-radius: 12px;" value="btnInactive">
+                                <i class="fas fa-pause-circle mr-2"></i> Deactivate
+                            </button>
+                        </div>
+                    }
+                    <div class="col-sm-3">
+                        <button type="submit" name="action" class="btn btn-danger btn-block btn-lg shadow-sm mb-3" style="border-radius: 12px;" value="btnArchive">
+                            <i class="fas fa-archive mr-2"></i> Archive
+                        </button>
+                    </div>
+                }
+            </div>
+
+
+        }
+    </div>
+</div>
+
+<div class="modal fade" id="rejectModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content border-0 shadow-lg" style="border-radius: 20px;">
+            <div class="modal-header bg-danger text-white border-0" style="border-radius: 20px 20px 0 0;">
+                <h5 class="modal-title font-weight-bold"><i class="fas fa-exclamation-triangle mr-2"></i>Reason for Rejection</h5>
+                <button type="button" class="close text-white" data-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body p-4">
+                <textarea id="rejectReason" class="form-control" rows="5" placeholder="Please provide specific reasons why this application is being rejected..." style="border-radius: 12px; border: 2px solid #f1f5f9;"></textarea>
+            </div>
+            <div class="modal-footer border-0 px-4 pb-4">
+                <button type="button" class="btn btn-light rounded-pill px-4" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-danger rounded-pill px-4 font-weight-bold" id="btnSubmitReject">Submit Rejection</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/plugins/jquery/jquery.min.js"></script>
+<script src="~/assets/js/toastr.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+    $(document).ready(function () {
+        // Modal trigger
+        $("#btnReject").on("click", function () {
+            $("#rejectModal").modal("show");
+        });
+
+        // Submit Rejection
+        $("#btnSubmitReject").on("click", function () {
+            let reason = $("#rejectReason").val().trim();
+            let UniversityId = "@Model.Id";
+
+            if (reason === "") {
+                toastr.error("Rejection reason is mandatory.");
+                return;
+            }
+
+            Swal.fire({
+                title: "Are you sure?",
+                text: "The provider will be notified of this rejection.",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#dc3545",
+                confirmButtonText: "Yes, Reject",
+                cancelButtonText: "Cancel"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '/Admin/University/RejectUniversity',
+                        type: 'POST',
+                        data: { id: UniversityId, reason: reason },
+                        success: function (response) {
+                            Swal.fire("Success", "Provider has been rejected.", "success")
+                                .then(() => { window.location.href = "/Admin/University/ViewUniversity"; });
+                        },
+                        error: function () {
+                            toastr.error("An error occurred while processing the request.");
+                        }
+                    });
+                }
+            });
+        });
+    });
+</script>

@@ -1,0 +1,28 @@
+﻿@{
+    var CourseDetails = ViewBag.List as List<CoursesHub.Areas.Panel.Models.CourseDetails>;
+}
+
+@foreach (var item in CourseDetails)
+{
+    <div class="col-lg-3 col-md-4 col-sm-6 col-12">
+        <div class="rbt-card variation-01 rbt-hover">
+            <div class="rbt-card-img">
+                <a href="@Url.Action("CourseDetails", "Courses", new {CourseId=@item.Id})">
+                    <img src="@(string.IsNullOrEmpty(item.CoursePhoto)==true ?"/assets/images/event/grid-type-01.jpg":item.CoursePhoto)" alt="Card image">
+                </a>
+            </div>
+            <div class="rbt-card-body" style=" white-space: normal;">
+                <h5 class="rbt-card-title">
+                    <a href="@Url.Action("CourseDetails", "Courses", new {CourseId=@item.Id})">
+                        @item.CourseName
+                    </a>
+                </h5>
+                <p class="rbt-card-text">@Html.Raw(item.AboutCourse.Substring(0, Math.Min(50, item.AboutCourse.Length)))...</p>
+                <div class="rbt-card-bottom">
+                    <a class="rbt-btn-link color-primary" href="@Url.Action("CourseDetails", "Courses", new {CourseId=@item.Id})">Enroll Course<i class="feather-arrow-right"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+

@@ -1,0 +1,82 @@
+﻿@model List<CoursesHub.Areas.Panel.Models.Testimonial>
+@{
+    ViewBag.Title = "Student Reviews";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var reviews = Model ?? new List<CoursesHub.Areas.Panel.Models.Testimonial>();
+    int courseCount = reviews.Where(r => !string.IsNullOrWhiteSpace(r.CourseName))
+                             .Select(r => r.CourseName.Trim().ToLowerInvariant()).Distinct().Count();
+}
+
+<section class="tp-hero rv-hero">
+    <span class="tp-blob tp-blob-1" aria-hidden="true"></span>
+    <span class="tp-blob tp-blob-2" aria-hidden="true"></span>
+    <div class="container">
+        <ul class="page-list bl-crumbs">
+            <li class="rbt-breadcrumb-item"><a href="@Url.Action("Index", "Index", new { area = "" })">Home</a></li>
+            <li><div class="icon-right"><i class="feather-chevron-right"></i></div></li>
+            <li class="rbt-breadcrumb-item active">Student Reviews</li>
+        </ul>
+        <span class="bl-eyebrow"><i class="feather-message-circle"></i> Testimonials</span>
+        <h1 class="bl-hero-title">What Our Students Say</h1>
+        <p class="bl-hero-text">Real feedback from learners who found their course with Courses Hub.</p>
+        <div class="bl-hero-meta">
+            <span class="bl-pill"><i class="feather-message-circle"></i> @reviews.Count @(reviews.Count == 1 ? "Review" : "Reviews")</span>
+            <span class="tp-pill-ghost"><i class="feather-book-open"></i> @courseCount @(courseCount == 1 ? "Course" : "Courses")</span>
+            @if (reviews.Count > 1)
+            {
+                <label class="bl-search" for="reviewSearch">
+                    <i class="feather-search" aria-hidden="true"></i>
+                    <input id="reviewSearch" type="search" placeholder="Search reviews..." autocomplete="off" aria-label="Search reviews">
+                </label>
+            }
+        </div>
+    </div>
+</section>
+
+<div class="rv-area rbt-section-gapBottom">
+    <div class="container">
+        @if (reviews.Count == 0)
+        {
+            <div class="bl-empty">
+                <span class="bl-empty-icon"><i class="feather-message-circle"></i></span>
+                <h4>No reviews yet</h4>
+                <p>Student reviews will appear here once they are shared.</p>
+            </div>
+        }
+        else
+        {
+            <div class="rv-grid">
+                @for (int i = 0; i < reviews.Count; i++)
+                {
+                    @Html.Partial("~/Views/Shared/_ReviewCard.cshtml", reviews[i], new ViewDataDictionary { { "Index", i }, { "CardClass", "rv-card" } })
+                }
+            </div>
+            <div class="bl-empty rv-no-match" hidden>
+                <span class="bl-empty-icon"><i class="feather-search"></i></span>
+                <h4>No review matches your search</h4>
+                <p>Try a different word.</p>
+            </div>
+        }
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        (function () {
+            var input = document.getElementById('reviewSearch');
+            if (!input) return;
+            var cards = document.querySelectorAll('.rv-card');
+            var empty = document.querySelector('.rv-no-match');
+            input.addEventListener('input', function () {
+                var q = input.value.trim().toLowerCase();
+                var shown = 0;
+                Array.prototype.forEach.call(cards, function (c) {
+                    var match = !q || (c.getAttribute('data-search') || '').indexOf(q) !== -1;
+                    c.hidden = !match;
+                    if (match) shown++;
+                });
+                if (empty) empty.hidden = shown !== 0;
+            });
+        })();
+    </script>
+}

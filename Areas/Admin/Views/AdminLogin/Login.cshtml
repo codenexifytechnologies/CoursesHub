@@ -1,0 +1,506 @@
+﻿@model CoursesHub.Areas.Admin.Models.AdminLogin
+@{
+    ViewBag.Title = "Login";
+}
+
+@if (TempData["Message"] != null)
+{
+    <script src="//code.jquery.com/jquery-2.2.4.min.js"></script>
+    <script src="~/assets/js/toastr.min.js"></script>
+    <link href="~/assets/css/toastr.min.css" rel="stylesheet" />
+    <script>
+        $(document).ready(function () {
+            toastr.info('@TempData["Message"]');
+        });
+    </script>
+}
+
+@if (TempData["ErrMessage"] != null)
+{
+    <script src="//code.jquery.com/jquery-2.2.4.min.js"></script>
+    <script src="~/assets/js/toastr.min.js"></script>
+    <link href="~/assets/css/toastr.min.css" rel="stylesheet" />
+    <script>
+        $(document).ready(function () {
+            toastr.error('@TempData["ErrMessage"]');
+        });
+    </script>
+}
+
+@if (TempData["ChangePasswordSuccessMessage"] != null)
+{
+    <script src="//code.jquery.com/jquery-2.2.4.min.js"></script>
+    <script src="~/assets/js/toastr.min.js"></script>
+    <link href="~/assets/css/toastr.min.css" rel="stylesheet" />
+    <script>
+        $(document).ready(function () {
+            toastr.info('@TempData["ChangePasswordSuccessMessage"]');
+        });
+    </script>
+}
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CoursesHub Admin | Log in</title>
+<link rel="shortcut icon" type="image/x-icon" href="@CoursesHub.AssetVersion.Url("~/assets/images/favicon.png")">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+<link rel="stylesheet" href="~/Areas/Admin/plugins/fontawesome-free/css/all.min.css">
+<link rel="stylesheet" href="~/Areas/Admin/plugins/icheck-bootstrap/icheck-bootstrap.css">
+<link rel="stylesheet" href="~/Areas/Admin/dist/css/adminlte.min.css">
+<link rel="stylesheet" href="@CoursesHub.AssetVersion.Url("~/Areas/Admin/dist/css/brand-admin.css")">
+
+<style>
+    .tabs {
+        display: flex;
+    }
+
+        .tabs button {
+            flex: 1;
+            padding: 10px;
+            cursor: pointer;
+            background: #e0e0e0;
+            border: none;
+            border-radius: 5px 5px 0 0;
+            font-weight: bold;
+        }
+
+            .tabs button.active {
+                background: #ffffff;
+                border-bottom: 2px solid white;
+                color: var(--color-white);
+                background-size: 300% 100%;
+                background: var(--primary-color);
+                /*background-image: linear-gradient(to right, var(--color-primary), var(--color-secondary), var(--color-secondary), var(--color-primary));*/
+            }
+
+    .tabform {
+        display: none;
+    }
+
+        .tabform.active {
+            display: block;
+        }
+
+    input[type=radio] {
+        opacity: 1 !important;
+        position: initial !important;
+        height: auto;
+    }
+
+    .login-page-wrapper {
+        background: var(--bg-gradient);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: 'Inter', sans-serif;
+        padding: 20px;
+    }
+
+    .login-container {
+        display: flex;
+        background: #ffffff;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        max-width: 900px;
+        width: 100%;
+    }
+
+    /* Character Side */
+    .character-section {
+        flex: 1;
+        background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+        padding: 40px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        text-align: center;
+    }
+
+    .welcome-text h2 {
+        font-weight: 700;
+        margin-top: 20px;
+    }
+
+    .welcome-text p {
+        opacity: 0.8;
+        font-size: 0.9rem;
+    }
+
+    /* Form Side */
+    .form-section {
+        flex: 1.2;
+        padding: 50px 40px;
+    }
+
+    .login-logo {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+        .login-logo b {
+            color: var(--primary-color);
+            font-size: 1.8rem;
+            letter-spacing: -1px;
+        }
+
+        .login-logo a {
+            text-decoration: none;
+            color: var(--text-main);
+        }
+
+    .login-box-msg {
+        color: #718096;
+        text-align: center;
+        margin-bottom: 25px;
+    }
+
+    .input-wrapper {
+        position: relative !important;
+        margin-bottom: 20px;
+        display: block; /* Changed from flex to prevent pushing the icon out */
+        width: 100%;
+    }
+
+        .input-wrapper .icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #a0aec0;
+            z-index: 2;
+        }
+
+    .modern-input {
+        width: 100% !important;
+        padding: 12px 45px 12px 45px !important; /* Space for icons on both sides */
+        border: 1px solid #e2e8f0;
+        border-radius: 10px;
+        outline: none;
+        background: #f7fafc;
+        box-sizing: border-box; /* Prevents padding from expanding width */
+    }
+
+    /* THE FIX FOR THE EYE ICON */
+    .toggle-password-btn {
+        position: absolute !important;
+        right: 15px !important; /* Force it inside the right edge */
+        top: 50% !important;
+        transform: translateY(-50%) !important;
+        cursor: pointer;
+        color: #a0aec0;
+        z-index: 10;
+        background: transparent;
+    }
+    /* Button & Links */
+    .actions {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 30px;
+    }
+
+    .forgot-link {
+        font-size: 0.85rem;
+        color: #718096;
+        text-decoration: none;
+    }
+
+        .forgot-link:hover {
+            color: var(--primary);
+        }
+
+    .btn-modern {
+        background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+        color: white;
+        border: none;
+        padding: 12px 25px;
+        border-radius: 10px;
+        font-weight: 600;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        transition: 0.3s;
+    }
+
+        .btn-modern:hover {
+            background: linear-gradient(135deg, var(--accent-color) 0%, var(--accent-dark) 100%);
+            color: var(--on-accent-color);
+            transform: translateY(-2px);
+        }
+
+    /* Mobile Responsiveness */
+    @@media (max-width: 768px) {
+        .login-container {
+            flex-direction: column;
+        }
+
+        .character-section {
+            padding: 30px;
+        }
+
+        .form-section {
+            padding: 40px 20px;
+        }
+    }
+
+    .walking-character {
+        width: 260px;
+        margin-right: 40px;
+    }
+
+    #walkingCharacter {
+        width: 100%;
+        height: 320px;
+    }
+
+    @@keyframes walkIn {
+        from {
+            opacity: 0;
+            transform: translateX(-120px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    .walking-character {
+        animation: walkIn 1.2s ease-out;
+    }
+    /* wrapper controls visibility */
+    .login-box-wrapper {
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(20px);
+    }
+
+        /* show after animation */
+        .login-box-wrapper.show-form {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+    .main-container {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        gap: 20px;
+        padding: 20px;
+    }
+
+    .walking-character {
+        flex: 1;
+        min-width: 300px;
+        display: flex;
+        justify-content: center;
+    }
+
+
+    .login-box-wrapper {
+        flex: 1;
+        min-width: 320px;
+        max-width: 400px;
+        display: flex;
+        justify-content: center;
+    }
+
+    @@media (max-width: 768px) {
+        .main-container {
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .walking-character {
+            margin-bottom: 20px;
+        }
+    }
+
+    /* phones: let the form shrink to the screen instead of a fixed 300/320px minimum */
+    @@media (max-width: 480px) {
+        #University {
+            width: 100%;
+        }
+
+        .main-container {
+            padding: 16px;
+        }
+
+        .login-page-wrapper,
+        .login-container {
+            width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
+        }
+
+        .walking-character,
+        .login-box-wrapper {
+            min-width: 0;
+            width: 100%;
+        }
+    }
+
+    .video-bg-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1; /* Keeps it behind everything */
+        overflow: hidden;
+    }
+
+    .video-bg {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        filter: blur(4px);
+    }
+
+    .video-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(255, 255, 255, 0.4); /* Soft white tint */
+    }
+
+    .login-container {
+        backdrop-filter: blur(10px);
+        background: rgba(255, 255, 255, 0.9);
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    }
+</style>
+
+<body class="hold-transition login-page">
+    @Html.Partial("~/Views/Shared/_PageLoader.cshtml")
+
+    @*<div class="video-bg-container">
+            <video autoplay muted loop playsinline class="video-bg">
+                <source src="~/assets/videos/" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <div class="video-overlay"></div>
+        </div>*@
+
+    @using (Html.BeginForm("Login", "AdminLogin", FormMethod.Post, new { @class = "max-width-auto", @id = "University" }))
+    {
+        <div class="main-container">
+
+            <div class="login-page-wrapper">
+                <div class="login-container">
+
+                    <div class="character-section">
+                        <div id="walkingCharacter"></div>
+                        <div class="welcome-text">
+                            <h2>Welcome Back!</h2>
+                            <p>Please login to access the admin dashboard.</p>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <form action="/AdminLogin/Login" method="post">
+                            <div class="login-box">
+                                <div class="login-logo">
+                                    <a href="#"><b>ADMIN</b>PANEL</a>
+                                </div>
+
+                                <div class="login-card-body">
+                                    <p class="login-box-msg">Sign in to start your session</p>
+
+                                    <div class="input-wrapper">
+                                        <i class="fas fa-envelope icon"></i>
+                                        <input type="email"
+                                               name="EmailId"
+                                               id="EmailId"
+                                               class="modern-input"
+                                               placeholder="Email Address"
+                                               required />
+                                    </div>
+
+                                    <div class="input-wrapper">
+                                        <i class="fas fa-lock icon"></i> <input type="password" name="Password" id="Password" class="modern-input" placeholder="Password" required />
+
+                                        <i class="fas fa-eye toggle-password-btn" id="eyeIcon"></i>
+                                    </div>
+
+                                    <div class="actions">
+                                        <a href="@Url.Action("ForgotPassword","AdminLogin", new { area="Admin"})" class="forgot-link">Forgot password?</a>
+
+                                        <button type="submit" class="btn-modern">
+                                            <span>Sign In</span>
+                                            <i class="fas fa-arrow-right"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    }
+    <script src="~/Areas/Admin/plugins/jquery/jquery.min.js"></script>
+    <script src="~/Areas/Admin/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/Areas/Admin/dist/js/adminlte.min.js"></script>
+    <script>
+        $(".toggle-password").click(function () {
+            $(this).toggleClass("fa-eye fa-eye-slash");
+            var input = $($(this).attr("toggle"));
+            if (input.attr("type") == "password") {
+                input.attr("type", "text");
+            } else {
+                input.attr("type", "password");
+            }
+        });
+    </script>
+    <script src="https://unpkg.com/lottie-web@5.12.2/build/player/lottie.min.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+
+            const animation = lottie.loadAnimation({
+                container: document.getElementById('walkingCharacter'),
+                renderer: 'svg',
+                loop: true,
+                autoplay: true,
+                path: '/assets/animations/walking-presenter.json'
+            });
+
+        });
+
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const eyeIcon = document.getElementById("eyeIcon");
+            const passwordInput = document.getElementById("Password");
+
+            if (eyeIcon && passwordInput) {
+                eyeIcon.addEventListener("click", function () {
+                    // Check the current type
+                    const isPassword = passwordInput.getAttribute("type") === "password";
+
+                    // Toggle Type
+                    passwordInput.setAttribute("type", isPassword ? "text" : "password");
+
+                    // Toggle Icon Class
+                    this.classList.toggle("fa-eye");
+                    this.classList.toggle("fa-eye-slash");
+                });
+            }
+        });
+    </script>
+
+
+</body>
+

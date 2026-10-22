@@ -1,0 +1,62 @@
+﻿@model CoursesHub.Areas.Panel.Models.CourseDetails
+@* Featured course card: home page "Hand-picked courses for you" and the Featured Courses page *@
+@{
+    int index = ViewData["Index"] is int ? (int)ViewData["Index"] : 0;
+    // Scroll reveal (data-sal) only where sal.js runs (home page); elsewhere the card fades in with CSS (.hf-card:not([data-sal]))
+    bool useSal = ViewData["UseSal"] is bool && (bool)ViewData["UseSal"];
+    // The "Featured" ribbon is shown unless the caller turns it off (e.g. "More Courses by" on the course details page)
+    bool showRibbon = !(ViewData["ShowRibbon"] is bool) || (bool)ViewData["ShowRibbon"];
+    var priority = CoursesHub.Models.CourseFilterHelper.FeaturedPriority(Model.FeaturedCourse) ?? "Low";
+    var code = CoursesHub.Models.CourseFilterHelper.CourseCode(Model.CourseName);
+    var title = CoursesHub.Models.CourseFilterHelper.CourseTitle(Model.CourseName);
+    var about = CoursesHub.Models.CourseFilterHelper.PlainText(Model.AboutCourse, 160);
+    var provider = string.IsNullOrWhiteSpace(Model.UniversityName) ? Model.CourseProvider : Model.UniversityName;
+    var url = Url.Action("CourseDetails", "Courses", new { area = "", CourseId = Model.Id });
+    var photo = string.IsNullOrEmpty(Model.CoursePhoto) ? "/assets/images/event/grid-type-01.jpg" : Model.CoursePhoto;
+}
+@{
+    // Razor always writes data-* attributes (even empty ones), so the scroll-reveal attributes are added only when wanted
+    var salAttributes = useSal ? Html.Raw(" data-sal=\"slide-up\" data-sal-delay=\"" + ((index % 3) * 120) + "\" data-sal-duration=\"700\"") : Html.Raw("");
+}
+<article class="hf-card @("hf-" + priority.ToLowerInvariant())" style="--hf-i:@(index % 12)"@salAttributes>
+    <a class="hf-media" href="@url" tabindex="-1" aria-hidden="true">
+        <img loading="lazy" decoding="async" src="@photo" alt="" onerror="this.onerror=null;this.src='/assets/images/event/grid-type-01.jpg';">
+        @if (showRibbon)
+        {
+            <span class="hf-ribbon"><i class="feather-star"></i> Featured</span>
+        }
+    </a>
+    <span class="hf-logo">
+        @if (!string.IsNullOrWhiteSpace(Model.UniversityLogo))
+        {
+            <img src="@Model.UniversityLogo" alt="@provider logo" loading="lazy" onerror="this.parentNode.innerHTML='&lt;i class=&quot;feather-home&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;';">
+        }
+        else
+        {
+            <i class="feather-home" aria-hidden="true"></i>
+        }
+    </span>
+    <div class="hf-body">
+        <div class="hf-tags">
+            @if (!string.IsNullOrEmpty(code))
+            {
+                <span class="hf-code">@code</span>
+            }
+            @if (!string.IsNullOrEmpty(Model.CategoryName))
+            {
+                <span class="hf-cat">@Model.CategoryName</span>
+            }
+        </div>
+        <h3 class="hf-title"><a href="@url">@title</a></h3>
+        <p class="hf-provider"><i class="feather-home"></i> @provider</p>
+        @if (!string.IsNullOrEmpty(about))
+        {
+            <p class="hf-about">@about</p>
+        }
+        <div class="hf-facts">
+            <span><i class="feather-clock"></i> @(string.IsNullOrWhiteSpace(Model.CourseDuration) ? "Contact provider" : Model.CourseDuration + " Weeks")</span>
+            <span><i class="feather-monitor"></i> @(string.IsNullOrWhiteSpace(Model.StudyMethod) ? "Contact provider" : Model.StudyMethod)</span>
+        </div>
+        <a class="hf-btn" href="@url">View course <i class="feather-arrow-right"></i></a>
+    </div>
+</article>

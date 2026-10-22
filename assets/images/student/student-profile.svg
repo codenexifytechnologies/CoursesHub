@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 200" role="img" aria-label="Student profile card">
+  <defs>
+    <style>
+      .bob{animation:bob 4.5s ease-in-out infinite}
+      .bob2{animation:bob 5s ease-in-out infinite .7s}
+      .fill{transform-origin:left;animation:fill 3.5s ease-in-out infinite}
+      @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+      @keyframes fill{0%,100%{transform:scaleX(.55)}50%{transform:scaleX(1)}}
+      @media (prefers-reduced-motion: reduce){.bob,.bob2,.fill{animation:none}}
+    </style>
+  </defs>
+  <ellipse cx="130" cy="188" rx="96" ry="9" fill="#0E6B6A" fill-opacity="0.12"/>
+  <circle cx="130" cy="96" r="84" fill="#E8F4F4"/>
+  <g class="bob">
+    <rect x="52" y="42" width="156" height="112" rx="14" fill="#ffffff" stroke="#DCE8E8" stroke-width="2"/>
+    <rect x="52" y="42" width="156" height="30" rx="14" fill="#158887"/>
+    <rect x="52" y="58" width="156" height="14" fill="#158887"/>
+    <circle cx="90" cy="96" r="22" fill="#E8F4F4" stroke="#F79646" stroke-width="3"/>
+    <circle cx="90" cy="90" r="8" fill="#0E6B6A"/>
+    <path d="M76 110 a14 12 0 0 1 28 0" fill="#0E6B6A"/>
+    <rect x="124" y="84" width="66" height="7" rx="3.5" fill="#0F3F42"/>
+    <rect x="124" y="98" width="52" height="6" rx="3" fill="#BFDDDC"/>
+    <rect x="70" y="130" width="120" height="8" rx="4" fill="#E8F4F4"/>
+    <rect class="fill" x="70" y="130" width="120" height="8" rx="4" fill="#F79646"/>
+  </g>
+  <g class="bob2">
+    <circle cx="210" cy="44" r="18" fill="#F79646"/>
+    <path d="M202 44 l5 5 l11 -11" stroke="#ffffff" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>

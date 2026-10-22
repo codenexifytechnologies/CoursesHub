@@ -1,0 +1,342 @@
+﻿@model CoursesHub.Areas.Panel.Models.CourseDetails
+@using System.Configuration
+@{
+    ViewBag.Title = "Modern Course Review";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    var baseUrl = ConfigurationManager.AppSettings["BaseURL"];
+}
+
+<script src="//code.jquery.com/jquery-2.2.4.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<link href="~/assets/css/toastr.min.css" rel="stylesheet" />
+<script src="~/assets/js/toastr.min.js"></script>
+<link href="@CoursesHub.AssetVersion.Url("~/assets/css/adminCustom.css")" rel="stylesheet" />
+
+<div class="container-fluid pt-4 px-4">
+    <div class="course-header-card">
+        <div class="row align-items-center">    
+            <div class="col-md-9">
+                <span class="badge badge-pill badge-light mb-2 px-3 py-2 text-primary">@(Model.IsActive == false ? "Pending Approval" : "Verified")</span>
+                <h1 class="font-weight-bold">@Model.CourseName</h1>
+                <p class="mb-0 opacity-8">
+                    <i class="fas fa-university mr-2"></i><strong>Provider:</strong> @Model.CourseProvider
+                    <span class="mx-3">|</span>
+                    <i class="fas fa-fingerprint mr-2"></i><strong>RTO ID:</strong> @Model.RTO_ID
+                </p>
+            </div>
+            <div class="col-md-3 text-md-right mt-3 mt-md-0">
+                <a href="/Admin/Courses/ViewCourses" class="btn btn-outline-light rounded-pill px-4">
+                    <i class="fas fa-chevron-left mr-2"></i> Back to List
+                </a>
+            </div>
+        </div>
+    </div>
+
+    @using (Html.BeginForm("ChangeStatusCourse", "Courses", FormMethod.Post, new { id = "CoursesForm", enctype = "multipart/form-data" }))
+    {
+        @Html.HiddenFor(model => model.Id)
+
+
+        <div class="col-lg-12 detail-card" style="border-top: 4px solid var(--primary-color);">
+            <div class="review-card">
+                <div class="card-title-modern"><i class="fas fa-tags"></i> Course Classification</div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="detail-group">
+                                <span class="detail-label">Study Method</span>
+                                <div class="detail-value">@Model.StudyMethod</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="detail-group">
+                                <span class="detail-label">Course Category</span>
+                                <div class="detail-value text-primary">@Model.CategoryName</div>
+                                @Html.HiddenFor(model => model.CourseCategory)
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="detail-group">
+                                <span class="detail-label">Course Level</span>
+                                <div class="detail-value">@Model.CourseLevelName</div>
+                                @Html.HiddenFor(model => model.CourseLevel)
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="detail-group">
+                                <span class="detail-label">Government Funding</span>
+                                <div class="detail-value">@{ var fundingFlag = CoursesHub.Models.CourseFilterHelper.FundingFlag(Model.GovernmentFunding); }@(fundingFlag == true ? "Yes (Government Funded)" : fundingFlag == false ? "No (Fee for Service)" : "Not set")</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="detail-group">
+                                <span class="detail-label">Student Type</span>
+                                <div class="detail-value">@(CoursesHub.Models.CourseFilterHelper.StudentTypeLabel(Model.StudentType) ?? "Not set")</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="review-card">
+                <div class="card-title-modern"><i class="fas fa-calendar-alt"></i>Course Duration Details</div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-6 detail-group border-right">
+                            <span class="detail-label">Duration</span>
+                            <div class="detail-value">@Model.CourseDuration</div>
+                        </div>
+                        <div class="col-6 detail-group pl-4">
+                            <span class="detail-label">Start Date</span>
+                            <div class="detail-value">@Model.CourseStartDate</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="review-card">
+                <div class="card-title-modern"><i class="fas fa-play-circle"></i> Media & Assets</div>
+                <div class="card-body">
+                    <div class="row no-gutters mb-3">
+
+                        <div class="col-4 pr-1">
+                            @if (!string.IsNullOrEmpty(Model.CourseVideo))
+                            {
+                                <a href="@Model.CourseVideo" target="_blank" class="video-grid-item d-block">
+                                    <img src="~/assets/images/others/video-01.jpg" />
+                                    <div class="play-btn-overlay"><i class="fas fa-play-circle"></i></div>
+                                </a>
+                            }
+                        </div>
+
+                        <div class="col-4 pr-1">
+                            @if (!string.IsNullOrEmpty(Model.CourseVideo2))
+                            {
+                                <a href="@Model.CourseVideo2" target="_blank" class="video-grid-item d-block">
+                                    <img src="~/assets/images/others/video-01.jpg" />
+                                    <div class="play-btn-overlay"><i class="fas fa-play-circle"></i></div>
+                                </a> }
+                        </div>
+                        <div class="col-4">
+                            @if (!string.IsNullOrEmpty(Model.CourseVideo3))
+                            {
+                               <a href="@Model.CourseVideo3" target="_blank" class="video-grid-item d-block">
+                                   <img src="~/assets/images/others/video-01.jpg" />
+                                   <div class="play-btn-overlay"><i class="fas fa-play-circle"></i></div>
+                               </a>
+                               }
+                        </div>
+                    </div>
+
+                    @if (!string.IsNullOrEmpty(Model.CourseGuide))
+                    {
+                        <a href="@(baseUrl + Model.CourseGuide)" target="_blank" class="btn btn-outline-danger btn-block rounded-pill">
+                            <i class="fas fa-file-pdf mr-2"></i> Download Course Guide
+                        </a>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-12 detail-card" style="border-top: 4px solid var(--primary-color);">
+            <div class="review-card">
+                <div class="card-title-modern"><i class="fas fa-edit"></i> Detailed Overviews</div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="detail-group">
+                                <label class="detail-label">About Course</label>
+                                <div class="rich-text-container">@Html.Raw(CoursesHub.Models.CourseFilterHelper.CleanRichText(Model.AboutCourse))</div>
+                            </div>
+                        </div><div class="col-lg-6">
+                            <div class="detail-group">
+                                <label class="detail-label">Course Overview</label>
+                                <div class="rich-text-container">@Html.Raw(CoursesHub.Models.CourseFilterHelper.CleanRichText(Model.CourseOverview))</div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="review-card">
+                        <div class="card-title-modern text-info"><i class="fas fa-map-marker-alt"></i> Work Placement</div>
+                        <div class="card-body">
+                            <div class="rich-text-container" style="min-height: 150px;">
+                                @Html.Raw(string.IsNullOrEmpty(CoursesHub.Models.CourseFilterHelper.CleanRichText(Model.WorkPlacement)) ? "Not Specified" : CoursesHub.Models.CourseFilterHelper.CleanRichText(Model.WorkPlacement))
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="review-card">
+                        <div class="card-title-modern text-info"><i class="fas fa-stamp"></i> RPL Details</div>
+                        <div class="card-body">
+                            <div class="rich-text-container" style="min-height: 150px;">
+                                @Html.Raw(string.IsNullOrEmpty(CoursesHub.Models.CourseFilterHelper.CleanRichText(Model.RPL)) ? "No RPL Information provided." : CoursesHub.Models.CourseFilterHelper.CleanRichText(Model.RPL))
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="review-card">
+                        <div class="card-title-modern text-success"><i class="fas fa-bullseye"></i> Learning Outcomes</div>
+                        <div class="card-body rich-text-container">@Html.Raw(CoursesHub.Models.CourseFilterHelper.CleanRichText(Model.CourseOutcomes))</div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="review-card">
+                        <div class="card-title-modern text-warning"><i class="fas fa-list-check"></i> Course Requirements</div>
+                        <div class="card-body rich-text-container">@Html.Raw(CoursesHub.Models.CourseFilterHelper.CleanRichText(Model.CourseRequirements))</div>
+                    </div>
+                </div>
+            </div>
+
+            @if (Model.IsReject)
+            {
+                <div class="alert alert-danger shadow-sm py-3 px-4" style="border-radius:12px; border:none;">
+                    <h6 class="font-weight-bold mb-1"><i class="fas fa-exclamation-triangle mr-2"></i> Rejection History</h6>
+                    <p class="mb-0">@Model.RejectionReason</p>
+                </div>
+            }
+            @{
+                bool isTrending = CoursesHub.Models.CourseFilterHelper.IsTrending(Model.TrendingCourses);
+                string featured = CoursesHub.Models.CourseFilterHelper.FeaturedPriority(Model.FeaturedCourse);
+            }
+            <div class="col-lg-12">
+                <div class="course-admin-options">
+                    <div class="custom-control custom-switch">
+                        @Html.CheckBoxFor(model => model.IsActive, new { @class = "custom-control-input", id = "VerifySwitch" })
+                        <label class="custom-control-label font-weight-bold" for="VerifySwitch" style="cursor:pointer">Verify Course</label>
+                    </div>
+
+                    @* Trending course (admin only): saved as 1 (trending) / 0 (not trending) *@
+                    <div class="custom-control custom-switch">
+                        <input type="checkbox" class="custom-control-input" id="TrendingSwitch" @(isTrending ? "checked" : "")>
+                        <label class="custom-control-label font-weight-bold" for="TrendingSwitch" style="cursor:pointer">Trending Course</label>
+                        <input type="hidden" name="TrendingCourses" id="TrendingCourses" value="@(isTrending ? "1" : "0")">
+                    </div>
+
+                    @* Featured course (admin only): priority High / Medium / Low, or not featured *@
+                    <div class="course-admin-featured">
+                        <label class="font-weight-bold mb-0" for="FeaturedCourse">Featured Course</label>
+                        <select class="form-control form-control-sm" name="FeaturedCourse" id="FeaturedCourse">
+                            <option value="" @(featured == null ? "selected" : "")>Not featured</option>
+                            @foreach (var priority in CoursesHub.Models.CourseFilterHelper.FeaturedPriorityOptions)
+                            {
+                                <option value="@priority" @(featured == priority ? "selected" : "")>@priority priority</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-lg-2">
+                <button type="submit" class="btn btn-success btn-action1 shadow-sm" name="Save">
+                    <i class="fas fa-check-circle"></i> Save
+                </button>
+            </div>
+            <div class="col-lg-2">
+                <button type="button" class="btn btn-danger btn-action1 shadow-sm" id="btnRejectAction">
+                    <i class="fas fa-times-circle"></i> Reject
+                </button>
+            </div>
+        </div>
+    }
+</div>
+
+<div class="modal fade" id="rejectModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content border-0 shadow-lg" style="border-radius: 15px;">
+            <div class="modal-header bg-danger text-white" style="border-radius: 15px 15px 0 0;">
+                <h5 class="modal-title font-weight-bold">Reject Course</h5>
+                <button type="button" class="close text-white" data-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body p-4">
+                <label class="font-weight-bold text-muted">Why is this course being rejected?</label>
+                <textarea id="rejectReasonText" class="form-control border-primary" rows="5" placeholder="Please provide detailed feedback to the provider..."></textarea>
+            </div>
+            <div class="modal-footer border-0 pb-4">
+                <button type="button" class="btn btn-light rounded-pill px-4" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-danger rounded-pill px-4 font-weight-bold" id="confirmReject">Submit Rejection</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        // Show Toastr Messages from TempData
+        @if (TempData["EditCourseDetailsMsg"] != null) {
+            <text>toastr.info('@TempData["EditCourseDetailsMsg"]');</text>
+        }
+
+        // Handle Reject Button Click
+        $("#btnRejectAction").on("click", function () {
+            $("#rejectModal").modal("show");
+        });
+
+        // Handle Rejection Submission
+        $("#confirmReject").on("click", function () {
+            let reason = $("#rejectReasonText").val().trim();
+            let courseId = "@Model.Id";
+
+            if (reason === "") {
+                toastr.warning("A rejection reason is required.");
+                return;
+            }
+
+            Swal.fire({
+                title: "Confirm Rejection?",
+                text: "The provider will be notified and the course will be moved to rejected status.",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#d33",
+                confirmButtonText: "Yes, Reject",
+                cancelButtonText: "No, Go Back"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Show the Courses Hub loader while the rejection is saved
+                    if (window.CHLoader) { CHLoader.show('Loading\u2026'); }
+
+                    $.ajax({
+                        url: '/Admin/Courses/RejectCourse',
+                        type: 'POST',
+                        data: { id: courseId, reason: reason },
+                        success: function (response) {
+                            if (window.CHLoader) { CHLoader.hide(); }
+                            Swal.fire("Rejected!", "Course has been successfully rejected.", "success")
+                                .then(() => { window.location.href = "/Admin/Courses/ViewCourses"; });
+                        },
+                        error: function () {
+                            if (window.CHLoader) { CHLoader.hide(); }
+                            Swal.fire("Error", "Something went wrong. Please try again.", "error");
+                        }
+                    });
+                }
+            });
+        });
+
+        // Trending switch -> hidden 1 / 0 value that is saved
+        $("#TrendingSwitch").on("change", function () {
+            $("#TrendingCourses").val(this.checked ? "1" : "0");
+        });
+
+        // Form Submission Confirmation
+        $("#CoursesForm").on("submit", function (e) {
+            if (!$("#VerifySwitch").is(":checked")) {
+                e.preventDefault();
+                toastr.error("Please toggle the 'Verify Course' switch before approving.");
+                return false;
+            }
+        });
+    });
+</script>

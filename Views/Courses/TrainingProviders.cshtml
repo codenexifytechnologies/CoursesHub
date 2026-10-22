@@ -1,0 +1,172 @@
+﻿@model List<CoursesHub.Models.ProviderSummary>
+@{
+    ViewBag.Title = "Training Providers";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var providers = Model ?? new List<CoursesHub.Models.ProviderSummary>();
+    Func<string, string> LetterOf = name =>
+    {
+        char c = string.IsNullOrEmpty(name) ? '#' : char.ToUpperInvariant(name.Trim()[0]);
+        return (c >= 'A' && c <= 'Z') ? c.ToString() : "#";
+    };
+    // A..Z first, names that start with a number or symbol ("#") last
+    var groups = providers.GroupBy(p => LetterOf(p.Name)).OrderBy(g => g.Key == "#" ? "~" : g.Key, StringComparer.Ordinal).ToList();
+    var lettersWithProviders = new HashSet<string>(groups.Select(g => g.Key));
+    int totalCourses = providers.Sum(p => p.CourseCount);
+}
+
+<section class="tp-hero">
+    <span class="tp-blob tp-blob-1" aria-hidden="true"></span>
+    <span class="tp-blob tp-blob-2" aria-hidden="true"></span>
+    <div class="container">
+        <ul class="page-list bl-crumbs">
+            <li class="rbt-breadcrumb-item"><a href="@Url.Action("Index", "Index")">Home</a></li>
+            <li><div class="icon-right"><i class="feather-chevron-right"></i></div></li>
+            <li class="rbt-breadcrumb-item active">Training Providers</li>
+        </ul>
+        <span class="bl-eyebrow"><i class="feather-home"></i> Training Providers</span>
+        <h1 class="bl-hero-title">All Training Providers</h1>
+        <p class="bl-hero-text">Browse every registered training provider on Courses Hub from A to Z, and explore all of their courses.</p>
+        <div class="bl-hero-meta">
+            <span class="bl-pill"><i class="feather-home"></i> @providers.Count @(providers.Count == 1 ? "Provider" : "Providers")</span>
+            <span class="tp-pill-ghost"><i class="feather-book-open"></i> @totalCourses @(totalCourses == 1 ? "Course" : "Courses")</span>
+            @if (providers.Count > 1)
+            {
+                <label class="bl-search" for="providerSearch">
+                    <i class="feather-search" aria-hidden="true"></i>
+                    <input id="providerSearch" type="search" placeholder="Search providers..." autocomplete="off" aria-label="Search training providers">
+                </label>
+            }
+        </div>
+    </div>
+</section>
+
+<div class="tp-area rbt-section-gapBottom">
+    <div class="container">
+        @if (providers.Count == 0)
+        {
+            <div class="bl-empty">
+                <span class="bl-empty-icon"><i class="feather-home"></i></span>
+                <h4>No training providers yet</h4>
+                <p>Providers will appear here once their courses are listed.</p>
+            </div>
+        }
+        else
+        {
+            <nav class="tp-az" aria-label="Jump to letter">
+                @foreach (var letter in "ABCDEFGHIJKLMNOPQRSTUVWXYZ#".Select(ch => ch.ToString()))
+                {
+                    if (lettersWithProviders.Contains(letter))
+                    {
+                        <a href="#tp-@(letter == "#" ? "other" : letter)" class="tp-az-link">@letter</a>
+                    }
+                    else
+                    {
+                        <span class="tp-az-link is-empty" aria-hidden="true">@letter</span>
+                    }
+                }
+            </nav>
+
+            foreach (var group in groups)
+            {
+                string anchor = group.Key == "#" ? "other" : group.Key;
+                <section class="tp-group" id="tp-@anchor" data-letter="@group.Key">
+                    <div class="tp-group-head tp-reveal">
+                        <span class="tp-letter">@group.Key</span>
+                        <span class="tp-group-line" aria-hidden="true"></span>
+                        <span class="tp-group-count">@group.Count() @(group.Count() == 1 ? "provider" : "providers")</span>
+                    </div>
+                    <div class="row g-4">
+                        @foreach (var p in group)
+                        {
+                            string url = Url.Action("AllCourses", "Courses", new { area = "", FilterType = "Provider", FilterValue = p.Name });
+                            <div class="col-xl-4 col-md-6 tp-col" data-name="@p.Name.ToLower() @string.Join(" ", p.StudyAreas).ToLower() @string.Join(" ", p.Locations).ToLower()">
+                                <a class="tp-card tp-reveal" href="@url" title="View all courses by @p.Name">
+                                    <span class="tp-logo">
+                                        <span class="tp-logo-initial" aria-hidden="true">@p.Name.Trim().Substring(0, 1).ToUpper()</span>
+                                        @if (!string.IsNullOrWhiteSpace(p.Logo))
+                                        {
+                                            <img loading="lazy" decoding="async" src="@p.Logo" alt="@p.Name logo" onerror="this.remove()">
+                                        }
+                                    </span>
+                                    <span class="tp-info">
+                                        <span class="tp-name">@p.Name</span>
+                                        <span class="tp-count"><i class="feather-book-open"></i> @p.CourseCount @(p.CourseCount == 1 ? "Course" : "Courses")</span>
+                                        @if (p.StudyAreas.Count > 0)
+                                        {
+                                            <span class="tp-tags">
+                                                @foreach (var area in p.StudyAreas.Take(3))
+                                                {
+                                                    <span class="tp-tag">@area</span>
+                                                }
+                                                @if (p.StudyAreas.Count > 3)
+                                                {
+                                                    <span class="tp-tag tp-tag-more">+@(p.StudyAreas.Count - 3)</span>
+                                                }
+                                            </span>
+                                        }
+                                        @if (p.Locations.Count > 0)
+                                        {
+                                            <span class="tp-loc"><i class="feather-map-pin"></i> @string.Join(", ", p.Locations)</span>
+                                        }
+                                    </span>
+                                    <span class="tp-go" aria-hidden="true"><i class="feather-arrow-right"></i></span>
+                                </a>
+                            </div>
+                        }
+                    </div>
+                </section>
+            }
+
+            <div class="bl-empty tp-no-match" hidden>
+                <span class="bl-empty-icon"><i class="feather-search"></i></span>
+                <h4>No matching providers</h4>
+                <p>Try a different name, study area or location.</p>
+            </div>
+        }
+    </div>
+</div>
+
+@section scripts{
+    <script src="@CoursesHub.AssetVersion.Url("~/assets/js/main.js")"></script>
+    <script>
+        (function () {
+            // Fade in as items scroll into view (everything shows anyway after 1.5s)
+            var items = document.querySelectorAll('.tp-reveal');
+            var showAll = function () { items.forEach(function (el) { el.classList.add('tp-in'); }); };
+            if ('IntersectionObserver' in window) {
+                var io = new IntersectionObserver(function (entries) {
+                    entries.forEach(function (e) {
+                        if (e.isIntersecting) { e.target.classList.add('tp-in'); io.unobserve(e.target); }
+                    });
+                }, { threshold: 0.1 });
+                items.forEach(function (el) { io.observe(el); });
+                setTimeout(showAll, 1500);
+            } else {
+                showAll();
+            }
+
+            // Search by provider name, study area or location
+            var input = document.getElementById('providerSearch');
+            if (!input) return;
+            var groups = document.querySelectorAll('.tp-group');
+            var noMatch = document.querySelector('.tp-no-match');
+            input.addEventListener('input', function () {
+                var q = input.value.trim().toLowerCase();
+                var total = 0;
+                groups.forEach(function (g) {
+                    var shown = 0;
+                    g.querySelectorAll('.tp-col').forEach(function (c) {
+                        var hit = !q || c.getAttribute('data-name').indexOf(q) !== -1;
+                        c.hidden = !hit;
+                        if (hit) { shown++; c.querySelector('.tp-reveal').classList.add('tp-in'); }
+                    });
+                    g.hidden = shown === 0;
+                    total += shown;
+                });
+                showAll();
+                noMatch.hidden = total !== 0;
+            });
+        })();
+    </script>
+}

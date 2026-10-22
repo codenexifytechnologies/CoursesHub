@@ -1,0 +1,25 @@
+﻿@* Header course search (category + keyword), shown on every public page: desktop header, mobile bar and search popup *@
+@{
+    var categories = ViewBag.Category as List<CoursesHub.Models.Category> ?? CoursesHub.Models.CourseFilterHelper.HeaderCategories();
+    var currentSearch = Request.QueryString["Search"] ?? "";
+    var currentCategory = Request.QueryString["FilterType"] == "CategoryId" ? (Request.QueryString["FilterValue"] ?? "") : "";
+    var formClass = ViewData["SearchClass"] as string ?? "";
+}
+<form class="rbt-search-with-category ch-header-search @formClass" role="search" method="get" action="@Url.Action("AllCourses", "Courses", new { area = "" })">
+    <input type="hidden" name="FilterType" value="CategoryId" />
+    <div class="filter-select rbt-modern-select search-by-category">
+        <select name="FilterValue" aria-label="Course category">
+            <option value="">All Categories</option>
+            @foreach (var item in categories)
+            {
+                <option value="@item.Id" @(currentCategory == item.Id.ToString() ? "selected" : "")>@item.CategoryValue</option>
+            }
+        </select>
+    </div>
+    <div class="search-field">
+        <input type="text" name="Search" value="@currentSearch" placeholder="Search Course" aria-label="Search courses" autocomplete="off">
+        <button class="rbt-round-btn serach-btn" type="submit" aria-label="Search">
+            <i class="feather-search"></i>
+        </button>
+    </div>
+</form>

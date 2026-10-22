@@ -1,0 +1,137 @@
+﻿@model CoursesHub.Models.ContactUs
+
+@{
+    ViewBag.Title = "ContactUs";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@if (TempData["Message"] != null)
+{
+    <script src="//code.jquery.com/jquery-2.2.4.min.js"></script>
+    <script src="~/assets/js/toastr.min.js"></script>
+     <link href="~/assets/css/toastr.min.css" rel="stylesheet" />
+    <script>
+        $(document).ready(function () {
+            toastr.info('@TempData["Message"]');
+        });
+    </script>
+}
+<div class="rbt-conatct-area bg-gradient-11 rbt-section-gap contact-page contact-intro">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="section-title text-center mb--60">
+                    <span class="subtitle bg-secondary-opacity">Contact Us</span>
+                    <h2 class="title">Histudy Course Contact <br> can join with us.</h2>
+                </div>
+            </div>
+        </div>
+        <div class="row g-5">
+            <div class="col-lg-4 col-md-6 col-sm-6 col-12 sal-animate" data-sal="slide-up" data-sal-delay="150" data-sal-duration="800">
+                <div class="rbt-address">
+                    <div class="icon">
+                        <i class="feather-headphones"></i>
+                    </div>
+                    <div class="inner">
+                        <h4 class="title">Contact Phone Number</h4>
+                        <p><a href="tel:0871196196">08 7119 6196</a></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 col-sm-6 col-12 sal-animate" data-sal="slide-up" data-sal-delay="200" data-sal-duration="800">
+                <div class="rbt-address">
+                    <div class="icon">
+                        <i class="feather-mail"></i>
+                    </div>
+                    <div class="inner">
+                        <h4 class="title">Our Email Address</h4>
+                        <p><a href="mailto:admin@courseshub.com.au">admin@courseshub.com.au</a></p>
+                        <p><a href="mailto:info@courseshub.com.au">info@courseshub.com.au</a></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 col-sm-6 col-12 sal-animate" data-sal="slide-up" data-sal-delay="250" data-sal-duration="800">
+                <div class="rbt-address">
+                    <div class="icon">
+                        <i class="feather-map-pin"></i>
+                    </div>
+                    <div class="inner">
+                        <h4 class="title">Our Location</h4>
+                        <p>Level 1/118 King William Street Adelaide SA 5000</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="rbt-contact-address contact-page">
+    <div class="container">
+        <div class="row g-5">
+            <div class="col-lg-6">
+                <div class="thumbnail">
+                    <img class="w-100 radius-6" src="~/assets/images/about/contact-support.svg" alt="Get in touch with CoursesHub by email, phone or chat">
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="rbt-contact-form contact-form-style-1 max-width-auto">
+                    <div class="section-title text-start">
+                        <span class="subtitle bg-primary-opacity">EDUCATION FOR EVERYONE</span>
+                    </div>
+                    <h3 class="title">Get a Free Course You Can Contact With Me</h3>
+                    @*<form id="contact-form" method="POST" action="mail.php" class="rainbow-dynamic-form max-width-auto">*@
+                    @using (Html.BeginForm("ContactUs", "ContactUs", FormMethod.Post, new { @class = "", onsubmit = "return showLoaderIfValid(this)" }))
+                    {
+                        <div class="form-group">
+                            @Html.TextBoxFor(m => m.Name, new { @autocomplete = "off", required = "required" })
+                            <label>Name*</label>
+                            <span class="focus-border"></span>
+                        </div>
+                        <div class="form-group">
+                            @Html.TextBoxFor(m => m.Email, new { @autocomplete = "off", required = "required" })
+                            <label>Email*</label>
+                            <span class="focus-border"></span>
+                        </div>
+                        <div class="form-group">
+                            @Html.TextBoxFor(m => m.Subject, new { @autocomplete = "off", required = "required" })
+                            <label>Your Subject*</label>
+                            <span class="focus-border"></span>
+                        </div>
+                        <div class="form-group">
+                            @Html.TextAreaFor(m => m.Message, new { @autocomplete = "off", required = "required" })
+                            <label>Message*</label>
+                            <span class="focus-border"></span>
+                        </div>
+                        <div class="form-submit-group">
+                            @*<button name="submit" type="submit" id="submit" class="rbt-btn btn-md btn-gradient hover-icon-reverse w-100">
+                                <span class="icon-reverse-wrapper">
+                                    <span class="btn-text">GET IT NOW</span>
+                                    <span class="btn-icon"><i class="feather-arrow-right"></i></span>
+                                    <span class="btn-icon"><i class="feather-arrow-right"></i></span>
+                                </span>
+                            </button>*@
+
+                            <button type="submit" name="submitButton" value="submitButton" class="rbt-btn btn-md btn-gradient hover-icon-reverse w-100">
+                                <span class="icon-reverse-wrapper">
+                                    <span class="btn-text">GET IT NOW</span>
+                                    <span class="btn-icon"><i class="feather-arrow-right"></i></span>
+                                    <span class="btn-icon"><i class="feather-arrow-right"></i></span>
+                                </span>
+                            </button>
+                        </div>
+                    }
+                    @*</form>*@
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="rbt-google-map bg-color-white rbt-section-gapTop contact-page contact-map">
+    <iframe class="w-100" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3271.237719754174!2d138.60007199999998!3d-34.9255746!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6b129f53d8dc30d7%3A0x644aabe988140ea9!2sNational%20College%20Australia!5e0!3m2!1sen!2sau!4v1775473996947!5m2!1sen!2sau" height="600" style="border:0"></iframe>
+</div>
+
+
+@section scripts{
+    <script src="@CoursesHub.AssetVersion.Url("~/assets/js/main.js")"></script>
+}

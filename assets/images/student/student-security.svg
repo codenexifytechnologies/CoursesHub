@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 260" role="img" aria-label="Keep your account secure">
+  <defs>
+    <linearGradient id="sh" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#158887"/>
+      <stop offset="1" stop-color="#0E6B6A"/>
+    </linearGradient>
+    <style>
+      .bob{animation:bob 4s ease-in-out infinite}
+      .ring{transform-origin:140px 120px;animation:spin 20s linear infinite}
+      .dot{animation:blink 1.6s ease-in-out infinite}
+      .shine{animation:shine 3.5s ease-in-out infinite}
+      @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+      @keyframes spin{to{transform:rotate(360deg)}}
+      @keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+      @keyframes shine{0%,100%{opacity:0}50%{opacity:.5}}
+      @media (prefers-reduced-motion: reduce){.bob,.ring,.dot,.shine{animation:none}}
+    </style>
+  </defs>
+  <ellipse cx="140" cy="242" rx="100" ry="10" fill="#0E6B6A" fill-opacity="0.12"/>
+  <circle cx="140" cy="120" r="104" fill="#E8F4F4"/>
+  <g class="ring">
+    <circle cx="140" cy="120" r="92" fill="none" stroke="#F79646" stroke-width="3" stroke-dasharray="6 14" stroke-opacity="0.8"/>
+  </g>
+  <g class="bob">
+    <path d="M140 38 L206 62 V118 C206 162 178 192 140 208 C102 192 74 162 74 118 V62 Z" fill="url(#sh)"/>
+    <path class="shine" d="M140 38 L206 62 V90 C170 80 140 70 110 50 Z" fill="#ffffff"/>
+    <!-- lock -->
+    <path d="M120 116 v-14 a20 20 0 0 1 40 0 v14" fill="none" stroke="#ffffff" stroke-width="9" stroke-linecap="round"/>
+    <rect x="108" y="114" width="64" height="50" rx="10" fill="#F79646"/>
+    <circle cx="140" cy="134" r="7" fill="#0F3F42"/>
+    <rect x="137" y="136" width="6" height="16" rx="3" fill="#0F3F42"/>
+  </g>
+  <!-- password field -->
+  <g transform="translate(36 196)">
+    <rect width="88" height="30" rx="15" fill="#ffffff" stroke="#DCE8E8" stroke-width="2"/>
+    <circle class="dot" cx="20" cy="15" r="4.5" fill="#0E6B6A"/>
+    <circle class="dot" style="animation-delay:.2s" cx="34" cy="15" r="4.5" fill="#0E6B6A"/>
+    <circle class="dot" style="animation-delay:.4s" cx="48" cy="15" r="4.5" fill="#0E6B6A"/>
+    <circle class="dot" style="animation-delay:.6s" cx="62" cy="15" r="4.5" fill="#0E6B6A"/>
+  </g>
+  <g transform="translate(196 40)" class="bob" style="animation-delay:1s">
+    <circle r="20" fill="#F79646"/>
+    <path d="M-9 0 l6 6 l12 -12" stroke="#ffffff" stroke-width="4.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>

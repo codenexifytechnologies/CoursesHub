@@ -1,0 +1,149 @@
+﻿
+@{
+    Layout = null;
+    CoursesHub.Models.User obj = ((CoursesHub.Models.User)Session["AdminUser"]);
+    var LoginName = obj.Name;
+    var LoginNameV = LoginName != null ? LoginName : "";
+    var ProfileImage = obj.Image;
+    var ProfileImageV = ProfileImage != null ? ProfileImage : System.Configuration.ConfigurationManager.AppSettings["BaseURL"].ToString() + "Uploads/NoImage.jpg";
+}
+
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>CoursesHub Admin</title>
+    <link rel="shortcut icon" type="image/x-icon" href="@CoursesHub.AssetVersion.Url("~/assets/images/favicon.png")">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <link rel="stylesheet" href="~/Areas/Admin/plugins/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link rel="stylesheet" href="~/Areas/Admin/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+    <link rel="stylesheet" href="~/Areas/Admin/dist/css/adminlte.min.css">
+    <link rel="stylesheet" href="~/Areas/Admin/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+    <link rel="stylesheet" href="~/Areas/Admin/plugins/daterangepicker/daterangepicker.css">
+    <link rel="stylesheet" href="@CoursesHub.AssetVersion.Url("~/Areas/Admin/dist/css/brand-admin.css")">
+
+</head>
+<body class="hold-transition sidebar-mini layout-fixed">
+    @Html.Partial("~/Views/Shared/_PageLoader.cshtml")
+    @* Page-load loader (replaces the AdminLTE preloader): shown until the page has finished loading *@
+    <script>
+        if (window.CHLoader) {
+            CHLoader.show('Loading…');
+            window.addEventListener('load', function () { CHLoader.hide(); });
+        }
+    </script>
+    <div class="wrapper">
+
+        <nav class="main-header navbar navbar-expand navbar-white navbar-light px-3">
+            <ul class="navbar-nav align-items-center">
+                <li class="nav-item">
+                    <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+                </li>
+            </ul>
+
+            <ul class="navbar-nav ml-auto align-items-center">
+
+                @*<li class="nav-item">
+                        <a class="nav-link" href="#" id="dark-mode-toggle" role="button">
+                            <i class="fas fa-sun" id="theme-icon"></i>
+                        </a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link" data-toggle="dropdown" href="#">
+                            <i class="far fa-bell"></i>
+                            <span class="badge badge-danger navbar-badge">5</span>
+                        </a>
+                    </li>*@
+
+                <li class="nav-item">
+                    <a class="nav-link text-muted" data-widget="fullscreen" href="#" role="button">
+                        <i class="fas fa-expand" style="font-size: 1.1rem;"></i>
+                    </a>
+                </li>
+
+                <li class="nav-item dropdown ml-3">
+                    <a class="nav-link d-flex align-items-center p-0" data-toggle="dropdown" href="#">
+                        <div class="text-right d-none d-md-block mr-2" style="line-height: 1.2;">
+                            <div class="font-weight-bold text-dark" style="font-size: 0.85rem;">@LoginNameV</div>
+                            <small class="text-muted">Admin Head</small>
+                        </div>
+                        <div class="image">
+                            @if (string.IsNullOrEmpty(ProfileImageV))
+                            {
+                                <img src="~/assets/images/client/loginFace.png" class="img-circle elevation-1" width="35" height="35" alt="User Image" />
+                            }
+                            else
+                            {
+                                <img src="@ProfileImageV" class="img-circle elevation-1" width="35" height="35" alt="User Image" />
+                            }
+                        </div>
+                        <i class="fas fa-angle-down ml-2 text-muted" style="font-size: 0.8rem;"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right shadow border-0">
+                        <a class="dropdown-item" href="@Url.Action("Changepassword", "AdminLogin")">
+                            <i class="fas fa-lock mr-2"></i> Change Password
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item text-danger" href="@Url.Action("LogOff", "AdminLogin")">
+                            <i class="fas fa-power-off mr-2"></i> Logout
+                        </a>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+
+        <aside class="main-sidebar sidebar-dark-primary elevation-4" style=" width: auto !important">
+            <!-- Brand Logo -->
+            <a href="@Url.Action("Index", "Dashboard", new {area="Admin"})" class="brand-link">
+                <img src="@CoursesHub.AssetVersion.Url("~/assets/images/favicon.png")" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+                <span class="brand-text font-weight-light">CoursesHub</span>
+            </a>
+
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <nav class="mt-2">
+                    @{
+                        Html.RenderAction("GetEmpMenuRole", "MenuManagement");
+                    }
+                </nav>
+            </div>
+        </aside>
+        <div class="content-wrapper">
+            @RenderBody()
+        </div>
+
+        <footer class="main-footer">
+            <div class="footer-content">
+                <div class="footer-left">
+                    <span>&copy; @DateTime.Now.Year </span>
+                    <span class="copyright-brand font-weight-bold">CoursesHub</span>.
+                    <span class="d-none d-sm-inline">All rights reserved.</span>
+                </div>
+            </div>
+        </footer>
+
+        <aside class="control-sidebar control-sidebar-dark">
+        </aside>
+
+    </div>
+    <script src="~/Areas/Admin/plugins/jquery/jquery.min.js"></script>
+    <script src="~/Areas/Admin/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/Areas/Admin/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/Areas/Admin/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="~/Areas/Admin/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="~/Areas/Admin/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+    <script src="~/Areas/Admin/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="~/Areas/Admin/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+    <script src="~/Areas/Admin/plugins/jszip/jszip.min.js"></script>
+    <script src="~/Areas/Admin/plugins/pdfmake/pdfmake.min.js"></script>
+    <script src="~/Areas/Admin/plugins/pdfmake/vfs_fonts.js"></script>
+    <script src="~/Areas/Admin/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+    <script src="~/Areas/Admin/plugins/datatables-buttons/js/buttons.print.min.js"></script>
+    <script src="~/Areas/Admin/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+    <script src="~/Areas/Admin/dist/js/adminlte.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,663 @@
+﻿@{
+    ViewBag.Title = "CoursesHub";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    int i = 0;
+    int j = 0;
+    var categories = ViewBag.Category as List<CoursesHub.Models.Category>;
+    var allCourses = ViewBag.All as List<CoursesHub.Areas.Panel.Models.CourseDetails>;
+    var Blogs = ViewBag.Blog as List<CoursesHub.Areas.Admin.Models.Blogs>;
+    var lstCategory = ViewBag.lstCategory as List<CoursesHub.Models.Category>;
+}
+
+@if (TempData["Message"] != null)
+{
+    <script src="//code.jquery.com/jquery-2.2.4.min.js"></script>
+    <script src="~/assets/js/toastr.min.js"></script>
+    <link href="~/assets/css/toastr.min.css" rel="stylesheet" />
+    <script>
+        $(document).ready(function () {
+            toastr.info('@TempData["Message"]');
+        });
+    </script>
+}
+
+<style>
+    .tab-scroll-container {
+        position: relative;
+        display: flex;
+        align-items: center;
+        width: 100%;
+    }
+
+    .tabs-wrapper {
+        overflow-x: auto;
+        scroll-behavior: smooth;
+        white-space: nowrap;
+        width: 100%;
+    }
+
+        /* hide default scrollbar */
+        .tabs-wrapper::-webkit-scrollbar {
+            display: none;
+        }
+
+    .rbt-course-tab-button {
+        display: inline-flex;
+        gap: 10px;
+    }
+
+        .rbt-course-tab-button .nav-item {
+            display: inline-block;
+        }
+
+    .scroll-btn {
+        background: transparent;
+        border: none;
+        font-size: 24px;
+        padding: 5px 20px;
+        cursor: pointer;
+        color: #333;
+        font-weight: bold;
+    }
+
+        .scroll-btn:hover {
+            color: #000;
+        }
+</style>
+
+<main class="rbt-main-wrapper">
+    <div class="rbt-banner-area rbt-banner-17">
+        <div class="wrapper">
+            <div class="shape-wrap">
+                <div class="shape-bg">
+                </div>
+                <div class="shadow-bg">
+                    <img src="@Url.Content("~/assets/images/banner/banner.png")" alt="Banner Background" style="width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; z-index: -1;">
+                </div>
+                <div class="shape-1">
+                    <img src="~/assets/images/shape/o-shape-1.png" alt="Banner Shape">
+                </div>
+                <div class="shape-2">
+                    <img src="~/assets/images/shape/o-shape-2.png" alt="Banner Shape">
+                </div>
+                <div class="union">
+                    <img src="~/assets/images/shape/o-union.png" alt="Banner Shape">
+                </div>
+                <div class="star scene">
+                    <span data-depth="1">
+                        <img src="~/assets/images/shape/o-star.png" alt="Banner Shape">
+                    </span>
+                </div>
+                <div class="dot-shape-1">
+                    <img src="~/assets/images/shape/o-dots-1.png" alt="Banner Shape">
+                </div>
+                <div class="dot-shape-2">
+                    <span>
+                        <img src="~/assets/images/shape/o-dots-2.png" alt="Banner Shape">
+                    </span>
+                </div>
+            </div>
+            <div class="container">
+                <div class="row flex-column-reverse flex-xl-row">
+                    <div class="col-xl-7">
+                        <div class="inner position-relative">
+                            <h1 class="title">Find the Right Course & Training in <span class="theme-gradient">Australia</span></h1>
+                            <p class="description">
+                                Discover and compare courses, training providers and qualifications
+                                across Australia <span class="w-500">to find the right study option for your career.</span>
+                            </p>
+                            <div class="button-group mb-3">
+                                <a class="rbt-btn btn-gradient hover-icon-reverse" href="@Url.Action("CareerChange", "Index")">
+                                    <span class="icon-reverse-wrapper">
+                                        <span class="btn-text">Get Started</span>
+                                        <span class="btn-icon"><i class="feather-arrow-right"></i></span>
+                                        <span class="btn-icon"><i class="feather-arrow-right"></i></span>
+                                    </span>
+                                </a>
+                            </div>
+                            <div class="card-row mt-4 mb-5">
+                                @* The whole box is the link *@
+                                <a class="card-option" href="@Url.Action("AllCourses", "Courses", new { FilterType = "CategoryType", FilterValue = "Latest" })">
+                                    <img src="~/assets/images/icons/employment-promotion.svg" alt="" />
+                                    <p>Latest</p>
+                                </a>
+                                <a class="card-option" href="@Url.Action("AllCourses", "Courses", new { FilterType = "CategoryType", FilterValue = "Popular" })">
+                                    <img src="~/assets/images/icons/upgrade.svg" alt="" />
+                                    <p>Popular</p>
+                                </a>
+                                <a class="card-option" href="@Url.Action("AllCourses", "Courses", new { FilterType = "CategoryType", FilterValue = "Core" })">
+                                    <img src="~/assets/images/icons/work-ui.svg" alt="" />
+                                    <p>Core</p>
+                                </a>
+                                <a class="card-option" href="@Url.Action("AllCourses", "Courses", new { FilterType = "CategoryType", FilterValue = "Master" })">
+                                    <img src="~/assets/images/icons/stack.svg" alt="" />
+                                    <p>Master</p>
+                                </a>
+                            </div>
+                            <div class="line-arrow scene">
+                                <span data-depth="1">
+                                    <img src="~/assets/images/shape/o-line-arrow.png" alt="Banner Shape">
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-5">
+                        <div class="banner-wrap">
+                            <div class="banner">
+                                <img src="~/assets/images/banner/o-banner.png" alt="Banner">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @* How Courses Hub helps: three steps, shown before the Training Providers section *@
+    <section class="home-steps" aria-label="How Courses Hub helps you">
+        <div class="container">
+            <div class="hs-grid">
+                <a class="hs-card" href="@Url.Action("AllCourses", "Courses", new { area = "" })" style="--hs-i:0" data-sal="slide-up" data-sal-delay="0" data-sal-duration="700">
+                    <span class="hs-step">01</span>
+                    <span class="hs-icon" aria-hidden="true"><i class="feather-compass"></i></span>
+                    <h3 class="hs-title">Discover your Path</h3>
+                    <p class="hs-text">Explore courses that align with your goals, interests and career aspirations.</p>
+                    <span class="hs-more">Explore courses <i class="feather-arrow-right"></i></span>
+                </a>
+                <a class="hs-card" href="@Url.Action("TrainingProviders", "Courses", new { area = "" })" style="--hs-i:1" data-sal="slide-up" data-sal-delay="150" data-sal-duration="700">
+                    <span class="hs-step">02</span>
+                    <span class="hs-icon" aria-hidden="true"><i class="feather-book-open"></i></span>
+                    <h3 class="hs-title">Learn with Purpose</h3>
+                    <p class="hs-text">Build practical skills and knowledge that can help you move forward in your career.</p>
+                    <span class="hs-more">Meet our providers <i class="feather-arrow-right"></i></span>
+                </a>
+                <a class="hs-card" href="@Url.Action("Registration", "Registration", new { area = "" })" style="--hs-i:2" data-sal="slide-up" data-sal-delay="300" data-sal-duration="700">
+                    <span class="hs-step">03</span>
+                    <span class="hs-icon" aria-hidden="true"><i class="feather-trending-up"></i></span>
+                    <h3 class="hs-title">Take the Next Step</h3>
+                    <p class="hs-text">Turn your learning goals into action and start building the future you want.</p>
+                    <span class="hs-more">Get started for free <i class="feather-arrow-right"></i></span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <div class="rbt-categories-area bg-color-white rbt-section-gap home-providers">
+        <div class="container">
+            <div class="row g-5 mb--30">
+                <div class="col-lg-12">
+                    <div class="section-title text-center">
+                        <span class="subtitle bg-primary-opacity">TRAINING PROVIDERS</span>
+                        <h2 class="title w-600">Popular with <span class="theme-gradient">other students</span></h2>
+                        <p class="description has-medium-font-size mt--20 mb--0">Trusted, registered training organisations offering nationally recognised courses. Pick a provider to explore all of their courses.</p>
+                    </div>
+                </div>
+            </div>
+            <div id="DivUnivercity" class="row g-5 justify-content-center">
+                @* Home shows at most 8 providers (most courses first); "View All" lists every provider *@
+                @foreach (var item in ((List<CoursesHub.Areas.Panel.Models.CourseDetails>)ViewBag.Provider)
+                                        .OrderByDescending(x => x.Count)
+                                        .ThenBy(x => x.UniversityName, StringComparer.OrdinalIgnoreCase)
+                                        .Take(8))
+                {
+                    <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+                        <a class="rbt-cat-box rbt-cat-box-1 provider-card" href="@Url.Action("AllCourses", "Courses", new { area = "", FilterType = "Provider", FilterValue = item.UniversityName })" title="View courses by @item.UniversityName">
+                            <div class="inner">
+                                <div class="thumbnail">
+                                    <img loading="lazy" decoding="async" src="@item.UniversityLogo" alt="@item.UniversityName logo">
+                                </div>
+                                <div class="content">
+                                    <h5 class="title">@item.UniversityName</h5>
+                                    <div class="read-more-btn">
+                                        <span class="rbt-btn-link">@item.Count @(item.Count == 1 ? "Course" : "Courses")<i class="feather-arrow-right"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                }
+            </div>
+            <div class="home-providers-more">
+                <a class="bl-btn" href="@Url.Action("TrainingProviders", "Courses", new { area = "" })">View All Training Providers <i class="feather-arrow-right"></i></a>
+            </div>
+
+        </div>
+    </div>
+
+    @* Small call-to-action banner (same background as the Training Providers banner); the button opens the Get Started page *@
+    <section class="home-cta" aria-label="Get course advice">
+        <div class="container">
+            <div class="hc-banner" data-sal="slide-up" data-sal-duration="700">
+                <span class="tp-blob tp-blob-1" aria-hidden="true"></span>
+                <span class="tp-blob tp-blob-2" aria-hidden="true"></span>
+                <span class="hc-icon" aria-hidden="true"><i class="feather-target"></i></span>
+                <div class="hc-text">
+                    <h2 class="hc-title">Not sure which course is <span>right for you?</span></h2>
+                    <p class="hc-desc">Tell us a little about your goals and we'll help you find courses and training providers that match your career plans.</p>
+                </div>
+                <a class="hc-btn" href="@Url.Action("CareerChange", "Index", new { area = "" })">
+                    Get Started <i class="feather-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <div class="rbt-category-area category-section-02 bg-color-white rbt-section-gap">
+        <div class="gradient-shape"></div>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="section-title text-center">
+                        <span class="subtitle bg-primary-opacity">CATEGORIES</span>
+                        <h2 class="title w-600 text-center">Explore Courses by <span class="theme-gradient">Field of Study</span></h2>
+                    </div>
+                </div>
+            </div>
+            @* Same boxes as the All Categories page; at most 8 here, the rest are on that page *@
+            @{ var homeCategories = (lstCategory ?? new List<CoursesHub.Models.Category>()).Take(8).ToList(); }
+            <div class="cg-grid home-cg-grid">
+                @for (int n = 0; n < homeCategories.Count; n++)
+                {
+                    var item = homeCategories[n];
+                    <a class="cg-card" style="--cg-i:@n" href="@Url.Action("AllCourses", "Courses", new { area = "", FilterType = "CategoryId", FilterValue = item.Id })" title="@item.CategoryValue">
+                        <span class="cg-icon">
+                            <img loading="lazy" decoding="async" src="@(string.IsNullOrEmpty(item.ImagePath) ? "/assets/images/course/course-01.jpg" : item.ImagePath)" alt="" onerror="this.onerror=null;this.src='/assets/images/course/course-01.jpg';">
+                        </span>
+                        <span class="cg-body">
+                            <span class="cg-name">@item.CategoryValue</span>
+                            <span class="cg-count">@item.Count @(item.Count == 1 ? "Course" : "Courses")</span>
+                        </span>
+                        <span class="cg-arrow" aria-hidden="true"><i class="feather-arrow-right"></i></span>
+                    </a>
+                }
+            </div>
+            <div class="home-providers-more home-categories-more">
+                <a class="bl-btn" href="@Url.Action("Categories", "Courses", new { area = "" })">View All Categories <i class="feather-arrow-right"></i></a>
+            </div>
+        </div>
+    </div>
+
+    @{
+        // Featured courses (set by the admin): High, Medium, Low, newest first; only 6 on the home page
+        var allFeatured = CoursesHub.Models.CourseFilterHelper.FeaturedCourses(allCourses);
+        var featuredCourses = allFeatured.Take(6).ToList();
+    }
+    @if (featuredCourses.Count > 0)
+    {
+    <section class="home-featured rbt-section-gap" aria-labelledby="featuredTitle">
+        <span class="hf-blob hf-blob-1" aria-hidden="true"></span>
+        <span class="hf-blob hf-blob-2" aria-hidden="true"></span>
+        <div class="container">
+            <div class="section-title text-center hf-head" data-sal="slide-up" data-sal-duration="700">
+                <span class="subtitle bg-primary-opacity">Featured Courses</span>
+                <h2 class="title w-600" id="featuredTitle">Hand-picked <span class="theme-gradient">courses for you</span></h2>
+                <p class="hf-intro">Top courses selected by our team from trusted training providers across Australia.</p>
+            </div>
+
+            <div class="hf-grid">
+                @for (int f = 0; f < featuredCourses.Count; f++)
+                {
+                    @Html.Partial("~/Views/Courses/_FeaturedCourseCard.cshtml", featuredCourses[f], new ViewDataDictionary { { "Index", f }, { "UseSal", true } })
+                }
+            </div>
+
+            <div class="home-providers-more home-categories-more">
+                <a class="bl-btn" href="@Url.Action("FeaturedCourses", "Courses", new { area = "" })">View All Featured Courses <i class="feather-arrow-right"></i></a>
+            </div>
+        </div>
+    </section>
+    }
+
+    <!--<div class="rbt-course-area rbt-sec-cir-shadow-1 bg-color-extra2 rbt-section-gap home-popular-courses">
+        <div class="gradient-shape-top"></div>
+        <div class="gradient-shape-bottom"></div>
+        <div class="container">
+            <div class="row mb--30">
+                <div class="col-lg-12">
+                    <div class="section-title text-center">
+                        <span class="subtitle bg-primary-opacity">Top Popular Course</span>
+                        <h2 class="title w-600">CoursesHub Course Student <br> Can <span class="theme-gradient">Join With Us</span></h2>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-scroll-container">
+                <button class="scroll-btn left" onclick="scrollTabs(-200)">&#10094;</button>
+                <div class="tabs-wrapper">
+                    <ul class="rbt-course-tab-button nav nav-tabs" id="rbt-myTab" role="tablist">
+                        @foreach (var item in ViewBag.Category as List<CoursesHub.Models.Category>)
+                        {
+                            var isActiveClass = i == 0 ? "active" : "";
+                            <li class="nav-item" role="presentation">
+                                <button class="@isActiveClass"
+                                        id="@item.CategoryValue.Replace(" ","_")-tab"
+                                        data-bs-toggle="tab"
+                                        data-bs-target="#@item.CategoryValue.Replace(" ","_")"
+                                        type="button" role="tab">
+                                    <span class="filter-text">@item.CategoryValue</span>
+                                </button>
+                            </li>
+                            i++;
+                        }
+                    </ul>
+                </div>
+                <button class="scroll-btn right" onclick="scrollTabs(200)">&#10095;</button>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="tab-content" id="rbt-myTabContent">
+                        @foreach (var Categoryitem in categories)
+                        {
+                            var isActiveCourseClass = j == 0 ? "active" : "";
+                            <div class="tab-pane @isActiveCourseClass" id="@Categoryitem.CategoryValue.Replace(" ", "_")"
+                                 role="tabpanel" aria-labelledby="@Categoryitem.CategoryValue.Replace(" ", "_")-tab">
+                                <div class="row g-5">
+                                    @foreach (var item in allCourses.Where(x => x.CourseCategory == Convert.ToString(Categoryitem.Id)))
+                                    {
+                                        <div class="col-lg-4 col-md-6 col-12">
+                                            <div class="rbt-card variation-04 rbt-hover">
+                                                <div class="rbt-card-img">
+                                                    <a href="@Url.Action("CourseDetails", "Courses", new {CourseId=@item.Id})">
+                                                        <img loading="lazy" decoding="async" src="@(string.IsNullOrEmpty(item.CoursePhoto)==true ?"/assets/images/event/grid-type-01.jpg":item.CoursePhoto)" alt="Card image">
+                                                    </a>
+                                                </div>
+                                                <div class="rbt-card-body">
+                                                    <div class="rbt-card-top">
+                                                        <div class="rbt-review">
+                                                            <span class="rating-count">Course Starting on: <br />@item.CourseStartDate</span>
+                                                        </div>
+                                                        <div class="rbt-bookmark-btn">
+                                                            <div class="rbt-review">
+                                                                <span class="rating-count">
+                                                                    Duration: <br />
+                                                                    @item.CourseDuration Weeks
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <h4 class="rbt-card-title">
+                                                        <a href="@Url.Action("CourseDetails", "Courses", new {CourseId=@item.Id})" title="@item.CourseName">
+                                                            @item.CourseName
+                                                        </a>
+                                                    </h4>
+                                                    <div class="rbt-card-bottom">
+                                                        <a class="rbt-btn-link color-primary" href="@Url.Action("CourseDetails", "Courses", new {CourseId=@item.Id})">Enroll Course<i class="feather-arrow-right"></i></a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                            j++;
+                        }
+                    </div>
+                </div>
+            </div>-->
+            @* Same button style as "View All Categories" / "View All Training Providers" *@
+            <!--<div class="home-providers-more home-categories-more">
+                <a class="bl-btn" href="@Url.Action("AllCourses", "Courses", new { area = "" })">View All Courses <i class="feather-arrow-right"></i></a>
+            </div>
+        </div>
+    </div>-->
+    @{
+        // Up to 6 trending courses, one card per course (the same course from several providers is shown once)
+        var trending = (allCourses ?? new List<CoursesHub.Areas.Panel.Models.CourseDetails>())
+            .Where(x => CoursesHub.Models.CourseFilterHelper.IsTrending(x.TrendingCourses))
+            .GroupBy(x => (CoursesHub.Models.CourseFilterHelper.CourseCode(x.CourseName) ?? CoursesHub.Models.CourseFilterHelper.CourseTitle(x.CourseName)).ToLowerInvariant())
+            .Select(g => g.First())
+            .Take(6)
+            .ToList();
+    }
+    @if (trending.Count > 0)
+    {
+    <div class="rbt-course-area rbt-section-gap home-trending">
+        <span class="tp-blob tp-blob-1" aria-hidden="true"></span>
+        <span class="tp-blob tp-blob-2" aria-hidden="true"></span>
+        <div class="container">
+            <div class="section-title text-center ht-head" data-sal="slide-up" data-sal-duration="700">
+                <span class="subtitle bg-primary-opacity">Top Trending Course</span>
+                <h2 class="title w-600 color-white">Get job-ready with these <span class="ht-accent">popular courses</span></h2>
+                <p class="ht-intro">These courses are designed to give you practical, job-ready skills that stay relevant in a changing workplace.</p>
+            </div>
+
+            <div class="ht-list">
+                @for (int t = 0; t < trending.Count; t++)
+                {
+                    var item = trending[t];
+                    var tCode = CoursesHub.Models.CourseFilterHelper.CourseCode(item.CourseName);
+                    var tTitle = CoursesHub.Models.CourseFilterHelper.CourseTitle(item.CourseName);
+                    var tAbout = CoursesHub.Models.CourseFilterHelper.PlainText(item.AboutCourse, 420);
+                    var tCareers = CoursesHub.Models.CourseFilterHelper.CareerChips(item.CourseOutcomes);
+                    var tLevel = CoursesHub.Models.CourseFilterHelper.Qualification(item);
+                    var tDetailsUrl = Url.Action("CourseDetails", "Courses", new { CourseId = item.Id });
+                    // "Find a provider": compare every provider that offers this course
+                    var tProvidersUrl = Url.Action("FindProvider", "Courses", new { area = "", course = tCode ?? tTitle });
+
+                    <article class="ht-card" style="--ht-i:@t" data-sal="slide-up" data-sal-delay="@((t % 2) * 120 + (t / 2) * 80)" data-sal-duration="700">
+                        <div class="ht-main">
+                            <div class="ht-tags">
+                                @if (!string.IsNullOrEmpty(tCode))
+                                {
+                                    <span class="ht-code">@tCode</span>
+                                }
+                                @if (!string.IsNullOrEmpty(item.CategoryName))
+                                {
+                                    <span class="ht-cat">@item.CategoryName</span>
+                                }
+                            </div>
+                            <h3 class="ht-title"><a href="@tDetailsUrl">@tTitle</a></h3>
+                            @if (!string.IsNullOrEmpty(tAbout))
+                            {
+                                <p class="ht-about">@tAbout</p>
+                            }
+                            @if (tCareers.Count > 0)
+                            {
+                                <h4 class="ht-label">Career opportunities</h4>
+                                <ul class="ht-chips">
+                                    @foreach (var career in tCareers)
+                                    {
+                                        <li>@career</li>
+                                    }
+                                </ul>
+                            }
+                        </div>
+                        <aside class="ht-side">
+                            <dl class="ht-facts">
+                                <div>
+                                    <dt><i class="feather-clock"></i> Duration</dt>
+                                    <dd>@(string.IsNullOrWhiteSpace(item.CourseDuration) ? "Contact provider" : item.CourseDuration + " Weeks")</dd>
+                                </div>
+                                <div>
+                                    <dt><i class="feather-monitor"></i> Study mode</dt>
+                                    <dd>@(string.IsNullOrWhiteSpace(item.StudyMethod) ? "Contact provider" : item.StudyMethod)</dd>
+                                </div>
+                                @if (!string.IsNullOrWhiteSpace(tLevel))
+                                {
+                                    <div>
+                                        <dt><i class="feather-award"></i> Qualification</dt>
+                                        <dd>@tLevel</dd>
+                                    </div>
+                                }
+                            </dl>
+                            @* Opens the Find a provider questions; the link is the fallback without JavaScript *@
+                            <a class="ht-btn" href="@tProvidersUrl" data-find-provider="@(tCode ?? tTitle)" data-course-code="@tCode" data-course-title="@tTitle"><i class="feather-search"></i> Find a provider</a>
+                            <a class="ht-link" href="@tDetailsUrl">View course details <i class="feather-arrow-right"></i></a>
+                        </aside>
+                    </article>
+                }
+            </div>
+        </div>
+    </div>
+    }
+
+
+
+    @{
+        var reviews = ViewBag.Testimonials as List<CoursesHub.Areas.Panel.Models.Testimonial> ?? new List<CoursesHub.Areas.Panel.Models.Testimonial>();
+    }
+    @if (reviews.Count > 0)
+    {
+    <div id="reviews" class="rbt-testimonial-area home-reviews rbt-section-gap">
+        <span class="hr-blob hr-blob-1" aria-hidden="true"></span>
+        <span class="hr-blob hr-blob-2" aria-hidden="true"></span>
+        <span class="hr-blob hr-blob-3" aria-hidden="true"></span>
+        <div class="container">
+            <div class="row mb--40">
+                <div class="col-lg-12">
+                    <div class="section-title text-center" data-sal="slide-up" data-sal-duration="700">
+                        <span class="subtitle bg-primary-opacity">Testimonials</span>
+                        <h2 class="title w-600">What Our <span class="theme-gradient">Students Say</span></h2>
+                        <p class="description hr-intro">Real feedback from learners who found their course with Courses Hub.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-item-3-activation swiper rbt-arrow-between gutter-swiper-30">
+                <div class="swiper-wrapper">
+                    @foreach (var item in reviews)
+                    {
+                        <div class="swiper-slide">
+                            <div class="single-slide">
+                                @Html.Partial("~/Views/Shared/_ReviewCard.cshtml", item)
+                            </div>
+                        </div>
+                    }
+
+                </div>
+
+                <div class="rbt-swiper-arrow rbt-arrow-left" role="button" tabindex="0" aria-label="Previous reviews">
+                    <div class="custom-overfolow">
+                        <i class="rbt-icon feather-arrow-left"></i>
+                        <i class="rbt-icon-top feather-arrow-left"></i>
+                    </div>
+                </div>
+
+                <div class="rbt-swiper-arrow rbt-arrow-right" role="button" tabindex="0" aria-label="Next reviews">
+                    <div class="custom-overfolow">
+                        <i class="rbt-icon feather-arrow-right"></i>
+                        <i class="rbt-icon-top feather-arrow-right"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="home-providers-more home-categories-more">
+                <a class="bl-btn" href="@Url.Action("Reviews", "Courses", new { area = "" })">View All Reviews <i class="feather-arrow-right"></i></a>
+            </div>
+        </div>
+    </div>
+    }
+
+
+
+
+    <div class="rbt-event-area event-style-2 rbt-section-gap home-blogs">
+        @* Same background as Top Trending Course *@
+        <span class="tp-blob tp-blob-1" aria-hidden="true"></span>
+        <span class="tp-blob tp-blob-2" aria-hidden="true"></span>
+        <div class="container">
+            @* Same heading layout and fonts as "Hand-picked courses for you" (colours for the dark background) *@
+            <div class="section-title text-center hf-head hb-head" data-sal="slide-up" data-sal-duration="700">
+                <span class="subtitle bg-primary-opacity">Blogs</span>
+                <h2 class="title w-600">Explore Our <span class="hb-accent">Latest Insights</span></h2>
+                <p class="hf-intro">Study tips, career advice and course news from the Courses Hub team.</p>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="swiper event-activation-1 rbt-arrow-between rbt-dot-bottom-center pb--60 icon-bg-primary">
+                        <div class="swiper-wrapper">
+                            @foreach (var item in Blogs)
+                            {
+                                <div class="swiper-slide">
+                                    <div class="single-slide">
+                                        <div class="rbt-card shadow-none event-grid-card variation-01 rbt-hover">
+                                            <div class="rbt-card-img">
+                                                <a href="@Url.RouteUrl("BlogDetailSEO",new { slug = item.slug})">
+                                                    <img loading="lazy" decoding="async" src="@(string.IsNullOrEmpty(item.BlogThumbnailImagePath)==true ?"/assets/images/event/grid-type-01.jpg":item.BlogThumbnailImagePath)" alt="Card image" onerror="this.onerror=null;this.src='/assets/images/event/grid-type-01.jpg';">
+                                                    <div class="rbt-badge-3 bg-white">
+                                                        <span>@Convert.ToDateTime(item.CreatedDate).ToString("dd-MMM")</span>
+                                                        <span>@Convert.ToDateTime(item.CreatedDate).Year</span>
+                                                    </div>
+                                                </a>
+                                            </div>
+                                            <div class="rbt-card-body">
+                                                @* same fonts as the featured course cards (.hf-provider / .hf-title) *@
+                                                <p class="hf-provider"><i class="feather-map-pin"></i> CoursesHub</p>
+                                                <h3 class="hf-title rbt-card-title">
+                                                    <a href="@Url.RouteUrl("BlogDetailSEO",new { slug = item.slug})" title="@item.BlogTitle">@item.BlogTitle</a>
+                                                </h3>
+
+                                                <div class="read-more-btn">
+                                                    @* same button as "Find a provider" / "View course" *@
+                                                    <a class="hf-btn hb-view-btn" href="@Url.RouteUrl("BlogDetailSEO",new { slug = item.slug})">View Blog <i class="feather-arrow-right"></i></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                        <div class="rbt-swiper-arrow rbt-arrow-left">
+                            <div class="custom-overfolow">
+                                <i class="rbt-icon feather-arrow-left"></i>
+                                <i class="rbt-icon-top feather-arrow-left"></i>
+                            </div>
+                        </div>
+                        <div class="rbt-swiper-arrow rbt-arrow-right">
+                            <div class="custom-overfolow">
+                                <i class="rbt-icon feather-arrow-right"></i>
+                                <i class="rbt-icon-top feather-arrow-right"></i>
+                            </div>
+                        </div>
+                        <div class="rbt-swiper-pagination"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="home-providers-more home-categories-more home-blogs-more">
+                <a class="bl-btn" href="@Url.Action("Blog", "Blog", new { area = "" })">View All Blogs <i class="feather-arrow-right"></i></a>
+            </div>
+        </div>
+    </div>
+</main>
+
+@section scripts{
+    <script src="@CoursesHub.AssetVersion.Url("~/assets/js/main.js")"></script>
+    @* Remove the stored login details only (keeps other saved preferences, e.g. the Find a provider answers) *@
+    <script>try { ['EmailId', 'Password', 'LoginType'].forEach(function (k) { localStorage.removeItem(k); }); } catch (e) { }</script>
+    <script>
+        function scrollTabs(amount) {
+            const wrapper = document.querySelector('.tabs-wrapper');
+            wrapper.scrollLeft += amount;
+        }
+
+        // Reviews: show the left/right arrows only when there are more reviews than fit on screen,
+        // and gently move to the next card every few seconds (pauses on hover/focus, off for reduced motion)
+        window.addEventListener('load', function () {
+            var el = document.querySelector('.home-reviews .testimonial-item-3-activation');
+            if (!el || !el.swiper) return;
+            var section = el.closest('.home-reviews');
+            var updateNav = function () {
+                var perView = Math.floor(el.swiper.params.slidesPerView) || 1;
+                section.classList.toggle('hr-has-nav', el.swiper.slides.length > perView);
+                el.swiper.update();
+            };
+            updateNav();
+            el.swiper.on('breakpoint', updateNav);
+            window.addEventListener('resize', updateNav);
+            section.querySelectorAll('.rbt-swiper-arrow').forEach(function (btn) {
+                btn.addEventListener('keydown', function (e) {
+                    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); btn.click(); }
+                });
+            });
+            if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+            var paused = false;
+            el.addEventListener('mouseenter', function () { paused = true; });
+            el.addEventListener('mouseleave', function () { paused = false; });
+            el.addEventListener('focusin', function () { paused = true; });
+            el.addEventListener('focusout', function () { paused = false; });
+            setInterval(function () {
+                if (paused || document.hidden || !section.classList.contains('hr-has-nav')) return;
+                if (el.swiper.isEnd) { el.swiper.slideTo(0, 700); } else { el.swiper.slideNext(700); }
+            }, 5000);
+        });
+
+    </script>
+
+}

@@ -1,0 +1,538 @@
+﻿@model CoursesHub.Models.Login
+@{
+    bool isProvider = CoursesHub.Models.LoginTypes.Normalize(Model.LoginType) == CoursesHub.Models.LoginTypes.University;
+    string pageTitle = isProvider ? "Training Provider Login" : "Student Login";
+    ViewBag.Title = pageTitle;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@if (TempData["Message"] != null)
+{
+    <script src="//code.jquery.com/jquery-2.2.4.min.js"></script>
+    <script src="~/assets/js/toastr.min.js"></script>
+    <link href="~/assets/css/toastr.min.css" rel="stylesheet" />
+    <script>
+        $(document).ready(function () {
+            toastr.info('@TempData["Message"]');
+        });
+    </script>
+}
+@if (TempData["ErrMessage"] != null)
+{
+    <script src="//code.jquery.com/jquery-2.2.4.min.js"></script>
+    <script src="~/assets/js/toastr.min.js"></script>
+    <link href="~/assets/css/toastr.min.css" rel="stylesheet" />
+    <script>
+        $(document).ready(function () {
+            toastr.error('@TempData["ErrMessage"]');
+        });
+    </script>
+}
+
+<style>
+    .login-page {
+        padding: 70px 0 90px;
+        background: linear-gradient(180deg, var(--primary-light) 0%, #FFFFFF 70%);
+    }
+
+    .login-shell {
+        display: flex;
+        max-width: 1000px;
+        margin: 0 auto;
+        overflow: hidden;
+        border-radius: var(--radius-big);
+        background: #fff;
+        box-shadow: 0 24px 60px rgba(15, 63, 66, 0.14);
+    }
+
+    /* Left brand panel */
+    .login-aside {
+        position: relative;
+        flex: 0 0 42%;
+        padding: 48px 40px;
+        overflow: hidden;
+        color: #fff;
+        background: linear-gradient(150deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    }
+
+        .login-aside::before,
+        .login-aside::after {
+            content: "";
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .login-aside::before {
+            width: 260px;
+            height: 260px;
+            right: -90px;
+            top: -90px;
+            border: 30px solid rgba(var(--accent-rgb), 0.25);
+        }
+
+        .login-aside::after {
+            width: 220px;
+            height: 220px;
+            left: -80px;
+            bottom: -90px;
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+    .login-aside-icon {
+        position: relative;
+        z-index: 1;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 72px;
+        height: 72px;
+        margin-bottom: 26px;
+        border-radius: 50%;
+        background: var(--accent-color);
+        color: var(--on-accent-color);
+        font-size: 32px;
+        box-shadow: 0 0 0 8px rgba(255, 255, 255, 0.12);
+    }
+
+    .login-aside .eyebrow {
+        position: relative;
+        z-index: 1;
+        display: block;
+        margin-bottom: 10px;
+        color: var(--accent-color);
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+    }
+
+    .login-aside h2 {
+        position: relative;
+        z-index: 1;
+        margin-bottom: 14px;
+        color: #fff;
+        font-size: 30px;
+        line-height: 1.25;
+    }
+
+    .login-aside p {
+        position: relative;
+        z-index: 1;
+        margin-bottom: 26px;
+        color: rgba(255, 255, 255, 0.85);
+        font-size: 16px;
+    }
+
+    .login-benefits {
+        position: relative;
+        z-index: 1;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+        .login-benefits li {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin: 0 0 14px;
+            color: #fff;
+            font-size: 15px;
+        }
+
+            .login-benefits li i {
+                flex: 0 0 24px;
+                width: 24px;
+                height: 24px;
+                margin-top: 1px;
+                border-radius: 50%;
+                background: rgba(255, 255, 255, 0.16);
+                color: var(--accent-color);
+                font-size: 13px;
+                line-height: 24px;
+                text-align: center;
+            }
+
+    /* Right form panel */
+    .login-main {
+        flex: 1 1 auto;
+        padding: 44px 48px;
+    }
+
+    .login-switch {
+        display: flex;
+        gap: 6px;
+        margin-bottom: 30px;
+        padding: 6px;
+        border-radius: 999px;
+        background: var(--primary-light);
+    }
+
+        .login-switch a {
+            flex: 1 1 0;
+            padding: 10px 12px;
+            border-radius: 999px;
+            color: var(--primary-dark);
+            font-size: 15px;
+            font-weight: 600;
+            text-align: center;
+            transition: background-color 0.25s ease, color 0.25s ease;
+        }
+
+            .login-switch a:hover {
+                color: var(--secondary-color);
+                background: rgba(255, 255, 255, 0.7);
+            }
+
+            .login-switch a.active {
+                color: #fff;
+                background: var(--primary-color);
+                box-shadow: 0 6px 14px rgba(var(--primary-rgb), 0.3);
+            }
+
+            .login-switch a:focus-visible {
+                outline: 3px solid rgba(var(--primary-rgb), 0.45);
+                outline-offset: 2px;
+            }
+
+    .login-main h1 {
+        margin-bottom: 8px;
+        color: var(--heading-color);
+        font-size: 32px;
+    }
+
+    .login-main .login-subtitle {
+        margin-bottom: 28px;
+        color: var(--text-color);
+        font-size: 16px;
+    }
+
+    .login-field {
+        position: relative;
+        margin-bottom: 20px;
+    }
+
+        .login-field label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--heading-color);
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+    .login-input-wrap {
+        position: relative;
+    }
+
+        .login-input-wrap > .field-icon {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--primary-color);
+            font-size: 18px;
+            pointer-events: none;
+        }
+
+    .login-page .login-input {
+        width: 100%;
+        height: 52px;
+        padding: 0 46px;
+        border: 1px solid var(--border-color);
+        border-radius: var(--radius-10);
+        background: #F9FCFC;
+        color: var(--heading-color);
+        font-size: 16px;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+    }
+
+        .login-page .login-input::placeholder {
+            color: #8A979E;
+        }
+
+        .login-page .login-input:hover {
+            border-color: rgba(var(--primary-rgb), 0.5);
+        }
+
+        .login-page .login-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            background: #fff;
+            box-shadow: 0 0 0 0.2rem rgba(var(--primary-rgb), 0.15);
+        }
+
+        .login-page .login-input.is-invalid {
+            border-color: #D93838;
+            box-shadow: 0 0 0 0.2rem rgba(217, 56, 56, 0.12);
+        }
+
+    .login-page .toggle-password {
+        position: absolute;
+        right: 16px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #6B7A82;
+        cursor: pointer;
+        z-index: 2;
+    }
+
+        .login-page .toggle-password:hover {
+            color: var(--primary-color);
+        }
+
+    .login-field .invalid-feedback {
+        display: block;
+        margin: 6px 0 0;
+        color: #D93838;
+        font-size: 13px;
+    }
+
+    .login-options {
+        display: flex;
+        justify-content: flex-end;
+        margin: -4px 0 24px;
+    }
+
+        .login-options a {
+            color: var(--primary-dark);
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+            .login-options a:hover {
+                color: var(--accent-dark);
+            }
+
+    .login-page .login-submit {
+        width: 100%;
+        height: 54px;
+        line-height: 54px;
+        border-radius: var(--radius-10);
+    }
+
+    .login-register {
+        margin: 24px 0 0;
+        padding-top: 20px;
+        border-top: 1px solid var(--border-color);
+        color: var(--text-color);
+        font-size: 15px;
+        text-align: center;
+    }
+
+        .login-register a {
+            color: var(--primary-dark);
+            font-weight: 700;
+        }
+
+            .login-register a:hover {
+                color: var(--accent-dark);
+            }
+
+    @@media only screen and (max-width: 991px) {
+        .login-aside {
+            flex-basis: 40%;
+            padding: 40px 30px;
+        }
+
+        .login-main {
+            padding: 40px 32px;
+        }
+    }
+
+    @@media only screen and (max-width: 767px) {
+        .login-page {
+            padding: 30px 0 50px;
+        }
+
+        .login-shell {
+            flex-direction: column;
+        }
+
+        .login-aside {
+            padding: 30px 24px;
+        }
+
+            .login-aside h2 {
+                font-size: 24px;
+            }
+
+            .login-aside p,
+            .login-benefits {
+                display: none;
+            }
+
+        .login-aside-icon {
+            width: 56px;
+            height: 56px;
+            margin-bottom: 16px;
+            font-size: 24px;
+        }
+
+        .login-main {
+            padding: 28px 22px 32px;
+        }
+
+            .login-main h1 {
+                font-size: 26px;
+            }
+
+        .login-switch a {
+            font-size: 14px;
+            padding: 9px 6px;
+        }
+    }
+</style>
+
+<div class="login-page">
+    <div class="container">
+        <div class="login-shell">
+
+            <aside class="login-aside">
+                @if (isProvider)
+                {
+                    <span class="login-aside-icon"><i class="feather-briefcase"></i></span>
+                    <span class="eyebrow">Provider Portal</span>
+                    <h2>Welcome back, training provider</h2>
+                    <p>Manage your courses and connect with learners across Australia.</p>
+                    <ul class="login-benefits">
+                        <li><i class="feather-check"></i><span>Add and update your course listings</span></li>
+                        <li><i class="feather-check"></i><span>Review student enquiries and leads</span></li>
+                        <li><i class="feather-check"></i><span>Keep your provider profile up to date</span></li>
+                    </ul>
+                }
+                else
+                {
+                    <span class="login-aside-icon"><i class="feather-book-open"></i></span>
+                    <span class="eyebrow">Student Portal</span>
+                    <h2>Welcome back, learner</h2>
+                    <p>Pick up where you left off and find the right course for your career.</p>
+                    <ul class="login-benefits">
+                        <li><i class="feather-check"></i><span>Track the courses you have applied for</span></li>
+                        <li><i class="feather-check"></i><span>Compare courses and training providers</span></li>
+                        <li><i class="feather-check"></i><span>Manage your profile and feedback</span></li>
+                    </ul>
+                }
+            </aside>
+
+            <section class="login-main">
+                <nav class="login-switch" aria-label="Choose login type">
+                    <a href="@Url.Action("Login", "Login", new { area = "", type = "Student" })" class="@(isProvider ? "" : "active")" aria-current="@(isProvider ? "false" : "page")">Student</a>
+                    <a href="@Url.Action("Login", "Login", new { area = "", type = "TrainingProvider" })" class="@(isProvider ? "active" : "")" aria-current="@(isProvider ? "page" : "false")">Training Provider</a>
+                </nav>
+
+                <h1>@pageTitle</h1>
+                <p class="login-subtitle">
+                    @(isProvider
+                        ? "Sign in to your provider account to manage your courses."
+                        : "Sign in to your student account to continue your learning journey.")
+                </p>
+
+                @using (Html.BeginForm("Login", "Login", FormMethod.Post, new { @class = "max-width-auto", @id = "SLogin", onsubmit = "return showLoaderIfValid(this)" }))
+                {
+                    @Html.HiddenFor(m => m.LoginType)
+
+                    <div class="form-group login-field">
+                        <label for="EmailId">Email address</label>
+                        <div class="login-input-wrap">
+                            <i class="feather-mail field-icon"></i>
+                            @Html.TextBoxFor(m => m.EmailId, new { @class = "login-input", @autocomplete = "username", placeholder = "you@example.com", required = "required" })
+                        </div>
+                    </div>
+
+                    <div class="form-group login-field">
+                        <label for="Password">Password</label>
+                        <div class="login-input-wrap">
+                            <i class="feather-lock field-icon"></i>
+                            @Html.PasswordFor(m => m.Password, new
+                            {
+                                @id = "Password",
+                                @class = "login-input",
+                                @autocomplete = "current-password",
+                                placeholder = "Enter your password",
+                                required = "required"
+                            })
+                            <span class="fas fa-eye toggle-password" toggle="#Password" role="button" aria-label="Show or hide password"></span>
+                        </div>
+                    </div>
+
+                    <div class="login-options">
+                        <a href="@Url.Action("LostPassword", "Login", new { area = "", LoginType = Model.LoginType })">Forgot password?</a>
+                    </div>
+
+                    <button type="submit" class="rbt-btn btn-md btn-gradient hover-icon-reverse login-submit">
+                        <span class="icon-reverse-wrapper">
+                            <span class="btn-text">@(isProvider ? "Log In as Training Provider" : "Log In as Student")</span>
+                            <span class="btn-icon"><i class="feather-arrow-right"></i></span>
+                            <span class="btn-icon"><i class="feather-arrow-right"></i></span>
+                        </span>
+                    </button>
+                }
+
+                <p class="login-register">
+                    @(isProvider ? "New training provider?" : "New to CoursesHub?")
+                    <a href="@Url.Action("Registration", "Registration", new { area = "", type = isProvider ? "TrainingProvider" : "Student" })">
+                        @(isProvider ? "Register your organisation" : "Create a student account")
+                    </a>
+                </p>
+            </section>
+
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/assets/js/vendor/jquery.js"></script>
+    <script src="~/assets/js/vendor/bootstrap.min.js"></script>
+    <script src="~/Plugins/jquery-validation/jquery.validate.min.js"></script>
+
+    <script>
+        $.validator.addMethod("customEmailId", function (value, element) {
+            return this.optional(element) || /^[a-zA-Z0-9._%+-]+@@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(value);
+        }, "Please enter a valid email address.");
+
+        $(document).ready(function () {
+            $('#SLogin').validate({
+                rules: {
+                    EmailId: {
+                        required: true,
+                        customEmailId: true
+                    },
+                    Password: {
+                        required: true,
+                    },
+                },
+                messages: {
+                    EmailId: {
+                        required: "Enter Email ID",
+                    },
+                    Password: {
+                        required: "Enter Password",
+                    },
+                },
+                errorElement: 'p',
+                errorPlacement: function (error, element) {
+                    error.addClass('invalid-feedback');
+                    element.closest('.form-group').append(error);
+                },
+                highlight: function (element) {
+                    $(element).addClass('is-invalid');
+                },
+                unhighlight: function (element) {
+                    $(element).removeClass('is-invalid');
+                }
+            });
+        });
+
+        $(document).on("click", ".toggle-password", function () {
+            var input = $($(this).attr("toggle"));
+
+            if (input.attr("type") === "password") {
+                input.attr("type", "text");
+                $(this).removeClass("fa-eye").addClass("fa-eye-slash");
+            } else {
+                input.attr("type", "password");
+                $(this).removeClass("fa-eye-slash").addClass("fa-eye");
+            }
+        });
+    </script>
+}

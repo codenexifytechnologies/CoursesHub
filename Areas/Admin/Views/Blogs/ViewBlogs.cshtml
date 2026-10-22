@@ -1,0 +1,158 @@
+﻿@model List<CoursesHub.Areas.Admin.Models.Blogs>
+
+@{
+    ViewBag.Title = "ViewBlogs";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="~/Areas/Admin/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+<link rel="stylesheet" href="~/Areas/Admin/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+<link rel="stylesheet" href="~/Areas/Admin/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+<script src="//code.jquery.com/jquery-2.2.4.min.js"></script>
+<script src="~/assets/js/toastr.min.js"></script>
+<link href="~/assets/css/toastr.min.css" rel="stylesheet" />
+<link href="@CoursesHub.AssetVersion.Url("~/assets/css/adminCustom.css")" rel="stylesheet" />
+
+@if (TempData["Message"] != null)
+{
+    <script>
+        $(document).ready(function () {
+            toastr.info('@TempData["Message"]');
+        });
+    </script>
+}
+
+@* Loading uses the shared Courses Hub loader (CHLoader, Views/Shared/_PageLoader.cshtml) *@
+
+<section class="content-header pt-4 px-4">
+    <div class="container-fluid">
+        <div class="row mb-3 align-items-center">
+            <div class="col-sm-10">
+                <h1 class="m-0 font-weight-bold text-dark" style="letter-spacing: -1px;">My Blogs</h1>
+                <p class="text-muted mb-0">Manage and track your published articles and their verification status.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="content px-4 pb-4">
+    <div class="container-fluid">
+        <div class="card shadow-sm border-0" style="border-radius: 15px;">
+            <div class="card-body p-4">
+                <div class="table-responsive">
+                    <table id="example1" class="table table-hover border-0" style="width:100%">
+                        <thead class="bg-light">
+                            <tr>
+                                <th class="border-0 text-uppercase small font-weight-bold text-muted">Blog Title</th>
+                                <th class="border-0 text-uppercase small font-weight-bold text-muted text-center">Status</th>
+                                <th class="border-0 text-uppercase small font-weight-bold text-muted">Created Date</th>
+                                <th class="border-0 text-uppercase small font-weight-bold text-muted">Created By</th>
+                                <th class="border-0 text-uppercase small font-weight-bold text-muted text-center">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td class="align-middle font-weight-600">@item.BlogTitle</td>
+                                    <td class="align-middle text-center">
+                                        @if (item.BlogVerified == 1)
+                                        {
+                                            <span class="badge badge-soft-success px-3 py-2 rounded-pill"><i class="fas fa-check-circle mr-1"></i>Verified</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge badge-soft-warning px-3 py-2 rounded-pill"><i class="fas fa-clock mr-1"></i>Pending</span>
+                                        }
+                                    </td>
+                                    <td class="align-middle text-muted">@item.CreatedDate</td>
+                                    <td class="align-middle">
+                                        <div class="d-flex align-items-center">
+                                            <div class="avatar-sm mr-2 bg-soft-primary text-primary rounded-circle d-flex align-items-center justify-content-center" style="width:30px; height:30px; font-size:12px;">
+                                                @(string.IsNullOrEmpty(item.CreatedBy) ? "U" : item.CreatedBy.Substring(0, 1).ToUpper())
+                                            </div>
+                                            <span>@item.CreatedBy</span>
+                                        </div>
+                                    </td>
+                                    <td class="align-middle text-center">
+                                        <a href="@Url.Action("EditBlog","Blogs",new {Id=item.Id})" class="btn btn-light btn-sm rounded-circle shadow-sm mx-1" title="Edit">
+                                            <i class="fa fa-edit text-primary"></i>
+                                        </a>
+                                        <a href="#" class="btn btn-light btn-sm rounded-circle shadow-sm mx-1 delete-course" data-url="@Url.Action("DeleteBlog","Blogs",new {Id=item.Id})" title="Delete">
+                                            <i class="fa fa-trash text-danger"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script src="~/plugins/jquery/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    $(document).ready(function () {
+        if (window.CHLoader) { CHLoader.show('Loading…'); }
+
+        var table = $("#example1").DataTable({
+            "destroy": true,
+            "responsive": true,
+            "lengthChange": false,
+            "autoWidth": false
+            //"buttons": [
+            //    {
+            //        extend: 'copy',
+            //        className: 'btn btn-sm btn-dark rounded-pill px-3 mr-1 shadow-sm',
+            //        exportOptions: { columns: ":visible" }
+            //    },
+            //    {
+            //        extend: 'csv',
+            //        className: 'btn btn-sm btn-dark rounded-pill px-3 mr-1 shadow-sm',
+            //        exportOptions: { columns: ":visible" }
+            //    },
+            //    {
+            //        extend: 'excel',
+            //        className: 'btn btn-sm btn-dark rounded-pill px-3 mr-1 shadow-sm',
+            //        exportOptions: { columns: ":visible" }
+            //    },
+            //    {
+            //        extend: 'pdf',
+            //        className: 'btn btn-sm btn-dark rounded-pill px-3 mr-1 shadow-sm',
+            //        exportOptions: { columns: ":visible" }
+            //    },
+            //    {
+            //        extend: 'print',
+            //        className: 'btn btn-sm btn-dark rounded-pill px-3 mr-1 shadow-sm',
+            //        exportOptions: { columns: ":visible" }
+            //    },
+            //]
+        });
+
+        // This ensures the buttons are placed in the top-left area of the table grid
+        table.buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+
+        if (window.CHLoader) { CHLoader.hide(); }
+    });
+</script>
+<script>
+    $(document).on('click', '.delete-course', function (e) {
+        e.preventDefault();
+        var url = $(this).data('url');
+        Swal.fire({
+            title: "Are you sure?",
+            text: "This will permanently delete the record!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#158887",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = url;
+            }
+        });
+    });
+</script>

@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 200" role="img" aria-label="Organisation profile">
+  <defs>
+    <style>
+      .bob{animation:bob 4.5s ease-in-out infinite}
+      .bob2{animation:bob 5s ease-in-out infinite .7s}
+      .win{animation:win 3s ease-in-out infinite}
+      @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+      @keyframes win{0%,100%{opacity:1}50%{opacity:.45}}
+      @media (prefers-reduced-motion: reduce){.bob,.bob2,.win{animation:none}}
+    </style>
+  </defs>
+  <ellipse cx="130" cy="188" rx="96" ry="9" fill="#0E6B6A" fill-opacity="0.12"/>
+  <circle cx="130" cy="96" r="84" fill="#E8F4F4"/>
+  <g class="bob">
+    <rect x="70" y="56" width="120" height="118" rx="8" fill="#ffffff" stroke="#DCE8E8" stroke-width="2"/>
+    <rect x="70" y="56" width="120" height="22" rx="8" fill="#158887"/>
+    <rect x="70" y="68" width="120" height="10" fill="#158887"/>
+    <g fill="#9CC9C8">
+      <rect class="win" x="86" y="90" width="20" height="16" rx="3"/>
+      <rect x="120" y="90" width="20" height="16" rx="3"/>
+      <rect class="win" x="154" y="90" width="20" height="16" rx="3" style="animation-delay:1s"/>
+      <rect x="86" y="116" width="20" height="16" rx="3"/>
+      <rect class="win" x="120" y="116" width="20" height="16" rx="3" style="animation-delay:.5s"/>
+      <rect x="154" y="116" width="20" height="16" rx="3"/>
+    </g>
+    <rect x="116" y="142" width="28" height="32" rx="4" fill="#0F3F42"/>
+  </g>
+  <g class="bob2">
+    <rect x="164" y="30" width="76" height="46" rx="10" fill="#ffffff" stroke="#DCE8E8" stroke-width="2"/>
+    <circle cx="182" cy="53" r="9" fill="#F79646"/>
+    <rect x="196" y="46" width="34" height="5" rx="2.5" fill="#0F3F42"/>
+    <rect x="196" y="56" width="24" height="5" rx="2.5" fill="#BFDDDC"/>
+  </g>
+  <g class="bob2">
+    <circle cx="44" cy="70" r="18" fill="#F79646"/>
+    <path d="M36 70 l5 5 l11 -11" stroke="#ffffff" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>

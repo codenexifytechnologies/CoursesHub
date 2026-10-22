@@ -1,0 +1,343 @@
+﻿
+@{
+    ViewBag.Title = "ViewLeadDetails";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+
+    var objStudentRegistration = (CoursesHub.Models.StudentRegistration)ViewBag.StudentDetails;
+    var isAustraliaResident = objStudentRegistration.isAustraliaResident == true ? "Yes" : "No";
+    var Country = objStudentRegistration.isAustraliaResident == true ? "AUS" : objStudentRegistration.Country;
+}
+
+@if (TempData["Message"] != null)
+{
+    <script src="//code.jquery.com/jquery-2.2.4.min.js"></script>
+    <script src="~/assets/js/toastr.min.js"></script>
+    <link href="~/assets/css/toastr.min.css" rel="stylesheet" />
+    <script>
+        $(document).ready(function () {
+            toastr.success('@TempData["Message"]');
+        });
+    </script>
+}
+
+@if (TempData["ErrMessage"] != null)
+{
+    <script src="//code.jquery.com/jquery-2.2.4.min.js"></script>
+    <script src="~/assets/js/toastr.min.js"></script>
+    <link href="~/assets/css/toastr.min.css" rel="stylesheet" />
+    <script>
+        $(document).ready(function () {
+            toastr.error('@TempData["ErrMessage"]');
+        });
+    </script>
+}
+
+<link href="@CoursesHub.AssetVersion.Url("~/assets/css/adminCustom.css")" rel="stylesheet" />
+<link rel="stylesheet" href="~/Areas/Admin/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css" />
+<br />
+<section class="content">
+    <div class="container-fluid py-4">
+        <div class="d-flex align-items-center mb-4">
+            <div class="p-3 rounded-circle mr-3 text-white shadow-sm" style="background: linear-gradient(135deg, #42e695 0%, #3bb2b8 100%);">
+                <i class="fas fa-user-graduate fa-lg"></i>
+            </div>
+            <div>
+                <h2 class="mb-0 font-weight-bold text-dark">Lead Details</h2>
+                <p class="text-muted mb-0 small">Managing data for <strong>@objStudentRegistration.FirstName</strong></p>
+            </div>
+        </div>
+
+
+        <div class="detail-card" style="border-top: 4px solid var(--primary-color);">
+            <div class="card-header bg-white py-3">
+                <h3 class="card-title font-weight-bold" style="border-left: 4px solid #10b981; padding-left: 10px;">Student Profile</h3>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-sm-4 mb-4">
+                        <label class="text-muted small text-uppercase font-weight-bold mb-1">Full Name</label>
+                        <div class="form-control-plaintext font-weight-bold text-dark border-bottom">
+                            <i class="fas fa-id-card mr-2 text-primary"></i> @objStudentRegistration.FirstName @objStudentRegistration.MiddleName @objStudentRegistration.LastName
+                        </div>
+                    </div>
+                    <div class="col-sm-4 mb-4">
+                        <label class="text-muted small text-uppercase font-weight-bold mb-1">Email Address</label>
+                        <div class="form-control-plaintext font-weight-bold text-dark border-bottom">
+                            <i class="fas fa-envelope mr-2 text-primary"></i> @objStudentRegistration.EmailId
+                        </div>
+                    </div>
+                    <div class="col-sm-4 mb-4">
+                        <label class="text-muted small text-uppercase font-weight-bold mb-1">Contact Number</label>
+                        <div class="form-control-plaintext font-weight-bold text-dark border-bottom">
+                            <i class="fas fa-phone mr-2 text-primary"></i> @objStudentRegistration.Mobile
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mt-2">
+                    <div class="col-sm-4">
+                        <label class="text-muted small text-uppercase font-weight-bold d-block mb-2">Residency Status</label>
+                        <span class="badge @(objStudentRegistration.isAustraliaResident ? "badge-success" : "badge-secondary") px-3 py-2 rounded-pill">
+                            @(objStudentRegistration.isAustraliaResident ? "Australia Resident: Yes" : "Australia Resident: No")
+                        </span>
+                    </div>
+                    <div class="col-sm-8">
+                        <label class="text-muted small text-uppercase font-weight-bold mb-1">Location Details</label>
+                        <div class="form-control-plaintext text-dark font-weight-500">
+                            <i class="fas fa-map-marker-alt mr-2 text-danger"></i>
+                            <strong>Country:</strong> @Country
+                            @if (objStudentRegistration.isAustraliaResident)
+                            {
+                                <span class="mx-2">|</span> <strong>State:</strong> @objStudentRegistration.State
+                                <span class="mx-2">|</span> <strong>Post Code:</strong> @objStudentRegistration.Zipcode}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="detail-card" style="border-top: 4px solid var(--primary-color);">
+            <div class="card-header bg-white py-3">
+                <h3 class="card-title font-weight-bold" style="border-left: 4px solid #3bb2b8; padding-left: 10px; color: #1e293b !important;">
+                    Premium Lead Assignment
+                </h3>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="bg-light text-muted small text-uppercase">
+                            <tr>
+                                <th class="border-0">Training Provider</th>
+                                <th class="border-0">Contact Person</th>
+                                <th class="border-0">Position</th>
+                                <th class="border-0">Contact</th>
+                                <th class="border-0">Email</th>
+                                <th class="border-0">Sent Status</th>
+                                @*<th class="border-0 text-right">Action</th>*@
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in ViewBag.PremiumLead as List<CoursesHub.Areas.Admin.Models.Lead>)
+                            {
+                                <tr>
+                                    <td class="font-weight-bold py-3 text-dark">@item.University_Name</td>
+                                    <td>@item.University_Full_Name</td>
+                                    <td><span class="text-muted small">@item.University_Position</span></td>
+                                    <td class="font-weight-500 text-dark">
+                                        <i class="fas fa-phone-alt mr-1 text-xs text-primary"></i> @item.University_Direct_Phone
+                                    </td>
+                                    <td>@item.University_Email</td>
+                                    <td>
+                                        @if (item.isEmailSent)
+                                        {
+                                            <span class="text-success font-weight-bold"><i class="fas fa-check-double mr-1"></i> Sent</span>
+                                            <div class="small text-muted">@item.EmailSentOn</div>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge badge-pill badge-light text-muted border">Pending</span>
+                                        }
+                                    </td>
+                                    @*<td class="text-right py-3">
+                                            @if (!item.isEmailSent)
+                                            {
+                                                <button class="btn btn-sm text-white px-3 shadow-sm btn-emerald-gradient" id="SendPremiumMail" data-url="@Url.Action("SendEmail", "Lead", new { area = "Admin", LeadId = item.Id, LeadType = "P" })">
+                                                    <i class="fas fa-paper-plane mr-1"></i> Send Email
+                                                </button>
+                                            }
+                                        </td>*@
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="detail-card" style="border-top: 4px solid var(--primary-color);">
+            <div class="card-header bg-white d-flex justify-content-between align-items-center py-3">
+                <h3 class="card-title font-weight-bold text-dark" style="border-left: 4px solid #6c757d; padding-left: 10px;">Normal Lead Queue</h3>
+                @*<button id="btnSendSelected" class="btn btn-sm btn-primary shadow-sm px-4">
+                        <i class="fas fa-mail-bulk mr-2"></i> Send to Selected
+                    </button>*@
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="bg-light text-muted small text-uppercase">
+                            <tr>
+                                @*<th style="width:50px; text-align:center;">
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" id="chkAll" checked="checked" class="custom-control-input" />
+                                            <label class="custom-control-label" for="chkAll"></label>
+                                        </div>
+                                    </th>*@
+                                <th>Training Provider</th>
+                                <th>Contact Person</th>
+                                <th>Position</th>
+                                <th>Contact</th>
+                                <th>Email</th>
+                                <th>Sent Status</th>
+                                <th>@*Sent Date*@</th>
+                                @*<th class="text-right">Resend</th>*@
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var Nitem in ViewBag.NormalLead as List<CoursesHub.Areas.Admin.Models.Lead>)
+                            {
+                                <tr>
+                                    @*<td class="text-center">
+                                            <div class="custom-control custom-checkbox">
+                                                <input type="checkbox" class="chkSingle custom-control-input" id="chk_@Nitem.Id" value="@Nitem.Id" checked="checked" />
+                                                <label class="custom-control-label" for="chk_@Nitem.Id"></label>
+                                            </div>
+                                        </td>*@
+                                    <td class="font-weight-500 text-dark">@Nitem.University_Name</td>
+                                    <td>@Nitem.University_Full_Name</td>
+                                    <td><span class="text-muted small">@Nitem.University_Position</span></td>
+                                    <td class="font-weight-500 text-dark">
+                                        <i class="fas fa-phone-alt mr-1 text-xs text-primary"></i> @Nitem.University_Direct_Phone
+                                    </td>
+                                    <td>@Nitem.University_Email</td>
+                                    <td>
+                                        @*<span class="badge @(Nitem.isEmailSent ? "badge-success-soft" : "badge-light text-muted border")">
+                                                @(Nitem.isEmailSent ? "Yes" : "No")
+                                            </span>*@
+                                        @if (Nitem.isEmailSent)
+                                        {
+                                            <span class="text-success font-weight-bold"><i class="fas fa-check-double mr-1"></i> Sent</span>
+                                            <div class="small text-muted">@Nitem.EmailSentOn</div>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge badge-pill badge-light text-muted border">Pending</span>
+                                        }
+                                    </td>
+                                    @* <td class="small text-muted font-italic">@(Nitem.isEmailSent ? Nitem.EmailSentOn.ToString() : "-")</td>*@
+                                    @*<td class="text-right">
+                                            @if (Nitem.isEmailSent)
+                                            {
+                                                <a class="btn btn-xs btn-outline-warning rounded-pill px-3" onclick="return confirm('Resend email to this lead?');"
+                                                   href="@Url.Action("SendEmail", "Lead", new { area = "Admin", Id = Nitem.Id, LeadType = "N" })">
+                                                    <i class="fas fa-sync-alt mr-1"></i> Resend
+                                                </a>}
+                                        </td>*@
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<script src="~/Areas/Admin/plugins/jquery/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    $(document).ready(function () {
+
+        $("#chkAll").click(function () {
+            $(".chkSingle").prop("checked", this.checked);
+        });
+
+        $(".chkSingle").change(function () {
+            if ($(".chkSingle:checked").length == $(".chkSingle").length) {
+                $("#chkAll").prop("checked", true);
+            } else {
+                $("#chkAll").prop("checked", false);
+            }
+        });
+
+
+
+        $(document).on("click", "#SendPremiumMail", function (e) {
+
+            e.preventDefault(); // Stop normal navigation
+
+            var url = $(this).data("url");
+
+            Swal.fire({
+                title: "Send Email",
+                text: "Are you sure you want to send email?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#158887",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, send it!",
+                cancelButtonText: "Cancel"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = url;
+                }
+            });
+        });
+
+
+
+
+        $("#btnSendSelected").click(function () {
+
+            let selectedIds = [];
+
+            $(".chkSingle:checked").each(function () {
+                selectedIds.push($(this).val());
+            });
+
+            if (selectedIds.length === 0) {
+                Swal.fire({
+                    text: "Please select at least one record.",
+                    icon: "warning",
+                });
+                return;
+            }
+
+            Swal.fire({
+                title: "Send email",
+                text: "Send email to selected leads?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#158887",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, send it!",
+                cancelButtonText: "Cancel"
+            }).then((result) => {
+                if (result.isConfirmed)
+                {
+                    $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("BulkSendEmail", "Lead", new { area = "Admin" })",
+                    data: { ids: selectedIds },
+                    traditional: true,
+                        success: function (res) {
+                            Swal.fire({
+                                title: "Success!",
+                                text: "Email sent successfully.",
+                                icon: "success",
+                                confirmButtonText: "OK"
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location.reload();
+                                }
+                            });
+                        },
+                        error: function () {
+                            Swal.fire({
+                                title: "Error!",
+                                text: "Error while sending emails.",
+                                icon: "error",
+                                confirmButtonText: "OK"
+                            });
+                        }
+                    });
+                }
+            });
+        });
+    });
+</script>
+
+
+
+
+

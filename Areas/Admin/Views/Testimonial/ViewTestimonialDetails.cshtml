@@ -1,0 +1,102 @@
+﻿@model CoursesHub.Areas.Panel.Models.Testimonial
+@{
+    ViewBag.Title = "View Student Details";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+<link href="@CoursesHub.AssetVersion.Url("~/assets/css/adminCustom.css")" rel="stylesheet" />
+
+<div class="container-fluid pt-4 px-4">
+    <div class="student-header">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <span class="badge badge-pill badge-light mb-2 px-3 py-2 text-primary">Student Testimonial</span>
+                <h1 class="display-5 font-weight-bold mb-1">@Model.Person_Name</h1>
+                <p class="lead mb-0 opacity-8">@Model.Designation</p>
+            </div>
+            <div class="col-md-4 text-md-right mt-3 mt-md-0">
+                <a href="@Url.Action("Index", "Testimonial")" class="btn btn-outline-light rounded-pill px-4">
+                    <i class="fas fa-arrow-left mr-2"></i> Back to List
+                </a>
+            </div>
+        </div>
+    </div>
+
+    @using (Html.BeginForm("ViewTestimonialDetails", "Testimonial", FormMethod.Post, new { id = "StudentForm" }))
+    {
+        @Html.HiddenFor(model => model.Id)
+
+        <div class="row">
+            <div class="col-md-12 detail-card" style="border-top: 4px solid var(--primary-color);">
+                <div class="modern-card">
+                    <div class="card-header-modern">
+                        <i class="fas fa-university"></i> Origin Details
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label class="info-label">Training Provider</label>
+                                <div class="info-value-box">@Model.Trading_Name</div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="info-label">Enrolled Course</label>
+                                <div class="info-value-box text-primary">@Model.CourseName</div>
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-md-12">
+                                <label class="info-label">Review Comment</label>
+                                <div class="testimonial-quote mb-4">
+                                    "@Model.Comment"
+                                </div>
+                            </div>
+                        </div>
+                        <div class="custom-control custom-switch custom-switch-off-danger custom-switch-on-success">
+
+                            @Html.CheckBoxFor(model => model.IsActive, new { @class = "custom-control-input", id = "IsActiveSwitch" })
+                            <label class="custom-control-label font-weight-bold" for="IsActiveSwitch">
+                                @(Model.IsActive ? "Verified & Published" : "Pending Verification")
+                            </label>
+                        </div>
+                    </div>
+
+                </div>
+
+                
+            </div>
+
+
+        </div>
+
+        <div >
+
+                <button type="submit" class="btn btn-primary rounded-pill px-5 shadow-sm font-weight-bold">
+                    <i class="fas fa-save mr-2"></i> Update Status
+                </button>
+            
+        </div>
+
+    }
+</div>
+
+<script src="//code.jquery.com/jquery-2.2.4.min.js"></script>
+<script src="~/assets/js/toastr.min.js"></script>
+<link href="~/assets/css/toastr.min.css" rel="stylesheet" />
+
+<script>
+    $(document).ready(function () {
+        @if (TempData["EditTestimonialDetailsMsg"] != null)
+        {
+            <text>toastr.success('@TempData["EditTestimonialDetailsMsg"]');</text>
+        }
+
+        // Add a small interaction for the switch
+        $('#IsActiveSwitch').on('change', function() {
+            const label = $(this).next('label');
+            if(this.checked) {
+                label.text('Verified & Published').addClass('text-success').removeClass('text-danger');
+            } else {
+                label.text('Pending Verification').addClass('text-danger').removeClass('text-success');
+            }
+        });
+    });
+</script>

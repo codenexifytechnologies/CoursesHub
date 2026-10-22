@@ -1,0 +1,103 @@
+﻿@model List<CoursesHub.Operation.NewsletterSubscriber>
+@{
+    ViewBag.Title = "Newsletter Subscribers";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    var list = Model ?? new List<CoursesHub.Operation.NewsletterSubscriber>();
+    int active = list.Count(s => s.IsActive);
+    int thisMonth = list.Count(s => s.IsActive && s.SubscribedDate >= new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1));
+}
+
+<link rel="stylesheet" href="~/Areas/Admin/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+<link href="@CoursesHub.AssetVersion.Url("~/assets/css/adminCustom.css")" rel="stylesheet" />
+
+<style>
+    .nls-stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; margin-bottom: 22px; }
+    .nls-stat { position: relative; overflow: hidden; padding: 20px 22px; border-radius: 16px; color: #fff; box-shadow: 0 10px 22px rgba(15, 63, 66, 0.18); animation: adRise 0.6s cubic-bezier(0.22, 1, 0.36, 1) both; }
+    .nls-stat:nth-child(1) { background: linear-gradient(135deg, #158887, #0E6B6A); }
+    .nls-stat:nth-child(2) { background: linear-gradient(135deg, #2E9E6B, #158887); animation-delay: 0.08s; }
+    .nls-stat:nth-child(3) { background: linear-gradient(135deg, #F79646, #E07B2C); animation-delay: 0.16s; }
+    .nls-stat .nls-label { font-size: 12px; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase; opacity: 0.85; }
+    .nls-stat .nls-value { font-size: 32px; font-weight: 800; line-height: 1.2; }
+    .nls-stat i { position: absolute; right: 18px; top: 50%; transform: translateY(-50%); font-size: 40px; opacity: 0.25; }
+    .nls-pill { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: 999px; font-size: 0.75rem; font-weight: 700; }
+    .nls-on { background: #e8f4f4; color: #0E6B6A; border: 1px solid #9fd0cf; }
+    .nls-off { background: #f4f7f7; color: #7a8a8b; border: 1px solid #DCE8E8; }
+    @@media (max-width: 767px) { .nls-stats { grid-template-columns: 1fr; } }
+</style>
+
+<section class="content-header pt-4 px-4">
+    <div class="container-fluid">
+        <div class="row mb-3 align-items-center">
+            <div class="col-md-7">
+                <h1 class="m-0 font-weight-bold text-dark" style="letter-spacing: -1px;">Newsletter Subscribers</h1>
+                <p class="text-muted mb-0">People who signed up with the newsletter box in the site footer.</p>
+            </div>
+            <div class="col-md-5 text-md-right mt-3 mt-md-0">
+                <a class="btn btn-success rounded-pill px-4 shadow-sm" href="@Url.Action("ExportCsv", "NewsletterSubscribers")"><i class="fas fa-file-csv mr-2"></i>Export active (CSV)</a>
+                <a class="btn btn-outline-secondary rounded-pill px-3 ml-1" href="@Url.Action("ExportCsv", "NewsletterSubscribers", new { all = true })">All</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="content px-4 pb-4">
+    <div class="container-fluid">
+        @if (ViewBag.LoadError != null)
+        {
+            <div class="alert alert-warning">@ViewBag.LoadError</div>
+        }
+        <div class="nls-stats">
+            <div class="nls-stat"><div class="nls-label">Active subscribers</div><div class="nls-value">@active</div><i class="fas fa-envelope-open-text"></i></div>
+            <div class="nls-stat"><div class="nls-label">New this month</div><div class="nls-value">@thisMonth</div><i class="fas fa-user-plus"></i></div>
+            <div class="nls-stat"><div class="nls-label">Unsubscribed</div><div class="nls-value">@(list.Count - active)</div><i class="fas fa-user-minus"></i></div>
+        </div>
+
+        <div class="card shadow-sm border-0" style="border-radius: 15px; overflow: hidden;">
+            <div class="card-body p-4">
+                <div class="table-responsive">
+                    <table id="subscribersTable" class="table table-hover mb-0" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th class="border-0 py-3">Email</th>
+                                <th class="border-0 py-3 text-center">Status</th>
+                                <th class="border-0 py-3">Subscribed</th>
+                                <th class="border-0 py-3">Unsubscribed</th>
+                                <th class="border-0 py-3">Source</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var s in list)
+                            {
+                                <tr>
+                                    <td class="py-3 font-weight-bold text-dark"><a href="mailto:@s.Email">@s.Email</a></td>
+                                    <td class="py-3 text-center" data-order="@(s.IsActive ? 0 : 1)">
+                                        @if (s.IsActive)
+                                        {
+                                            <span class="nls-pill nls-on"><i class="fas fa-check-circle"></i>Subscribed</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="nls-pill nls-off"><i class="fas fa-ban"></i>Unsubscribed</span>
+                                        }
+                                    </td>
+                                    <td class="py-3 text-secondary" data-order="@s.SubscribedDate.ToString("yyyyMMddHHmm")">@s.SubscribedDate.ToString("dd MMM yyyy, hh:mm tt")</td>
+                                    <td class="py-3 text-secondary" data-order="@(s.UnsubscribedDate.HasValue ? s.UnsubscribedDate.Value.ToString("yyyyMMddHHmm") : "0")">@(s.UnsubscribedDate.HasValue ? s.UnsubscribedDate.Value.ToString("dd MMM yyyy") : "-")</td>
+                                    <td class="py-3 text-secondary small">@s.Source</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@* jQuery and DataTables are loaded by the admin layout after this content, so wait for the page to finish loading *@
+<script>
+    window.addEventListener('load', function () {
+        if (window.jQuery && jQuery.fn.DataTable) {
+            jQuery("#subscribersTable").DataTable({ lengthChange: false, autoWidth: false, order: [[2, "desc"]], language: { emptyTable: "No subscribers yet." } });
+        }
+    });
+</script>

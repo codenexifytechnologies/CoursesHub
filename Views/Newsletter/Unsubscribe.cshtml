@@ -1,0 +1,54 @@
+﻿@{
+    ViewBag.Title = "Newsletter";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string status = ViewBag.Status as string ?? "Invalid";
+    string email = ViewBag.Email as string;
+    bool done = status == "Unsubscribed" || status == "AlreadyUnsubscribed";
+}
+
+<section class="tp-hero nl-hero">
+    <span class="tp-blob tp-blob-1" aria-hidden="true"></span>
+    <span class="tp-blob tp-blob-2" aria-hidden="true"></span>
+    <div class="container">
+        <ul class="page-list bl-crumbs">
+            <li class="rbt-breadcrumb-item"><a href="@Url.Action("Index", "Index", new { area = "" })">Home</a></li>
+            <li><div class="icon-right"><i class="feather-chevron-right"></i></div></li>
+            <li class="rbt-breadcrumb-item active">Newsletter</li>
+        </ul>
+        <span class="bl-eyebrow"><i class="feather-mail"></i> Newsletter</span>
+        <h1 class="bl-hero-title">@(done ? "You've been unsubscribed" : "We couldn't find that subscription")</h1>
+    </div>
+</section>
+
+<div class="nl-area rbt-section-gapBottom">
+    <div class="container">
+        <div class="nl-card">
+            <span class="nl-card-icon @(done ? "is-done" : "is-error")" aria-hidden="true"><i class="feather-@(done ? "check" : "info")"></i></span>
+            @if (status == "Unsubscribed")
+            {
+                <h2>Sorry to see you go</h2>
+                <p>@(string.IsNullOrEmpty(email) ? "Your email" : email) will no longer receive the Courses Hub newsletter.</p>
+            }
+            else if (status == "AlreadyUnsubscribed")
+            {
+                <h2>Already unsubscribed</h2>
+                <p>@(string.IsNullOrEmpty(email) ? "This email" : email) was already removed from our newsletter.</p>
+            }
+            else if (status == "Error")
+            {
+                <h2>Something went wrong</h2>
+                <p>Please try the link again in a few minutes, or contact us and we'll remove you.</p>
+            }
+            else
+            {
+                <h2>This link is not valid</h2>
+                <p>The unsubscribe link may be incomplete. Please use the link from your newsletter email, or contact us.</p>
+            }
+            <p class="nl-card-note">Changed your mind? You can subscribe again any time from the newsletter box at the bottom of every page.</p>
+            <div class="nl-card-actions">
+                <a class="bl-btn" href="@Url.Action("Index", "Index", new { area = "" })">Back to home <i class="feather-arrow-right"></i></a>
+                <a class="nl-link" href="@Url.Action("ContactUs", "ContactUs", new { area = "" })">Contact us</a>
+            </div>
+        </div>
+    </div>
+</div>

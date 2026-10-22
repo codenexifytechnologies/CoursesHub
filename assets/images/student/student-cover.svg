@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1290 245" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Courses Hub student area">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0F3F42"/>
+      <stop offset="0.55" stop-color="#0E6B6A"/>
+      <stop offset="1" stop-color="#158887"/>
+    </linearGradient>
+    <linearGradient id="wave" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#158887" stop-opacity="0.0"/>
+      <stop offset="1" stop-color="#F79646" stop-opacity="0.35"/>
+    </linearGradient>
+    <pattern id="dots" width="22" height="22" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="2" fill="#ffffff" fill-opacity="0.12"/>
+    </pattern>
+    <style>
+      .float1{animation:f1 6s ease-in-out infinite}
+      .float2{animation:f2 7s ease-in-out infinite}
+      .float3{animation:f1 8s ease-in-out infinite 1s}
+      .spin{transform-origin:1105px 70px;animation:spin 18s linear infinite}
+      .pulse{animation:pulse 3s ease-in-out infinite}
+      .waveA{animation:waveMove 12s ease-in-out infinite}
+      @keyframes f1{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+      @keyframes f2{0%,100%{transform:translateY(0)}50%{transform:translateY(8px)}}
+      @keyframes spin{to{transform:rotate(360deg)}}
+      @keyframes pulse{0%,100%{opacity:.35}50%{opacity:.8}}
+      @keyframes waveMove{0%,100%{transform:translateX(0)}50%{transform:translateX(-40px)}}
+      @media (prefers-reduced-motion: reduce){.float1,.float2,.float3,.spin,.pulse,.waveA{animation:none}}
+    </style>
+  </defs>
+  <rect width="1290" height="245" fill="url(#bg)"/>
+  <rect width="620" height="245" x="0" fill="url(#dots)"/>
+  <g class="waveA">
+    <path d="M0 190 C 220 140 420 240 650 190 S 1080 130 1340 180 L1340 245 L0 245 Z" fill="url(#wave)"/>
+    <path d="M0 215 C 260 175 470 255 720 215 S 1110 170 1340 205 L1340 245 L0 245 Z" fill="#0F3F42" fill-opacity="0.35"/>
+  </g>
+  <circle class="pulse" cx="140" cy="60" r="70" fill="#158887" fill-opacity="0.35"/>
+  <circle class="pulse" cx="560" cy="40" r="26" fill="#F79646" fill-opacity="0.35"/>
+  <!-- rotating ring -->
+  <g class="spin">
+    <circle cx="1105" cy="70" r="46" fill="none" stroke="#F79646" stroke-width="3" stroke-dasharray="10 12" stroke-opacity="0.8"/>
+  </g>
+  <!-- graduation cap -->
+  <g class="float1">
+    <polygon points="1105,40 1165,66 1105,92 1045,66" fill="#ffffff"/>
+    <path d="M1070 78 L1070 100 C1086 112 1124 112 1140 100 L1140 78 L1105 92 Z" fill="#E8F4F4"/>
+    <line x1="1160" y1="68" x2="1160" y2="100" stroke="#F79646" stroke-width="3"/>
+    <circle cx="1160" cy="103" r="5" fill="#F79646"/>
+  </g>
+  <!-- books -->
+  <g class="float2">
+    <rect x="900" y="150" width="120" height="20" rx="4" fill="#F79646"/>
+    <rect x="910" y="130" width="104" height="20" rx="4" fill="#ffffff"/>
+    <rect x="896" y="110" width="112" height="20" rx="4" fill="#E8F4F4"/>
+    <rect x="904" y="114" width="6" height="12" fill="#158887"/>
+    <rect x="918" y="134" width="6" height="12" fill="#F79646"/>
+    <rect x="908" y="154" width="6" height="12" fill="#ffffff"/>
+  </g>
+  <!-- certificate -->
+  <g class="float3">
+    <rect x="1190" y="135" width="76" height="56" rx="6" fill="#ffffff" fill-opacity="0.95"/>
+    <rect x="1200" y="147" width="44" height="5" rx="2.5" fill="#158887"/>
+    <rect x="1200" y="158" width="56" height="4" rx="2" fill="#9CC9C8"/>
+    <rect x="1200" y="167" width="36" height="4" rx="2" fill="#9CC9C8"/>
+    <circle cx="1248" cy="176" r="9" fill="#F79646"/>
+  </g>
+  <!-- sparkles -->
+  <g fill="#ffffff" class="pulse">
+    <path d="M820 50 l4 10 l10 4 l-10 4 l-4 10 l-4 -10 l-10 -4 l10 -4 z"/>
+    <path d="M1010 40 l3 7 l7 3 l-7 3 l-3 7 l-3 -7 l-7 -3 l7 -3 z"/>
+    <path d="M700 120 l3 7 l7 3 l-7 3 l-3 7 l-3 -7 l-7 -3 l7 -3 z"/>
+  </g>
+</svg>

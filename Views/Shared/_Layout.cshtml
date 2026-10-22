@@ -1,0 +1,660 @@
+﻿@using System.Configuration
+@{
+    string LoginName = string.Empty; string ProfileImage = string.Empty;
+    string EmailId = string.Empty; string UserId = string.Empty; string Password = string.Empty;
+    string LoginType = string.Empty;
+    if (Session["Registration"] != null)
+    {
+        LoginType = ((CoursesHub.Models.Registration)Session["Registration"]).LoginType;
+
+        if (LoginType == "Student")
+        {
+            CoursesHub.Models.StudentRegistration obj = ((CoursesHub.Models.Registration)Session["Registration"]).objStudentRegistration;
+
+            LoginName = obj.FirstName + " " + obj.LastName;
+            ProfileImage = System.Configuration.ConfigurationManager.AppSettings["BaseURL"].ToString() + "Uploads/NoImage.jpg";
+            EmailId = obj.EmailId;
+            Password = obj.Password;
+            UserId = obj.Id.ToString();
+        }
+        else
+        {
+            CoursesHub.Models.UniversityRegistration obj = ((CoursesHub.Models.Registration)Session["Registration"]).objUniversityRegistration;
+
+            LoginName = obj.Legal_Name_Organisation;
+            ProfileImage = obj.Logo;
+            EmailId = obj.Email;
+            Password = obj.Password;
+            UserId = obj.Id.ToString();
+        }
+    }
+    CoursesHub.Models.Master _Master = (CoursesHub.Models.Master)ViewBag.GetMaster;
+
+}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-R4M9S106H1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-R4M9S106H1');
+    </script>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>
+        @(string.IsNullOrEmpty(ViewBag.Title)
+        ? "Courses Hub - Set the right course for your career<"
+        : ViewBag.Title)
+    </title>
+    <meta name="robots" content="index, follow">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="shortcut icon" type="image/x-icon" href="@CoursesHub.AssetVersion.Url("~/assets/images/favicon.png")">
+    <link rel="stylesheet" href="~/assets/css/vendor/bootstrap.min.css">
+    <link rel="stylesheet" href="~/assets/css/vendor/slick.css">
+    <link rel="stylesheet" href="~/assets/css/vendor/slick-theme.css">
+    <link rel="stylesheet" href="~/assets/css/plugins/sal.css">
+    <link rel="stylesheet" href="~/assets/css/plugins/feather.css">
+    <link rel="stylesheet" href="~/assets/css/plugins/fontawesome.min.css">
+    <link rel="stylesheet" href="~/assets/css/plugins/euclid-circulara.css">
+    <link rel="stylesheet" href="~/assets/css/plugins/swiper.css">
+    <link rel="stylesheet" href="~/assets/css/plugins/odometer.css">
+    <link rel="stylesheet" href="~/assets/css/plugins/animation.css">
+    <link rel="stylesheet" href="~/assets/css/plugins/bootstrap-select.min.css">
+    <link rel="stylesheet" href="~/assets/css/plugins/jquery-ui.css">
+    <link rel="stylesheet" href="~/assets/css/plugins/magnigy-popup.min.css">
+    <link rel="stylesheet" href="@CoursesHub.AssetVersion.Url("~/assets/css/styles.css")">
+    <link rel="stylesheet" href="@CoursesHub.AssetVersion.Url("~/assets/css/brand-theme.css")">
+    <style>
+        /* Mobile menu (.popup-mobile-menu) uses the template styles + brand-theme.css */
+
+        .menu-divider {
+            font-size: 11px;
+            text-transform: uppercase;
+            color: var(--accent-color);
+            font-weight: 700;
+            margin: 25px 0 10px 15px;
+            letter-spacing: 1px;
+            opacity: 0.8;
+        }
+
+
+        /* Main Links */
+        .menu-link {
+            color: #fff;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            padding: 14px 15px;
+            border-radius: 10px;
+            font-weight: 500;
+            transition: 0.3s;
+            gap: 15px;
+        }
+
+            .menu-link i {
+                font-size: 18px;
+                color: var(--accent-color);
+            }
+
+            .menu-link:hover {
+                background: rgba(255, 255, 255, 0.1);
+                color: var(--accent-color) !important;
+            }
+
+
+        /* Accordion Styles */
+        .accordion-item {
+            margin-bottom: 8px;
+        }
+
+        .accordion-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 15px;
+            background: rgba(255, 255, 255, 0.05); /* Transparent subtle highlight instead of white */
+            border-radius: 10px;
+            cursor: pointer;
+            transition: 0.3s;
+            color: #ffffff; /* Explicitly set text to white */
+        }
+
+            .accordion-header span {
+                display: flex;
+                align-items: center;
+                gap: 15px;
+                font-weight: 500;
+                color: #ffffff; /* Force white text */
+            }
+
+            /* Change color on hover for better UX */
+            .accordion-header:hover {
+                background: rgba(255, 255, 255, 0.1);
+                color: var(--accent-color); /* Turns brand orange on hover */
+            }
+
+            .accordion-header span i {
+                color: var(--accent-color);
+                font-size: 18px;
+            }
+
+            .accordion-header:hover {
+                background: rgba(255, 255, 255, 0.1);
+                color: var(--accent-color); /* Turns brand orange on hover */
+            }
+
+
+
+        /* Submenu Grid Styling */
+        .accordion-content {
+            display: none;
+            padding: 15px;
+            background: var(--secondary-dark);
+            margin-top: 5px;
+            border-radius: 10px;
+            border: 1px solid rgba(var(--accent-rgb), 0.25);
+        }
+
+        .submenu-grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+            .submenu-grid-2 a {
+                color: #ffffff !important; /* Force white text */
+                text-decoration: none;
+                font-size: 13px;
+                padding: 12px 5px;
+                background: rgba(255, 255, 255, 0.1); /* Slight highlight */
+                border-radius: 6px;
+                text-align: center;
+                transition: 0.2s;
+                display: block;
+                border: 1px solid rgba(255, 255, 255, 0.1);
+            }
+
+                .submenu-grid-2 a:hover {
+                    background: var(--accent-color);
+                    color: var(--on-accent-color) !important;
+                    font-weight: 600;
+                }
+
+
+        /* Arrow rotation */
+        .arrow {
+            transition: 0.3s;
+            opacity: 0.6;
+        }
+
+        .rotate {
+            transform: rotate(180deg);
+            opacity: 1;
+            color: var(--accent-color);
+        }
+
+
+        /* Special Login Button */
+        .login-special {
+            background: var(--accent-color);
+            color: var(--on-accent-color) !important;
+            margin-top: 20px;
+            justify-content: center;
+        }
+
+            .login-special i {
+                color: var(--on-accent-color);
+            }
+    </style>
+    @RenderSection("MetaTags", required: false)
+</head>
+
+<body class="rbt-header-sticky rbt-dark-header-8">
+    @Html.Partial("~/Views/Shared/_PageLoader.cshtml")
+    <header class="rbt-header rbt-header-3">
+
+        <div class="rbt-sticky-placeholder"></div>
+        <!-- Start Header Top -->
+        <div class="rbt-header-top rbt-header-top-1 header-space-betwween bg-color-darker rbt-border-bottom top-expended-activation">
+            <div class="container-fluid">
+                <div class="top-expended-wrapper">
+                    <div class="top-expended-inner rbt-header-sec align-items-center ">
+
+                        <div class="rbt-header-sec-col rbt-header-left d-none d-xl-block">
+                            <div class="rbt-header-content">
+                                <div class="header-info">
+                                    <ul class="rbt-secondary-menu">
+                                        <li> <a href="@Url.Action("Index", "Index", new { area = "" })">Home</a></li>
+                                        <li> <a href="@Url.Action("AboutUs", "AboutUs", new { area = "" })">About</a></li>
+                                        <li><a href="@Url.Action("AllCourses", "Courses", new { area = "" })">Courses</a></li>
+                                        <li><a href="@Url.Action("Blog", "Blog", new { area = "" })">Blogs</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="rbt-header-sec-col rbt-header-right mt_md--10 mt_sm--10">
+                            <div class="rbt-header-content">
+                                <div class="header-info">
+                                    <ul class="social-share-transparent version-02">
+                                        <li><a href="https://www.facebook.com/courseshub.aus/"><i class="fab fa-facebook-f"></i></a></li>
+                                        <li><a href="https://www.instagram.com/courseshubaus/"><i class="fab fa-instagram"></i></a></li>
+                                        <li><a href="https://www.youtube.com/%40CoursesHub-aus"><i class="fab fa-youtube"></i></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="rbt-header-middle position-relative rbt-header-mid-1 header-space-betwween bg-color-white rbt-border-bottom d-none d-xl-block">
+            <div class="container-fluid">
+                <div class="rbt-header-sec align-items-center ">
+
+                    <div class="rbt-header-sec-col rbt-header-left">
+                        <div class="rbt-header-content">
+                            <div class="header-info">
+                                <div class="logo logo-dark">
+                                    <a href="@Url.Action("Index","Index", new { area="" })">
+                                        <img src="~/assets/images/logo/logo.png" alt="Education Logo Images">
+                                    </a>
+                                </div>
+
+                                <div class="logo d-none logo-light">
+                                    <a href="@Url.Action("Index","Index", new { area="" })">
+                                        <img src="~/assets/images/dark/logo/logo-light.png" alt="Education Logo Images">
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="rbt-header-sec-col rbt-header-center">
+                        <div class="rbt-header-content">
+                            <div class="header-info">
+                                @Html.Partial("~/Views/Shared/_HeaderSearch.cshtml")
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="rbt-header-sec-col rbt-header-right">
+                        <div class="rbt-header-content">
+                            <div class="header-info">
+                                <ul class="quick-access">
+                                    @Html.Partial("_HeaderAccountMenu")
+                                </ul>
+                            </div>
+                            <div class="header-info">
+                                <a class="rbt-btn rbt-switch-btn btn-gradient btn-sm hover-transform-none" href="@Url.Action("Registration", "Registration", new { area = "" })">
+                                    <span data-text="Join For Free">Join For Free</span>
+                                </a>
+                            </div>
+                            <div class="header-info d-none d-xl-block">
+                                <button type="button" class="fd-open-btn js-filter-drawer-open" aria-controls="filter-drawer" aria-expanded="false" aria-label="Open course filters" title="Find your course">
+                                    <span class="fd-bars" aria-hidden="true"><span></span><span></span><span></span></span>
+                                </button>
+                            </div>
+                            <div class="header-info d-xl-none">
+                                <ul class="quick-access">
+                                    <li class="access-icon">
+                                        <a class="search-trigger-active rbt-round-btn" href="#">
+                                            <i class="feather-search"></i>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="header-info d-block d-xl-none">
+                                <div class="mobile-menu-bar">
+                                    <div class="hamberger">
+                                        <button class="hamberger-button rbt-round-btn">
+                                            <i class="feather-menu"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="rbt-header-wrapper height-50 header-space-betwween bg-color-white header-sticky">
+            <div class="container-fluid">
+                <div class="mainbar-row rbt-navigation-center align-items-center">
+                    <div class="header-center ch-mobile-logo d-block d-xl-none">
+                        <div class="logo logo-dark">
+                            <a href="@Url.Action("Index","Index", new { area="" })">
+                                <img src="~/assets/images/logo/logo.png" alt="Education Logo Images">
+                            </a>
+                        </div>
+
+                        <div class="logo d-none logo-light">
+                            <a href="@Url.Action("Index","Index", new { area="" })">
+                                <img src="~/assets/images/dark/logo/logo-light.png" alt="Education Logo Images">
+                            </a>
+                        </div>
+                    </div>
+                    <div class="header-right">
+                        <div class="d-block d-xl-none">
+                            <ul class="quick-access">
+                                @Html.Partial("_HeaderAccountMenu", new ViewDataDictionary { { "MenuClass", "right-align-dropdown" } })
+                                <li class="access-icon">
+                                    <button type="button" class="rbt-round-btn fd-open-mobile js-filter-drawer-open" aria-controls="filter-drawer" aria-expanded="false" aria-label="Open course filters" title="Find your course">
+                                        <i class="feather-sliders"></i>
+                                    </button>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- Start Mobile-Menu-Bar -->
+                        <div class="mobile-menu-bar d-block d-xl-none">
+                            <div class="hamberger">
+                                <button class="hamberger-button rbt-round-btn ms-auto">
+                                    <i class="feather-menu"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <!-- Start Mobile-Menu-Bar -->
+                    </div>
+                </div>
+            </div>
+
+            @* Mobile / tablet: the course search is always visible under the header bar *@
+            <div class="ch-mobile-search d-xl-none">
+                <div class="container-fluid">
+                    @Html.Partial("~/Views/Shared/_HeaderSearch.cshtml", new ViewDataDictionary { { "SearchClass", "ch-header-search--mobile" } })
+                </div>
+            </div>
+        </div>
+    </header>
+    @* Mobile menu (opened by the header menu button on phones/tablets; main.js toggles .popup-mobile-menu.active) *@
+    <div class="popup-mobile-menu" id="mobile-menu" aria-label="Site menu">
+        <div class="inner-wrapper">
+            <div class="inner-top">
+                <div class="content">
+                    <div class="logo">
+                        <div class="logo logo-dark">
+                            <a href="@Url.Action("Index","Index", new { area="" })">
+                                <img src="~/assets/images/logo/logo.png" alt="Courses Hub">
+                            </a>
+                        </div>
+                    </div>
+                    <div class="rbt-btn-close">
+                        <button type="button" class="close-button rbt-round-btn" aria-label="Close menu"><i class="feather-x"></i></button>
+                    </div>
+                </div>
+            </div>
+            <nav class="mainmenu-nav">
+                <ul class="mainmenu">
+                    <li>
+                        <a href="@Url.Action("Index","Index", new { area = "" })"><i class="feather-home"></i> Home</a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("AboutUs","AboutUs", new { area = "" })"><i class="feather-info"></i> About</a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("AllCourses","Courses", new { area = "" })"><i class="feather-book-open"></i> Courses</a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("TrainingProviders","Courses", new { area = "" })"><i class="feather-briefcase"></i> Training Providers</a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Blog","Blog", new { area = "" })"><i class="feather-edit-3"></i> Blog</a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("ContactUs","ContactUs", new { area = "" })"><i class="feather-phone"></i> Contact Us</a>
+                    </li>
+                    @if (UserId == null || Convert.ToString(UserId) == "")
+                    {
+                        <li class="mobile-menu-divider">Account</li>
+                        <li>
+                            <a href="@Url.Action("Login", "Login", new { area = "", type = "Student" })"><i class="feather-user"></i> Student Login</a>
+                        </li>
+                        <li>
+                            <a href="@Url.Action("Login", "Login", new { area = "", type = "TrainingProvider" })"><i class="feather-briefcase"></i> Training Provider Login</a>
+                        </li>
+                        <li>
+                            <a class="mobile-menu-join" href="@Url.Action("Registration", "Registration", new { area = "" })"><i class="feather-user-plus"></i> Join For Free</a>
+                        </li>
+                    }
+                </ul>
+            </nav>
+            <div class="mobile-menu-bottom">
+                <div class="social-share-wrapper">
+                    <span class="rbt-short-title d-block">Find With Us</span>
+                    <ul class="social-icon social-default transparent-with-border justify-content-start mt--20">
+                        <li>
+                            <a href="https://www.facebook.com/courseshub.aus/">
+                                <i class="feather-facebook"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/%40CoursesHub-aus">
+                                <i class="feather-youtube"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.instagram.com/courseshubaus/">
+                                <i class="feather-instagram"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <a class="close_side_menu" href="javascript:void(0);"></a>
+    <aside id="filter-drawer" class="fd-drawer" role="dialog" aria-modal="true" aria-labelledby="fd-title" aria-hidden="true">
+        <div class="fd-head">
+            <span class="fd-head-blob" aria-hidden="true"></span>
+            <div class="fd-head-text">
+                <span class="fd-eyebrow"><i class="feather-sliders"></i> Quick Filters</span>
+                <h4 id="fd-title" class="fd-title">Find Your Course</h4>
+            </div>
+            <button type="button" class="fd-close" aria-label="Close filters"><i class="feather-x"></i></button>
+        </div>
+        @Html.Action("Master", "Index", new { area = "" })
+    </aside>
+    <div id="filter-drawer-overlay" class="fd-overlay" hidden></div>
+    <a class="close_side_menu" href="javascript:void(0);"></a>
+    <div class="container-fluid body-content banner-no-padding">
+        @RenderBody()
+    </div>
+    <br />
+    @Html.Partial("~/Views/Shared/_SiteFooter.cshtml")
+    @Html.Partial("~/Views/Shared/_FindProviderModal.cshtml")
+    <div class="rbt-progress-parent">
+        <svg class="rbt-back-circle svg-inner" width="100%" height="100%" viewBox="-1 -1 102 102">
+            <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98" />
+        </svg>
+    </div>
+    <script src="~/assets/js/vendor/jquery.js"></script>
+    <script src="~/assets/js/vendor/bootstrap.min.js"></script>
+    <script src="~/assets/js/vendor/bootstrap-select.min.js"></script>
+    <script src="~/assets/js/vendor/modernizr.min.js"></script>
+    <script src="~/assets/js/vendor/sal.js"></script>
+    <script src="~/assets/js/vendor/js.cookie.js"></script>
+    <script src="~/assets/js/vendor/jquery.style.switcher.js"></script>
+    <script src="~/assets/js/vendor/swiper.js"></script>
+    <script src="~/assets/js/vendor/jquery-appear.js"></script>
+    <script src="~/assets/js/vendor/odometer.js"></script>
+    <script src="~/assets/js/vendor/backtotop.js"></script>
+    <script src="~/assets/js/vendor/isotop.js"></script>
+    <script src="~/assets/js/vendor/imageloaded.js"></script>
+    <script src="~/assets/js/vendor/wow.js"></script>
+    <script src="~/assets/js/vendor/waypoint.min.js"></script>
+    <script src="~/assets/js/vendor/easypie.js"></script>
+    <script src="~/assets/js/vendor/text-type.js"></script>
+    <script src="~/assets/js/vendor/jquery-one-page-nav.js"></script>
+    <script src="~/assets/js/vendor/jquery-ui.js"></script>
+    <script src="~/assets/js/vendor/magnify-popup.min.js"></script>
+    <script src="~/assets/js/vendor/paralax-scroll.js"></script>
+    <script src="~/assets/js/vendor/paralax.min.js"></script>
+    <script src="~/assets/js/vendor/countdown.js"></script>
+    @RenderSection("scripts", required: false)
+    <script>
+        $(document).ready(function () {
+            $("#IndexsearchBox").on("keyup", function () {
+                var query = $(this).val().trim();
+
+                if (query.length >= 3) {
+                    $.ajax({
+                        url: '@Url.Action("SearchResults", "Index")',
+                        type: 'GET',
+                        data: { keyword: query },
+                        success: function (data) {
+                            $("#resultDivout").slideDown();
+                            if (data && data.trim() !== "") {
+
+                                $("#resultDiv").html(data);
+                            } else {
+                                $("#resultDiv").html("<p style='padding:10px;'>No results found.</p>").slideDown();
+                            }
+                        },
+                        error: function () {
+                            $("#resultDivout").slideDown();
+                            $("#resultDiv").html("<p style='padding:10px;color:red;'>Something went wrong.</p>").slideDown();
+                        }
+                    });
+                } else {
+                    $("#resultDivout").fadeOut(100);
+                }
+            });
+
+            $(document).on("click", function (e) {
+                if (!$(e.target).closest("#IndexsearchBox, #resultDivout").length) {
+                    $("#resultDivout").fadeOut(100);
+                }
+            });
+
+            $(document).on("click", ".search-item", function () {
+                $("#IndexsearchBox").val($(this).text());
+                $("#resultDivout").fadeOut(100);
+            });
+
+            localStorage.setItem("EmailId", "@EmailId");
+            localStorage.setItem("Password", "@Password");
+            localStorage.setItem("LoginType", "@LoginType");
+
+            setInterval(function () {
+                $.ajax({
+                    url: '/Index/SetSessionValues',
+                    type: 'Post',
+                    data: {
+                        EmailId: localStorage.getItem("EmailId"),
+                        Password: localStorage.getItem("Password"),
+                        LoginType: localStorage.getItem("LoginType")
+                    },
+                    success: function (response) {
+                        console.log('Repeated AJAX success:', response);
+                    },
+                    error: function (error) {
+                        console.log('Error:', error);
+                    }
+                });
+            }, 60000);
+        });
+    </script>
+    <script>
+        function showLoaderIfValid(form) {
+            // Check HTML5 validation
+            if (!form.checkValidity()) {
+                return false; // STOP loader & STOP submit
+            }
+            // The branded loader covers the page (also stops double clicks); see assets/js/ch-loader.js
+            if (window.CHLoader) { CHLoader.show("Loading…"); }
+            return true; // Continue submit
+        }
+    </script>
+    <script>
+        function showLoaderIfValidReg(form) {
+            var $form = $(form);
+
+            if (!$form.valid()) {
+                return false;
+            }
+            if (window.CHLoader) { CHLoader.show("Loading…"); }
+            return true;
+        }
+    </script>
+    <script>
+        // Mobile menu: works on every page (some pages do not load main.js)
+        (function () {
+            var menu = document.querySelector('.popup-mobile-menu');
+            if (!menu) return;
+            var setOpen = function (isOpen) {
+                menu.classList.toggle('active', isOpen);
+                document.body.classList.toggle('fd-lock', isOpen);
+                document.querySelectorAll('.hamberger-button').forEach(function (b) { b.setAttribute('aria-expanded', isOpen ? 'true' : 'false'); });
+                if (isOpen) { var c = menu.querySelector('.close-button'); if (c) c.focus(); }
+            };
+            document.querySelectorAll('.hamberger-button').forEach(function (b) {
+                b.setAttribute('aria-controls', 'mobile-menu');
+                b.setAttribute('aria-expanded', 'false');
+                b.setAttribute('aria-label', 'Open menu');
+                b.addEventListener('click', function (e) { e.preventDefault(); setOpen(true); });
+            });
+            menu.querySelectorAll('.close-button').forEach(function (b) {
+                b.addEventListener('click', function () { setOpen(false); });
+            });
+            // tap on the dark area outside the panel closes it
+            menu.addEventListener('click', function (e) { if (e.target === menu) setOpen(false); });
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape' && menu.classList.contains('active')) setOpen(false);
+            });
+        })();
+    </script>
+    <script>
+        // Right-side "Find Your Course" filter drawer
+        (function () {
+            var drawer = document.getElementById('filter-drawer');
+            var overlay = document.getElementById('filter-drawer-overlay');
+            if (!drawer || !overlay) return;
+            var openers = document.querySelectorAll('.js-filter-drawer-open');
+            var lastOpener = null;
+
+            function setOpen(isOpen) {
+                drawer.classList.toggle('is-open', isOpen);
+                drawer.setAttribute('aria-hidden', isOpen ? 'false' : 'true');
+                overlay.hidden = !isOpen;
+                document.body.classList.toggle('fd-lock', isOpen);
+                openers.forEach(function (b) { b.setAttribute('aria-expanded', isOpen ? 'true' : 'false'); });
+                if (isOpen) {
+                    drawer.querySelector('.fd-close').focus();
+                } else if (lastOpener) {
+                    lastOpener.focus();
+                }
+            }
+
+            openers.forEach(function (btn) {
+                btn.addEventListener('click', function (e) { e.preventDefault(); lastOpener = btn; setOpen(true); });
+            });
+            drawer.querySelector('.fd-close').addEventListener('click', function () { setOpen(false); });
+            overlay.addEventListener('click', function () { setOpen(false); });
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape' && drawer.classList.contains('is-open')) { setOpen(false); }
+            });
+
+            // One section open at a time
+            drawer.querySelectorAll('.fd-group-btn').forEach(function (btn) {
+                btn.addEventListener('click', function () {
+                    var willOpen = btn.getAttribute('aria-expanded') !== 'true';
+                    drawer.querySelectorAll('.fd-group-btn').forEach(function (other) {
+                        other.setAttribute('aria-expanded', 'false');
+                        document.getElementById(other.getAttribute('aria-controls')).hidden = true;
+                    });
+                    btn.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
+                    document.getElementById(btn.getAttribute('aria-controls')).hidden = !willOpen;
+                });
+            });
+        })();
+    </script>
+</body>
+</html>

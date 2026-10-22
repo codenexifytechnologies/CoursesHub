@@ -1,0 +1,143 @@
+﻿@model List<CoursesHub.Areas.Panel.Models.CourseDetails>
+@{
+    ViewBag.Title = "ViewCourses";
+    Layout = "~/Areas/Panel/Views/Shared/_Layout.cshtml";
+}
+<link rel="stylesheet" href="~/Areas/Admin/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+<link rel="stylesheet" href="~/Areas/Admin/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+<link rel="stylesheet" href="~/Areas/Admin/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+<script src="//code.jquery.com/jquery-2.2.4.min.js"></script>
+<script src="~/assets/js/toastr.min.js"></script>
+ <link href="~/assets/css/toastr.min.css" rel="stylesheet" />
+
+<div class="sd-page">
+    <div class="sd-card sd-reveal">
+        <div class="sd-page-head">
+            <span class="sd-page-icon"><i class="feather-book-open"></i></span>
+            <div>
+                <h4 class="sd-page-title">My Courses</h4>
+                <p class="sd-page-sub">All courses you have listed on Courses Hub and their verification status.</p>
+            </div>
+            <a class="sd-btn" href="@Url.Action("AddCourse", "Courses", new { area = "Panel" })"><i class="feather-plus"></i> Add Course</a>
+        </div>
+
+        @if (Model == null || Model.Count == 0)
+        {
+            <div class="sd-empty">
+                <img src="@CoursesHub.AssetVersion.Url("~/assets/images/student/student-empty-courses.svg")" alt="" aria-hidden="true">
+                <h5>No Records Found</h5>
+                <p>Add your first course to start receiving student leads.</p>
+            </div>
+        }
+        else
+        {
+            <div class="sd-list">
+                @foreach (var item in Model)
+                {
+                    <article class="sd-item pp-course-item sd-reveal">
+                        <input type="hidden" class="deletecourse" value="@item.Id" />
+                        <span class="sd-item-icon"><i class="feather-book"></i></span>
+                        <div class="sd-item-main">
+                            <span class="sd-item-label">Course Name</span>
+                            <span class="sd-item-title">@item.CourseName</span>
+                            <span class="sd-item-sub"><i class="feather-clock"></i> Duration: @item.CourseDuration Weeks</span>
+                            @{
+                                var fundingLabel = CoursesHub.Models.CourseFilterHelper.Funding(item.GovernmentFunding);
+                                var studentTypeLabel = CoursesHub.Models.CourseFilterHelper.StudentTypeLabel(item.StudentType);
+                            }
+                            <span class="pp-course-tags">
+                                <span class="pp-course-tag @(fundingLabel == null ? "is-empty" : "")" title="Government Funding">
+                                    <i class="feather-dollar-sign"></i> @(fundingLabel ?? "Funding not set")
+                                </span>
+                                <span class="pp-course-tag pp-course-tag-alt @(studentTypeLabel == null ? "is-empty" : "")" title="Student Type">
+                                    <i class="feather-users"></i> @(studentTypeLabel ?? "Student type not set")
+                                </span>
+                            </span>
+                        </div>
+                        <div class="sd-item-meta">
+                            <span class="sd-item-label">Provider</span>
+                            <span class="sd-item-value">@item.CourseProvider</span>
+                        </div>
+                        <div class="sd-item-meta sd-item-status">
+                            <span class="sd-item-label">Verification</span>
+                            @if (item.IsActive)
+                            {
+                                <span class="sd-status sd-status-ok"><i class="feather-check-circle"></i> Verified</span>
+                            }
+                            else
+                            {
+                                <span class="sd-status sd-status-pending"><i class="feather-clock"></i> Verification Pending</span>
+                            }
+                        </div>
+                        <div class="sd-item-actions">
+                            <a href="@Url.Action("EditCourse", "Courses", new { @Id=item.Id })" class="sd-icon-btn" title="Edit" aria-label="Edit course">
+                                <i class="feather-edit-2"></i>
+                            </a>
+                            <button type="button" class="sd-icon-btn sd-icon-btn-danger remove-row delete" title="Delete" aria-label="Delete course">
+                                <i class="feather-trash-2"></i>
+                            </button>
+                        </div>
+                    </article>
+                }
+            </div>
+        }
+    </div>
+</div>
+
+<script src="~/assets/js/vendor/jquery.js"></script>
+<script src="~/Plugins/jquery-validation/jquery.validate.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+     $(document).ready(function () {
+         $(document).on("click", ".delete", function () {
+         var row = $(this).closest(".pp-course-item");
+             var id = row.find('.deletecourse').val();
+
+         Swal.fire({
+             title: "Are you sure?",
+             text: "Do you really want to remove this Course?",
+             icon: "warning",
+             showCancelButton: true,
+             confirmButtonColor: "#158887",
+             cancelButtonColor: "#d33",
+             confirmButtonText: "Yes, remove it!",
+             cancelButtonText: "Cancel"
+         }).then((result) => {
+             if (result.isConfirmed)
+             {
+                   $.ajax({
+                     url: '@Url.Action("ChangeStatusCourse", "Courses")',  // Controller Action
+                     type: 'POST',
+                     data: { id: id },
+                       success: function (response)
+                       {
+                           if (response.success) {
+                               row.remove(); // remove row only after confirmation
+                               Swal.fire({
+                                   title: "Removed!",
+                                   text: response.message,
+                                   icon: "success",
+                                   timer: 1200,
+                                   showConfirmButton: false
+                               });
+                           }
+                           else {
+                               Swal.fire({
+                                   title: "Information",
+                                   text: response.message,
+                                   icon: "info",
+                                   timer: 1200,
+                                   showConfirmButton: false
+                               });
+                           }
+                       },
+                       error: function ()
+                       {
+                           alert("Something went wrong!");
+                       }
+                   });
+             }
+         });
+     });
+ });
+</script>

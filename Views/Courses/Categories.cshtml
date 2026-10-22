@@ -1,0 +1,92 @@
+﻿@model List<CoursesHub.Models.Category>
+@{
+    ViewBag.Title = "All Categories";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var categories = Model ?? new List<CoursesHub.Models.Category>();
+    int totalCourses = categories.Sum(c => c.Count);
+}
+
+<section class="tp-hero cg-hero">
+    <span class="tp-blob tp-blob-1" aria-hidden="true"></span>
+    <span class="tp-blob tp-blob-2" aria-hidden="true"></span>
+    <div class="container">
+        <ul class="page-list bl-crumbs">
+            <li class="rbt-breadcrumb-item"><a href="@Url.Action("Index", "Index", new { area = "" })">Home</a></li>
+            <li><div class="icon-right"><i class="feather-chevron-right"></i></div></li>
+            <li class="rbt-breadcrumb-item active">All Categories</li>
+        </ul>
+        <span class="bl-eyebrow"><i class="feather-grid"></i> Categories</span>
+        <h1 class="bl-hero-title">Explore Courses by Field of Study</h1>
+        <p class="bl-hero-text">Pick a field of study to see every course available in it.</p>
+        <div class="bl-hero-meta">
+            <span class="bl-pill"><i class="feather-grid"></i> @categories.Count @(categories.Count == 1 ? "Category" : "Categories")</span>
+            <span class="tp-pill-ghost"><i class="feather-book-open"></i> @totalCourses @(totalCourses == 1 ? "Course" : "Courses")</span>
+            @if (categories.Count > 1)
+            {
+                <label class="bl-search" for="categorySearch">
+                    <i class="feather-search" aria-hidden="true"></i>
+                    <input id="categorySearch" type="search" placeholder="Search categories..." autocomplete="off" aria-label="Search categories">
+                </label>
+            }
+        </div>
+    </div>
+</section>
+
+<div class="cg-area rbt-section-gapBottom">
+    <div class="container">
+        @if (categories.Count == 0)
+        {
+            <div class="bl-empty">
+                <span class="bl-empty-icon"><i class="feather-grid"></i></span>
+                <h4>No categories yet</h4>
+                <p>Categories will appear here once courses are listed.</p>
+            </div>
+        }
+        else
+        {
+            <div class="cg-grid">
+                @for (int n = 0; n < categories.Count; n++)
+                {
+                    var item = categories[n];
+                    <a class="cg-card" style="--cg-i:@(n % 12)" data-name="@((item.CategoryValue ?? "").ToLowerInvariant())"
+                       href="@Url.Action("AllCourses", "Courses", new { area = "", FilterType = "CategoryId", FilterValue = item.Id })">
+                        <span class="cg-icon">
+                            <img loading="lazy" decoding="async" src="@(string.IsNullOrEmpty(item.ImagePath) ? "/assets/images/course/course-01.jpg" : item.ImagePath)" alt="" onerror="this.onerror=null;this.src='/assets/images/course/course-01.jpg';">
+                        </span>
+                        <span class="cg-body">
+                            <span class="cg-name">@item.CategoryValue</span>
+                            <span class="cg-count">@item.Count @(item.Count == 1 ? "Course" : "Courses")</span>
+                        </span>
+                        <span class="cg-arrow" aria-hidden="true"><i class="feather-arrow-right"></i></span>
+                    </a>
+                }
+            </div>
+            <div class="bl-empty cg-no-match" hidden>
+                <span class="bl-empty-icon"><i class="feather-search"></i></span>
+                <h4>No category matches your search</h4>
+                <p>Try a different word.</p>
+            </div>
+        }
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        (function () {
+            var input = document.getElementById('categorySearch');
+            if (!input) return;
+            var cards = document.querySelectorAll('.cg-card');
+            var empty = document.querySelector('.cg-no-match');
+            input.addEventListener('input', function () {
+                var q = input.value.trim().toLowerCase();
+                var shown = 0;
+                Array.prototype.forEach.call(cards, function (c) {
+                    var match = !q || c.getAttribute('data-name').indexOf(q) !== -1;
+                    c.hidden = !match;
+                    if (match) shown++;
+                });
+                if (empty) empty.hidden = shown !== 0;
+            });
+        })();
+    </script>
+}

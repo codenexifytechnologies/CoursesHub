@@ -1,0 +1,132 @@
+﻿@model  List<CoursesHub.Areas.Panel.Models.CourseDetails>
+@{
+    ViewBag.Title = "AppliedCourses";
+    Layout = "~/Areas/Student/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="~/Areas/Admin/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+<link rel="stylesheet" href="~/Areas/Admin/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+<link rel="stylesheet" href="~/Areas/Admin/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+<script src="//code.jquery.com/jquery-2.2.4.min.js"></script>
+<script src="~/assets/js/toastr.min.js"></script>
+ <link href="~/assets/css/toastr.min.css" rel="stylesheet" />
+@if (TempData["EditTestimonialDetailsMsg"] != null)
+{
+    <script>
+        $(document).ready(function () {
+            toastr.info('@TempData["EditTestimonialDetailsMsg"]');
+        });
+    </script>
+}
+<div class="sd-page">
+    <div class="sd-card sd-reveal">
+        <div class="sd-page-head">
+            <span class="sd-page-icon"><i class="feather-book-open"></i></span>
+            <div>
+                <h4 class="sd-page-title">My Applied Courses</h4>
+                <p class="sd-page-sub">Courses you have applied for and how to reach each training provider.</p>
+            </div>
+            @if (Model != null && Model.Count > 0)
+            {
+                <span class="sd-count-pill">@Model.Count @(Model.Count == 1 ? "Course" : "Courses")</span>
+            }
+        </div>
+
+        @if (Model == null || Model.Count == 0)
+        {
+            <div class="sd-empty">
+                <img src="@CoursesHub.AssetVersion.Url("~/assets/images/student/student-empty-courses.svg")" alt="" aria-hidden="true">
+                <h5>No Records Found</h5>
+                <p>When you apply for a course it will appear here.</p>
+                <a class="sd-btn" href="@Url.Action("AllCourses", "Courses", new { area = "" })"><i class="feather-search"></i> Explore Courses</a>
+            </div>
+        }
+        else
+        {
+            <div class="sd-list">
+                @foreach (var item in Model)
+                {
+                    <article class="sd-item sd-reveal">
+                        <span class="sd-item-icon"><i class="feather-book"></i></span>
+                        <div class="sd-item-main">
+                            <span class="sd-item-label">Course Name</span>
+                            <a class="sd-item-title" href="@Url.Action("CourseDetails", "Courses", new { Area = "", CourseId = item.Id })">@item.CourseName</a>
+                        </div>
+                        <div class="sd-item-meta">
+                            <span class="sd-item-label">Training Provider</span>
+                            <span class="sd-item-value"><i class="feather-home"></i> @item.UniversityName</span>
+                        </div>
+                        <div class="sd-item-meta">
+                            <span class="sd-item-label">Training Provider Contact Detail</span>
+                            @if (!string.IsNullOrEmpty(item.UniversityEmail))
+                            {
+                                <a class="sd-item-value" href="mailto:@item.UniversityEmail"><i class="feather-mail"></i> @item.UniversityEmail</a>
+                            }
+                        </div>
+                        <a class="sd-icon-btn" href="@Url.Action("CourseDetails", "Courses", new { Area = "", CourseId = item.Id })" title="View course" aria-label="View @item.CourseName"><i class="feather-arrow-right"></i></a>
+                    </article>
+                }
+            </div>
+        }
+    </div>
+</div>
+
+<script src="~/assets/js/vendor/jquery.js"></script>
+<script src="~/Plugins/jquery-validation/jquery.validate.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+     $(document).ready(function () {
+         $(document).on("click", ".delete", function () {
+         var row = $(this).closest("tr");
+             var id = row.find('.deletecourse').val();
+
+         Swal.fire({
+             title: "Are you sure?",
+             text: "Do you really want to remove this Feedback?",
+             icon: "warning",
+             showCancelButton: true,
+             confirmButtonColor: "#158887",
+             cancelButtonColor: "#d33",
+             confirmButtonText: "Yes, remove it!",
+             cancelButtonText: "Cancel"
+         }).then((result) => {
+             if (result.isConfirmed)
+             {
+                   $.ajax({
+                     url: '@Url.Action("DeleteTestimonial", "Courses")',  // Controller Action
+                     type: 'POST',
+                     data: { id: id },
+                       success: function (response)
+                       {
+                           if (response.success) {
+                               row.remove(); // remove row only after confirmation
+                               Swal.fire({
+                                   title: "Removed!",
+                                   text: response.message,
+                                   icon: "success",
+                                   timer: 1200,
+                                   showConfirmButton: false
+                               });
+                           }
+                           else {
+                               Swal.fire({
+                                   title: "Information",
+                                   text: response.message,
+                                   icon: "info",
+                                   timer: 1200,
+                                   showConfirmButton: false
+                               });
+                           }
+                       },
+                       error: function ()
+                       {
+                           alert("Something went wrong!");
+                       }
+                   });
+             }
+         });
+     });
+ });
+</script>
+

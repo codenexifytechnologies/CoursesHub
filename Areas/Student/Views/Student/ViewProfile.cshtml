@@ -1,0 +1,134 @@
+﻿@model CoursesHub.Models.Registration
+@using System.Configuration
+
+@{
+    ViewBag.Title = "ViewProfile";
+    Layout = "~/Areas/Student/Views/Shared/_Layout.cshtml";
+
+    var LoginType = ((CoursesHub.Models.Registration)Session["Registration"]).LoginType;
+    var baseUrl = ConfigurationManager.AppSettings["BaseURL"];
+    var input = Model.objStudentRegistration.Password ?? "";
+
+    if (input.Length >= 4)
+    {
+        string first = input.Substring(0, 1);
+        string last3 = input.Substring(input.Length - 3);
+        string middle = new string('X', input.Length - 4);
+
+        input = first + middle + last3;
+    }
+    else
+    {
+        input = new string('X', input.Length);
+    }
+
+    var p = Model.objStudentRegistration;
+    string fullName = string.Join(" ", new[] { p.FirstName, p.MiddleName, p.LastName }.Where(x => !string.IsNullOrWhiteSpace(x)));
+    string initials = string.Concat(new[] { p.FirstName, p.LastName }.Where(x => !string.IsNullOrWhiteSpace(x)).Select(x => char.ToUpperInvariant(x.Trim()[0])));
+}
+
+<style>
+    .switch {
+        position: relative;
+        display: inline-block;
+        width: 30px;
+        height: 14px;
+    }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+    .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        transition: 0.4s;
+        border-radius: 24px;
+    }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 8px;
+            width: 8px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: 0.4s;
+            border-radius: 50%;
+        }
+
+    input[type="checkbox"]:checked ~ .slider {
+        background-color: var(--primary-color);
+    }
+
+        input[type="checkbox"]:checked ~ .slider:before {
+            transform: translateX(14px);
+        }
+</style>
+<div class="sd-page">
+    <section class="sd-profile-hero sd-reveal">
+        <span class="sd-profile-avatar" aria-hidden="true">@initials</span>
+        <div class="sd-profile-intro">
+            <span class="sd-eyebrow">My Profile</span>
+            <h3 class="sd-profile-name">@fullName</h3>
+            <span class="sd-profile-mail"><i class="feather-mail"></i> @p.EmailId</span>
+        </div>
+        <img class="sd-profile-art" src="@CoursesHub.AssetVersion.Url("~/assets/images/student/student-profile.svg")" alt="" aria-hidden="true">
+    </section>
+
+    <div class="sd-card sd-reveal">
+        <div class="sd-page-head">
+            <span class="sd-page-icon"><i class="feather-user"></i></span>
+            <div>
+                <h4 class="sd-page-title">Personal Details</h4>
+                <p class="sd-page-sub">The details saved on your Courses Hub student account.</p>
+            </div>
+        </div>
+        <div id="Student" class="sd-detail-grid">
+            @Html.HiddenFor(m => m.objStudentRegistration.Id)
+            <div class="sd-detail">
+                <span class="sd-detail-icon"><i class="feather-user"></i></span>
+                <span class="sd-detail-label">First Name</span>
+                <span class="sd-detail-value">@Model.objStudentRegistration.FirstName</span>
+            </div>
+            <div class="sd-detail">
+                <span class="sd-detail-icon"><i class="feather-user"></i></span>
+                <span class="sd-detail-label">Middle Name</span>
+                <span class="sd-detail-value">@(string.IsNullOrWhiteSpace(Model.objStudentRegistration.MiddleName) ? "—" : Model.objStudentRegistration.MiddleName)</span>
+            </div>
+            <div class="sd-detail">
+                <span class="sd-detail-icon"><i class="feather-user"></i></span>
+                <span class="sd-detail-label">Last Name</span>
+                <span class="sd-detail-value">@Model.objStudentRegistration.LastName</span>
+            </div>
+            <div class="sd-detail">
+                <span class="sd-detail-icon sd-detail-icon-accent"><i class="feather-mail"></i></span>
+                <span class="sd-detail-label">EmailId</span>
+                <span class="sd-detail-value">@Model.objStudentRegistration.EmailId</span>
+            </div>
+            <div class="sd-detail">
+                <span class="sd-detail-icon sd-detail-icon-accent"><i class="feather-phone"></i></span>
+                <span class="sd-detail-label">Mobile</span>
+                <span class="sd-detail-value">@Model.objStudentRegistration.Mobile</span>
+            </div>
+            <div class="sd-detail">
+                <span class="sd-detail-icon sd-detail-icon-accent"><i class="feather-lock"></i></span>
+                <span class="sd-detail-label">Password</span>
+                <span class="sd-detail-value sd-mono">@input</span>
+            </div>
+        </div>
+        <div class="sd-form-actions">
+            <a class="sd-btn" href="@Url.Action("ChangePassword", "Student", new { area = "Student", Id = Model.objStudentRegistration.Id })"><i class="feather-lock"></i> Change Password</a>
+            <a class="sd-btn sd-btn-ghost" href="@Url.Action("AppliedCourses", "AppliedCourses", new { area = "Student" })"><i class="feather-book-open"></i> Applied Courses</a>
+        </div>
+    </div>
+</div>
+

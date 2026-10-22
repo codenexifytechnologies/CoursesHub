@@ -1,0 +1,52 @@
+﻿@* "Find a provider" questions (assets/js/find-provider.js): any element with data-find-provider="<course code or title>" opens it *@
+<div id="fpModal" class="fp-modal" role="dialog" aria-modal="true" aria-labelledby="fpQuestion" hidden>
+    <div class="fp-backdrop" data-fp-close></div>
+    <div class="fp-dialog">
+        <button type="button" class="fp-close" data-fp-close aria-label="Close"><i class="feather-x"></i></button>
+
+        <div class="fp-course">
+            <span class="fp-course-code" hidden></span>
+            <span class="fp-course-title"></span>
+        </div>
+        <div class="fp-progress" aria-hidden="true"><span></span></div>
+
+        <div class="fp-step" data-fp-step="resident">
+            <h3 class="fp-question" id="fpQuestion">Are you an Australian Citizen or Permanent Resident?</h3>
+            <div class="fp-choices">
+                <button type="button" class="fp-choice" data-fp-resident="yes" aria-pressed="false">Yes</button>
+                <button type="button" class="fp-choice" data-fp-resident="no" aria-pressed="false">No</button>
+            </div>
+        </div>
+
+        <div class="fp-step" data-fp-step="postcode" hidden>
+            <label class="fp-question" for="fpPostcode">What is your postcode?</label>
+            <div class="fp-field">
+                <i class="feather-map-pin" aria-hidden="true"></i>
+                <input id="fpPostcode" type="text" inputmode="numeric" maxlength="4" placeholder="Postcode" autocomplete="postal-code" aria-describedby="fpPostcodeHint">
+            </div>
+            <p class="fp-hint" id="fpPostcodeHint">Required to show accurate study options for your area.</p>
+            <p class="fp-detected" hidden><i class="feather-check-circle"></i> <span></span></p>
+            <button type="button" class="fp-go" data-fp-go disabled>Show providers <i class="feather-arrow-right"></i></button>
+        </div>
+
+        <div class="fp-step" data-fp-step="country" hidden>
+            <label class="fp-question" for="fpCountry">Which country are you a citizen of?</label>
+            <div class="fp-field">
+                <i class="feather-globe" aria-hidden="true"></i>
+                <input id="fpCountry" type="text" list="fpCountries" placeholder="Start typing your country" autocomplete="country-name" aria-describedby="fpCountryHint">
+            </div>
+            <datalist id="fpCountries">
+                @foreach (var c in new[] { "Afghanistan", "Argentina", "Bangladesh", "Bhutan", "Brazil", "Cambodia", "Canada", "Chile", "China", "Colombia", "Egypt", "Fiji", "France", "Germany", "Ghana", "Hong Kong", "India", "Indonesia", "Iran", "Iraq", "Ireland", "Italy", "Japan", "Kenya", "Korea, South", "Laos", "Lebanon", "Malaysia", "Mauritius", "Mexico", "Mongolia", "Myanmar", "Nepal", "Netherlands", "New Zealand", "Nigeria", "Pakistan", "Papua New Guinea", "Peru", "Philippines", "Poland", "Saudi Arabia", "Singapore", "Somalia", "South Africa", "Spain", "Sri Lanka", "Sudan", "Taiwan", "Thailand", "Tonga", "Turkey", "Uganda", "Ukraine", "United Arab Emirates", "United Kingdom", "United States", "Vietnam", "Zimbabwe" })
+                {
+                    <option value="@c"></option>
+                }
+            </datalist>
+            <p class="fp-hint" id="fpCountryHint">We'll show providers that accept international students.</p>
+            <button type="button" class="fp-go" data-fp-go disabled>Show providers <i class="feather-arrow-right"></i></button>
+        </div>
+
+        <button type="button" class="fp-back" data-fp-back hidden><i class="feather-arrow-left"></i> Back</button>
+    </div>
+</div>
+<script>window.CH_FIND_PROVIDER_URL = '@Url.Action("FindProvider", "Courses", new { area = "" })';</script>
+<script src="@CoursesHub.AssetVersion.Url("~/assets/js/find-provider.js")"></script>

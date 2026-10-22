@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 260" role="img" aria-label="Student learning online">
+  <defs>
+    <style>
+      .bob{animation:bob 4s ease-in-out infinite}
+      .bob2{animation:bob 5s ease-in-out infinite .8s}
+      .blink{animation:blink 2.4s ease-in-out infinite}
+      .grow{transform-origin:bottom;animation:grow 3s ease-in-out infinite}
+      @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+      @keyframes blink{0%,100%{opacity:1}50%{opacity:.35}}
+      @keyframes grow{0%,100%{transform:scaleY(1)}50%{transform:scaleY(.75)}}
+      @media (prefers-reduced-motion: reduce){.bob,.bob2,.blink,.grow{animation:none}}
+    </style>
+  </defs>
+  <ellipse cx="180" cy="236" rx="150" ry="14" fill="#0E6B6A" fill-opacity="0.12"/>
+  <circle cx="190" cy="120" r="100" fill="#E8F4F4"/>
+  <!-- desk -->
+  <rect x="60" y="196" width="250" height="12" rx="6" fill="#0F3F42"/>
+  <rect x="80" y="208" width="10" height="28" fill="#0F3F42"/>
+  <rect x="280" y="208" width="10" height="28" fill="#0F3F42"/>
+  <!-- laptop -->
+  <rect x="150" y="120" width="120" height="76" rx="8" fill="#0F3F42"/>
+  <rect x="158" y="128" width="104" height="60" rx="4" fill="#ffffff"/>
+  <rect x="166" y="138" width="56" height="7" rx="3.5" fill="#158887"/>
+  <rect x="166" y="151" width="86" height="5" rx="2.5" fill="#BFDDDC"/>
+  <rect x="166" y="161" width="70" height="5" rx="2.5" fill="#BFDDDC"/>
+  <rect class="blink" x="166" y="172" width="34" height="9" rx="4.5" fill="#F79646"/>
+  <path d="M136 196 h148 l-10 -8 h-128 z" fill="#158887"/>
+  <!-- student -->
+  <g>
+    <rect x="86" y="140" width="56" height="58" rx="20" fill="#158887"/>
+    <circle cx="114" cy="112" r="24" fill="#F2C7A5"/>
+    <path d="M90 108 C92 84 136 82 138 106 C130 98 112 96 98 104 Z" fill="#0F3F42"/>
+    <path d="M132 150 C150 156 158 166 162 178" stroke="#F2C7A5" stroke-width="10" stroke-linecap="round" fill="none"/>
+    <!-- cap -->
+    <polygon points="114,76 146,90 114,104 82,90" fill="#0F3F42"/>
+    <line x1="142" y1="92" x2="142" y2="110" stroke="#F79646" stroke-width="2.5"/>
+    <circle cx="142" cy="112" r="3.5" fill="#F79646"/>
+  </g>
+  <!-- floating cards -->
+  <g class="bob">
+    <rect x="258" y="40" width="74" height="50" rx="10" fill="#ffffff" stroke="#DCE8E8"/>
+    <rect class="grow" x="270" y="62" width="9" height="20" rx="2" fill="#158887"/>
+    <rect class="grow" x="284" y="54" width="9" height="28" rx="2" fill="#F79646" style="animation-delay:.4s"/>
+    <rect class="grow" x="298" y="66" width="9" height="16" rx="2" fill="#0E6B6A" style="animation-delay:.8s"/>
+    <rect x="312" y="58" width="9" height="24" rx="2" fill="#9CC9C8"/>
+  </g>
+  <g class="bob2">
+    <circle cx="62" cy="62" r="26" fill="#F79646"/>
+    <path d="M50 62 l8 8 l16 -16" stroke="#ffffff" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  <g class="bob2">
+    <rect x="34" y="110" width="40" height="30" rx="6" fill="#ffffff" stroke="#DCE8E8"/>
+    <path d="M44 120 h20 M44 128 h14" stroke="#158887" stroke-width="3" stroke-linecap="round"/>
+  </g>
+</svg>

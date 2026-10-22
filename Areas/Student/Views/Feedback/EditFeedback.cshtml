@@ -1,0 +1,71 @@
+﻿@model  CoursesHub.Areas.Panel.Models.Testimonial
+@{
+    ViewBag.Title = "EditFeedback";
+    Layout = "~/Areas/Student/Views/Shared/_Layout.cshtml";
+}
+
+@if (TempData["Message"] != null)
+{
+    <script src="//code.jquery.com/jquery-2.2.4.min.js"></script>
+    <script src="~/assets/js/toastr.min.js"></script>
+     <link href="~/assets/css/toastr.min.css" rel="stylesheet" />
+    <script>
+        $(document).ready(function () {
+            toastr.info('@TempData["Message"]');
+        });
+    </script>
+}
+
+<div class="sd-page">
+    <div class="sd-card sd-reveal">
+        <div class="sd-page-head">
+            <span class="sd-page-icon sd-page-icon-accent"><i class="feather-edit-2"></i></span>
+            <div>
+                <h4 class="sd-page-title">Feedback Info</h4>
+                <p class="sd-page-sub">Update your comment about this course.</p>
+            </div>
+            <a class="sd-link" href="@Url.Action("ViewFeedback", "Feedback", new { area = "Student" })"><i class="feather-arrow-left"></i> Back to feedback</a>
+        </div>
+                    @using (Html.BeginForm("EditFeedback", "Feedback", FormMethod.Post, new { @class = "max-width-auto sd-form", @id = "EditFeedback", enctype = "multipart/form-data" }))
+                    {
+                        @Html.HiddenFor(m => m.Id)
+                                        <div class="rbt-course-field-wrapper rbt-default-form sd-form-grid">
+                                            <div class="course-field mb--15">
+                                                <label for="field-2">Training Provider Name</label>
+                                                @Html.TextBoxFor(m => m.Trading_Name, new { @class = "form-control", @placeholder = "Training Provider Name", @readonly = "readonly" })
+                                            </div>
+                                            <div class="course-field mb--15">
+                                                <label for="field-1">Course  Name</label>
+                                                @Html.TextBoxFor(m => m.CourseName, new { @class = "form-control", @placeholder = "Course Name", @readonly = "readonly" })
+                                            </div>
+                                            <div class="course-field mb--15">
+                                                <label for="field-2">Person Name</label>
+                                                @Html.TextBoxFor(m => m.Person_Name, new { @class = "form-control", @placeholder = "Person Name",@readonly = "readonly" })
+                                            </div>
+                                            <div class="course-field mb--15">
+                                                <label for="aboutCourse">Designation</label>
+                                                @Html.TextAreaFor(m => m.Designation, new { @class = "form-control", @rows = "5", @placeholder = "Designation", @readonly = "readonly" })
+                                            </div>
+                                            <div class="course-field mb--15 sd-field-wide">
+                                                <label for="aboutCourse">Comment</label>
+                                                @Html.TextAreaFor(m => m.Comment, new { @class = "form-control", @rows = "5", @placeholder = "Comment" })
+                                            </div>
+                                        </div>
+                        <div class="form-submit-group sd-form-actions">
+                            <button type="submit" value="Save" name="submitButton" class="sd-btn">
+                                <i class="feather-save"></i> Save
+                            </button>
+                        </div>
+                    }
+    </div>
+</div>
+
+<script src="~/assets/js/vendor/jquery.js"></script>
+<script src="~/Plugins/jquery-validation/jquery.validate.min.js"></script>
+
+
+
+
+
+
+

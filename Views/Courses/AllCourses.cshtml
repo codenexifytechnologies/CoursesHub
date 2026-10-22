@@ -1,0 +1,395 @@
+﻿
+@{
+    ViewBag.Title = "AllCourses";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var Courses = ViewBag.All as List<CoursesHub.Areas.Panel.Models.CourseDetails>
+                  ?? new List<CoursesHub.Areas.Panel.Models.CourseDetails>();
+
+    var Categories = ViewBag.CategoryType as List<SelectListItem>
+                     ?? new List<SelectListItem>();
+
+    // Sidebar filters: only values that the listed courses actually have
+    var durationOrder = CoursesHub.Models.CourseFilterHelper.DurationBands.ToList();
+    var sidebarFilters = new List<Tuple<string, string, string, List<CoursesHub.Models.CourseFilterHelper.FilterOption>>>
+    {
+        Tuple.Create("institution", "Institutions", "feather-home", CoursesHub.Models.CourseFilterHelper.Options(Courses, c => new[] { c.UniversityName })),
+        Tuple.Create("studyarea", "Study Area", "feather-book-open", CoursesHub.Models.CourseFilterHelper.Options(Courses, c => new[] { c.CategoryName })),
+        Tuple.Create("qualification", "Qualification Level", "feather-award", CoursesHub.Models.CourseFilterHelper.Options(Courses, c => new[] { CoursesHub.Models.CourseFilterHelper.Qualification(c) })),
+        Tuple.Create("location", "Location", "feather-map-pin", CoursesHub.Models.CourseFilterHelper.Options(Courses, c => CoursesHub.Models.CourseFilterHelper.Values(c.State))),
+        Tuple.Create("studymethod", "Study Method", "feather-monitor", CoursesHub.Models.CourseFilterHelper.Options(Courses, c => CoursesHub.Models.CourseFilterHelper.Values(c.StudyMethod))),
+        Tuple.Create("studenttype", "Student Type", "feather-users", CoursesHub.Models.CourseFilterHelper.StudentTypes
+            .Select(s => new CoursesHub.Models.CourseFilterHelper.FilterOption { Key = CoursesHub.Models.CourseFilterHelper.Key(s), Text = s, Count = Courses.Count(c => CoursesHub.Models.CourseFilterHelper.StudentTypeLabel(c.StudentType) == s) }).ToList()),
+        Tuple.Create("funding", "Government Funding", "feather-dollar-sign", CoursesHub.Models.CourseFilterHelper.FundingTypes
+            .Select(s => new CoursesHub.Models.CourseFilterHelper.FilterOption { Key = CoursesHub.Models.CourseFilterHelper.Key(s), Text = s, Count = Courses.Count(c => CoursesHub.Models.CourseFilterHelper.Funding(c.GovernmentFunding) == s) }).ToList()),
+        Tuple.Create("duration", "Duration", "feather-clock", CoursesHub.Models.CourseFilterHelper.Options(Courses, c => new[] { CoursesHub.Models.CourseFilterHelper.DurationBand(c.CourseDuration) })
+            .OrderBy(o => durationOrder.IndexOf(o.Text)).ToList())
+    };
+}
+
+<style>
+    #pagination button {
+        margin: 5px;
+        padding: 8px 14px;
+        border: 1px solid var(--border-color);
+        background: #fff;
+        color: var(--heading-color);
+        cursor: pointer;
+    }
+
+        #pagination button:hover:not(:disabled):not(.active) {
+            background: var(--primary-light);
+            border-color: var(--primary-color);
+            color: var(--primary-dark);
+        }
+
+        #pagination button.active {
+            border-color: var(--primary-color);
+            background: var(--primary-color);
+            color: #fff;
+            font-weight: bold;
+        }
+
+        #pagination button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+</style>
+<section class="tp-hero ac-hero">
+    <span class="tp-blob tp-blob-1" aria-hidden="true"></span>
+    <span class="tp-blob tp-blob-2" aria-hidden="true"></span>
+    <div class="container">
+        <ul class="page-list bl-crumbs">
+            <li class="rbt-breadcrumb-item"><a href="@Url.Action("Index","Index")">Home</a></li>
+            <li><div class="icon-right"><i class="feather-chevron-right"></i></div></li>
+            <li class="rbt-breadcrumb-item active">All Courses</li>
+        </ul>
+        <span class="bl-eyebrow"><i class="feather-book-open"></i> Courses</span>
+        <h1 class="bl-hero-title">All Courses</h1>
+        <p class="bl-hero-text">Discover and compare courses from training providers across Australia, and find the right study option for your career.</p>
+        <div class="bl-hero-meta">
+            <span class="bl-pill"><i class="feather-book-open"></i> @Courses.Count @(Courses.Count == 1 ? "Course" : "Courses")</span>
+            @{ var heroProviderCount = Courses.Where(c => !string.IsNullOrWhiteSpace(c.UniversityName)).Select(c => c.UniversityName.Trim().ToLowerInvariant()).Distinct().Count(); }
+            <span class="tp-pill-ghost"><i class="feather-home"></i> @heroProviderCount @(heroProviderCount == 1 ? "Provider" : "Providers")</span>
+        </div>
+@if (!string.IsNullOrEmpty((string)ViewBag.Search) || !string.IsNullOrEmpty((string)ViewBag.SearchCategoryName) || !string.IsNullOrEmpty((string)ViewBag.SearchProviderName) || !string.IsNullOrEmpty((string)ViewBag.SearchFilterLabel))
+        {
+            <div class="course-search-summary" role="status">
+                <i class="feather-search"></i>
+                <span>
+                    @Courses.Count @(Courses.Count == 1 ? "course" : "courses")
+                    @if (!string.IsNullOrEmpty((string)ViewBag.Search))
+                    {
+                        <text>for <strong>“@ViewBag.Search”</strong></text>
+                    }
+                    @if (!string.IsNullOrEmpty((string)ViewBag.SearchCategoryName))
+                    {
+                        <text>in <strong>@ViewBag.SearchCategoryName</strong></text>
+                    }
+                    @if (!string.IsNullOrEmpty((string)ViewBag.SearchProviderName))
+                    {
+                        <text>by <strong>@ViewBag.SearchProviderName</strong></text>
+                    }
+                    @if (!string.IsNullOrEmpty((string)ViewBag.SearchFilterLabel))
+                    {
+                        <text>for <strong>@ViewBag.SearchFilterLabel</strong></text>
+                    }
+                </span>
+                <a class="clear-search" href="@Url.Action("AllCourses", "Courses", new { area = "" })"><i class="feather-x"></i> @(string.IsNullOrEmpty((string)ViewBag.Search) && string.IsNullOrEmpty((string)ViewBag.SearchCategoryName) ? "Show all courses" : "Clear search")</a>
+            </div>
+        }
+    </div>
+</section>
+
+<div class="ac-tabs-row rbt-course-top-wrapper">
+    <div class="container">
+        <ul class="rbt-portfolio-filter filter-tab-button justify-content-start nav nav-tabs" id="rbt-myTab" role="tablist">
+            @{
+                bool isAllActive = ViewBag.SelectedCategoryType == null
+                                   || string.IsNullOrEmpty(ViewBag.SelectedCategoryType.ToString());
+            }
+
+            <li class="nav-item" role="presentation">
+                @*<button class="active" id="all-tab" data-bs-toggle="tab" data-bs-target="#all"
+type="button" role="tab" aria-controls="all" aria-selected="true">
+            <span class="filter-text">All Course</span>
+        </button>*@
+                <button class="@(isAllActive ? "active" : "")"
+                        id="all-tab"
+                        data-bs-toggle="tab"
+                        data-bs-target="#all"
+                        type="button"
+                        role="tab"
+                        aria-selected="@(isAllActive ? "true" : "false")">
+                    <span class="filter-text">All Course</span>
+                </button>
+            </li>
+
+            @foreach (var item in Categories)
+            {
+                var safeId = item.Text.ToLower().Replace(" ", "-");
+                var isActive = ViewBag.SelectedCategoryType != null &&
+                  item.Text.Equals(ViewBag.SelectedCategoryType.ToString(),
+                                   StringComparison.OrdinalIgnoreCase);
+
+                <li class="nav-item" role="presentation">
+                    <button class="@(isActive ? "active" : "")"
+                            id="@safeId-tab"
+                            data-bs-toggle="tab"
+                            data-bs-target="#@safeId"
+                            type="button"
+                            role="tab">
+                        <span class="filter-text">@item.Text</span>
+                    </button>
+                </li>
+            }
+        </ul>
+    </div>
+</div><div class="rbt-section-gapBottom all-courses-body">
+    <div class="container">
+        <div class="row row--30 gy-5">
+            <div class="col-lg-3">
+                <aside class="course-filter-sidebar" aria-label="Filter courses">
+                    <button type="button" class="course-filter-toggle d-lg-none" aria-expanded="false" aria-controls="courseFilterPanel">
+                        <span><i class="feather-sliders"></i> Filters <span class="course-filter-active-count" hidden></span></span>
+                        <i class="feather-chevron-down"></i>
+                    </button>
+                    <div class="course-filter-panel" id="courseFilterPanel">
+                        <div class="course-filter-head">
+                            <h4 class="course-filter-heading"><i class="feather-sliders"></i> Filter Courses</h4>
+                            <button type="button" class="course-filter-clear" id="clearCourseFilters" hidden>Clear all</button>
+                        </div>
+                        @foreach (var group in sidebarFilters)
+                        {
+                            if (group.Item4.Count == 0)
+                            {
+                                continue;
+                            }
+                            var groupId = "cf-" + group.Item1;
+                            <div class="course-filter-group" data-filter-group="@group.Item1">
+                                <button type="button" class="course-filter-title" aria-expanded="true" aria-controls="@groupId-list">
+                                    <span><i class="@group.Item3"></i> @group.Item2</span>
+                                    <i class="feather-chevron-down"></i>
+                                </button>
+                                <ul class="course-filter-list" id="@groupId-list">
+                                    @for (int i = 0; i < group.Item4.Count; i++)
+                                    {
+                                        var opt = group.Item4[i];
+                                        <li class="rbt-check-group">
+                                            <input id="@groupId-@i" type="checkbox" class="course-filter-check" data-group="@group.Item1" value="@opt.Key">
+                                            <label for="@groupId-@i">
+                                                <span class="cf-text">@opt.Text</span>
+                                                <span class="rbt-lable count">@opt.Count</span>
+                                            </label>
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                        }
+                    </div>
+                </aside>
+            </div>
+            <div class="col-lg-9">
+                <div class="tab-content" id="rbt-myTabContent">
+                    <div class="tab-pane fade show active" id="all" role="tabpanel" aria-labelledby="all-tab">
+                        @if (Courses.Count == 0)
+                        {
+                            <div class="course-search-empty">
+                                <span class="empty-icon"><i class="feather-search"></i></span>
+                                <h4>No courses found</h4>
+                                <p>Try a different keyword or category, or browse all courses.</p>
+                                <a class="rbt-btn btn-gradient btn-md" href="@Url.Action("AllCourses", "Courses", new { area = "" })">View All Courses</a>
+                            </div>
+                        }
+                        <div class="course-search-empty course-filter-empty" hidden>
+                            <span class="empty-icon"><i class="feather-sliders"></i></span>
+                            <h4>No courses match these filters</h4>
+                            <p>Try removing a filter to see more courses.</p>
+                            <button type="button" class="rbt-btn btn-gradient btn-md" id="clearCourseFilters2">Clear filters</button>
+                        </div>
+                        <div class="rbt-course-grid-column active-list-view">
+                            @foreach (var item in Courses)
+                            {
+                                @Html.Partial("_CourseCard", item)
+                            }
+                        </div>
+                    </div>
+                    <div class="rbt-pagination mt--60 text-center">
+                        <div id="pagination" class="rbt-pagination-wrapper"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script src="@CoursesHub.AssetVersion.Url("~/assets/js/main.js")"></script>
+    <script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function () {
+
+            const itemsPerPage = 6;
+            let currentPage = 1;
+
+            const containerSelector = '#rbt-myTabContent';
+            let $allCards = $(`${containerSelector} .course-card`);
+            let $currentCards = $allCards;
+
+            const $pagination = $('#pagination');
+            const $courseIndex = $('.course-index');
+
+            function normalize(txt) {
+                return (txt || '').toString().trim().toLowerCase().replace(/\s+/g, '-');
+            }
+
+            let selectedTab = ($('.nav-tabs button.active').attr('data-bs-target') || '#all').replace('#', '');
+
+            // Checked sidebar values, grouped: { location: ['south-australia'], ... }
+            function sidebarSelection() {
+                const selection = {};
+                $('.course-filter-check:checked').each(function () {
+                    const group = $(this).data('group');
+                    (selection[group] = selection[group] || []).push(this.value);
+                });
+                return selection;
+            }
+
+            function matchesSidebar(card, selection) {
+                return Object.keys(selection).every(function (group) {
+                    const raw = ($(card).attr('data-f-' + group) || '').toString();
+                    const values = raw.split('|');
+                    return selection[group].some(function (v) { return values.indexOf(v) !== -1; });
+                });
+            }
+
+            // ✅ ALL FILTERS: tab + sidebar (keyword search is done on the server from the header search)
+            function applyFilters() {
+                const selection = sidebarSelection();
+                const activeCount = $('.course-filter-check:checked').length;
+
+                $allCards = $(`${containerSelector} .course-card`);
+                $currentCards = $allCards.filter(function () {
+                    const $c = $(this);
+                    if (selectedTab !== 'all' && normalize($c.data('categorytype')) !== selectedTab) return false;
+                    return matchesSidebar(this, selection);
+                });
+
+                $('#clearCourseFilters').prop('hidden', activeCount === 0);
+                $('.course-filter-active-count').text(activeCount).prop('hidden', activeCount === 0);
+                $('.course-filter-empty').prop('hidden', !($allCards.length > 0 && $currentCards.length === 0));
+
+                showPage(1);
+            }
+
+            // ✅ TAB FILTER
+            $('.nav-tabs button').on('click', function () {
+                selectedTab = ($(this).data('bs-target') || '#all').replace('#', '');
+                applyFilters();
+            });
+
+            // ✅ SIDEBAR FILTERS
+            $(document).on('change', '.course-filter-check', applyFilters);
+
+            // "Clear all" (sidebar) unticks the sidebar filters
+            $('#clearCourseFilters').on('click', function () {
+                $('.course-filter-check').prop('checked', false);
+                applyFilters();
+            });
+
+            // "Clear filters" (no results message) resets everything: sidebar ticks, the category tab,
+            // and any search / filter that came in the page address (header search, filter menu)
+            $('#clearCourseFilters2').on('click', function () {
+                var params = new URLSearchParams(window.location.search);
+                var hasUrlFilter = ['Search', 'FilterValue', 'StudentType', 'GovernmentFunding'].some(function (k) { return (params.get(k) || '').trim() !== ''; });
+                if (hasUrlFilter) {
+                    if (window.CHLoader) { CHLoader.show('Loading…'); }
+                    window.location.href = '@Url.Action("AllCourses", "Courses", new { area = "" })';
+                    return;
+                }
+                $('.course-filter-check').prop('checked', false);
+                var $all = $('#all-tab');
+                if ($all.length && !$all.hasClass('active')) {
+                    $all.trigger('click');          // switches the tab and re-filters (tab click handler)
+                } else {
+                    selectedTab = 'all';
+                    applyFilters();
+                }
+            });
+
+            $('.course-filter-title').on('click', function () {
+                const open = $(this).attr('aria-expanded') === 'true';
+                $(this).attr('aria-expanded', open ? 'false' : 'true');
+                $('#' + $(this).attr('aria-controls')).prop('hidden', open);
+            });
+
+            $('.course-filter-toggle').on('click', function () {
+                const open = $(this).attr('aria-expanded') === 'true';
+                $(this).attr('aria-expanded', open ? 'false' : 'true');
+                $('#courseFilterPanel').toggleClass('is-open', !open);
+            });
+
+            function renderPagination() {
+                $pagination.empty();
+
+                const totalItems = $currentCards.length;
+                const totalPages = Math.max(Math.ceil(totalItems / itemsPerPage), 1);
+
+                $pagination.append(`<button data-page="prev" ${currentPage === 1 ? 'disabled' : ''}>Prev</button>`);
+
+                for (let i = 1; i <= totalPages; i++) {
+                    $pagination.append(`<button data-page="${i}" class="${i === currentPage ? 'active' : ''}">${i}</button>`);
+                }
+
+                $pagination.append(`<button data-page="next" ${currentPage === totalPages ? 'disabled' : ''}>Next</button>`);
+
+                const start = totalItems === 0 ? 0 : ((currentPage - 1) * itemsPerPage) + 1;
+                const end = Math.min(currentPage * itemsPerPage, totalItems);
+
+                $courseIndex.text(`Showing ${start}-${end} of ${totalItems} results`);
+            }
+
+            function showPage(page) {
+                const totalItems = $currentCards.length;
+                const totalPages = Math.max(Math.ceil(totalItems / itemsPerPage), 1);
+
+                if (page < 1) page = 1;
+                if (page > totalPages) page = totalPages;
+
+                currentPage = page;
+
+                $allCards = $(`${containerSelector} .course-card`).stop(true, true).hide();
+
+                let start = (currentPage - 1) * itemsPerPage;
+                let end = start + itemsPerPage;
+
+                $currentCards.slice(start, end).fadeIn(200);
+
+                renderPagination();
+            }
+
+            $(document).on('click', '#pagination button', function () {
+                let page = $(this).data('page');
+
+                if (page === "prev") currentPage--;
+                else if (page === "next") currentPage++;
+                else currentPage = parseInt(page);
+
+                showPage(currentPage);
+            });
+
+            // Coming from the header filter drawer (Student Type / Government Funding): tick that option
+            var preselectGroup = '@HttpUtility.JavaScriptStringEncode((string)ViewBag.PreselectGroup ?? "")';
+            var preselectKey = '@HttpUtility.JavaScriptStringEncode((string)ViewBag.PreselectKey ?? "")';
+            var $pre = preselectGroup ? $('.course-filter-check').filter(function () {
+                return $(this).data('group') === preselectGroup && this.value === preselectKey;
+            }) : $();
+            if ($pre.length) {
+                $pre.prop('checked', true);
+                applyFilters();
+            } else {
+                showPage(1);
+            }
+        });
+    </script>
+}
+

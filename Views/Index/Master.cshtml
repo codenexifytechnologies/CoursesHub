@@ -1,0 +1,104 @@
+﻿
+@{
+    Layout = null;
+    CoursesHub.Models.Master _Master = (CoursesHub.Models.Master)ViewBag.GetMaster;
+    int fdIndex = 0;
+}
+@* Body of the right-side "Find a Course" filter drawer (opened from the header menu button) *@
+<nav class="fd-body" aria-label="Course filters">
+    @{ var menuQualifications = ViewBag.MenuQualifications as List<CoursesHub.Models.CourseFilterHelper.FilterOption>; }
+    @if (menuQualifications != null && menuQualifications.Any())
+    {
+        @* Same options as the All Courses sidebar "Qualification Level" group (worked out from the course names) *@
+        fdIndex++;
+        <section class="fd-group" style="--fd-i:@fdIndex">
+            <button type="button" class="fd-group-btn" aria-expanded="true" aria-controls="fd-qualification">
+                <span class="fd-group-icon"><i class="feather-award"></i></span>
+                <span class="fd-group-title">Courses By Qualification Level</span>
+                <i class="feather-chevron-down fd-chevron"></i>
+            </button>
+            <div class="fd-options" id="fd-qualification">
+                @foreach (var item in menuQualifications)
+                {
+                    <a class="fd-chip" href="@Url.Action("AllCourses", "Courses", new { area = "", FilterType = "QualificationType", FilterValue = item.Text })">@item.Text</a>
+                }
+            </div>
+        </section>
+    }
+    @if (_Master?.objStudyMethod?.Any() == true)
+    {
+        fdIndex++;
+        <section class="fd-group" style="--fd-i:@fdIndex">
+            <button type="button" class="fd-group-btn" aria-expanded="false" aria-controls="fd-study-method">
+                <span class="fd-group-icon"><i class="feather-monitor"></i></span>
+                <span class="fd-group-title">Courses By Study Method</span>
+                <i class="feather-chevron-down fd-chevron"></i>
+            </button>
+            <div class="fd-options" id="fd-study-method" hidden>
+                @foreach (var item in _Master.objStudyMethod)
+                {
+                    <a class="fd-chip" href="@Url.Action("AllCourses", "Courses", new { area = "", FilterType = "StudeyType", FilterValue = item.objStudymethod })">@item.objStudymethod</a>
+                }
+            </div>
+        </section>
+    }
+    @if (_Master?.objState?.Any() == true)
+    {
+        fdIndex++;
+        <section class="fd-group" style="--fd-i:@fdIndex">
+            <button type="button" class="fd-group-btn" aria-expanded="false" aria-controls="fd-state">
+                <span class="fd-group-icon"><i class="feather-map-pin"></i></span>
+                <span class="fd-group-title">Courses By State</span>
+                <i class="feather-chevron-down fd-chevron"></i>
+            </button>
+            <div class="fd-options" id="fd-state" hidden>
+                @foreach (var item in _Master.objState)
+                {
+                    <a class="fd-chip" href="@Url.Action("AllCourses", "Courses", new { area = "", FilterType = "State", FilterValue = item.objState })">@item.objState</a>
+                }
+            </div>
+        </section>
+    }
+    @{ fdIndex++; }
+    <section class="fd-group" style="--fd-i:@fdIndex">
+        <button type="button" class="fd-group-btn" aria-expanded="false" aria-controls="fd-student-type">
+            <span class="fd-group-icon"><i class="feather-users"></i></span>
+            <span class="fd-group-title">Courses By Student Type</span>
+            <i class="feather-chevron-down fd-chevron"></i>
+        </button>
+        <div class="fd-options" id="fd-student-type" hidden>
+            @foreach (var type in CoursesHub.Models.CourseFilterHelper.StudentTypes)
+            {
+                <a class="fd-chip" href="@Url.Action("AllCourses", "Courses", new { area = "", FilterType = "StudentType", FilterValue = type })">@type</a>
+            }
+        </div>
+    </section>
+    @{ fdIndex++; }
+    <section class="fd-group" style="--fd-i:@fdIndex">
+        <button type="button" class="fd-group-btn" aria-expanded="false" aria-controls="fd-funding">
+            <span class="fd-group-icon"><i class="feather-dollar-sign"></i></span>
+            <span class="fd-group-title">Courses By Government Funding</span>
+            <i class="feather-chevron-down fd-chevron"></i>
+        </button>
+        <div class="fd-options" id="fd-funding" hidden>
+            @foreach (var funding in CoursesHub.Models.CourseFilterHelper.FundingTypes)
+            {
+                <a class="fd-chip" href="@Url.Action("AllCourses", "Courses", new { area = "", FilterType = "GovernmentFunding", FilterValue = funding })">@funding</a>
+            }
+        </div>
+    </section>
+    @{ fdIndex++; }
+    <section class="fd-group" style="--fd-i:@fdIndex">
+        <a class="fd-provider-link" href="@Url.Action("TrainingProviders", "Courses", new { area = "" })">
+            <span class="fd-group-icon"><i class="feather-home"></i></span>
+            <span class="fd-provider-text">
+                <span class="fd-group-title">Courses By Provider</span>
+                <small>Browse all training providers A&ndash;Z</small>
+            </span>
+            <i class="feather-arrow-right"></i>
+        </a>
+    </section>
+</nav>
+<div class="fd-footer">
+    <a class="fd-all" href="@Url.Action("AllCourses", "Courses", new { area = "" })"><i class="feather-book-open"></i> View All Courses</a>
+</div>

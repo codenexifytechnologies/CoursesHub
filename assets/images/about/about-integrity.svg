@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 308 250" width="308" height="250">
+  <title>Integrity: accredited, reputable providers</title>
+  <rect width="308" height="250" fill="#E8F4F4"/>
+  <circle cx="20" cy="20" r="80" fill="#158887" fill-opacity="0.1"/>
+  <circle cx="300" cy="240" r="70" fill="#F79646" fill-opacity="0.15"/>
+
+  <!-- certificate behind -->
+  <g transform="translate(150 120) rotate(-6)">
+    <rect x="-100" y="-62" width="200" height="124" rx="10" fill="#FFFFFF"/>
+    <rect x="-86" y="-48" width="172" height="96" rx="6" fill="none" stroke="#DCE8E8" stroke-width="3"/>
+    <rect x="-64" y="-26" width="96" height="9" rx="4.5" fill="#142B30"/>
+    <rect x="-64" y="-8" width="120" height="7" rx="3.5" fill="#B5C4C7"/>
+    <rect x="-64" y="6" width="84" height="7" rx="3.5" fill="#B5C4C7"/>
+  </g>
+
+  <!-- shield -->
+  <g transform="translate(206 140)">
+    <path d="M0 -62 L46 -44 V-6 C46 28 24 50 0 62 C-24 50 -46 28 -46 -6 V-44 Z" fill="#158887"/>
+    <path d="M0 -48 L34 -35 V-6 C34 20 18 37 0 46 C-18 37 -34 20 -34 -6 V-35 Z" fill="#0F3F42"/>
+    <path d="M-16 0 l11 11 22 -24" fill="none" stroke="#F79646" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+
+  <!-- ribbon seal -->
+  <g transform="translate(70 178)">
+    <path d="M-10 10 L-18 44 L0 34 L18 44 L10 10Z" fill="#E07B2C"/>
+    <circle r="24" fill="#F79646"/>
+    <circle r="15" fill="none" stroke="#FFFFFF" stroke-width="3"/>
+    <path d="M0 -8 l3 6 6 1 -4.5 4 1 6 -5.5 -3 -5.5 3 1 -6 -4.5 -4 6 -1z" fill="#FFFFFF"/>
+  </g>
+</svg>

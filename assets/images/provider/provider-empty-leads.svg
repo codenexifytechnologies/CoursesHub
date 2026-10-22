@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 180" role="img" aria-label="No leads yet">
+  <defs>
+    <style>
+      .bob{animation:bob 4s ease-in-out infinite}
+      .p1{animation:bob 4.4s ease-in-out infinite .3s}
+      .p2{animation:bob 4.8s ease-in-out infinite .9s}
+      .pulse{transform-origin:120px 92px;transform-box:fill-box;animation:pulse 2.6s ease-out infinite}
+      @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+      @keyframes pulse{0%{transform:scale(.8);opacity:.6}100%{transform:scale(1.6);opacity:0}}
+      @media (prefers-reduced-motion: reduce){.bob,.p1,.p2,.pulse{animation:none}}
+    </style>
+  </defs>
+  <ellipse cx="120" cy="166" rx="90" ry="9" fill="#0E6B6A" fill-opacity="0.12"/>
+  <circle cx="120" cy="88" r="72" fill="#E8F4F4"/>
+  <circle class="pulse" cx="120" cy="92" r="34" fill="none" stroke="#F79646" stroke-width="3"/>
+  <g class="bob">
+    <circle cx="120" cy="80" r="16" fill="#158887"/>
+    <path d="M94 124 a26 22 0 0 1 52 0 z" fill="#158887"/>
+  </g>
+  <g class="p1">
+    <circle cx="62" cy="70" r="11" fill="#F79646"/>
+    <path d="M44 102 a18 16 0 0 1 36 0 z" fill="#F79646"/>
+  </g>
+  <g class="p2">
+    <circle cx="178" cy="70" r="11" fill="#0E6B6A"/>
+    <path d="M160 102 a18 16 0 0 1 36 0 z" fill="#0E6B6A"/>
+  </g>
+  <path d="M74 92 Q96 104 104 98 M166 92 Q144 104 136 98" stroke="#9CC9C8" stroke-width="2.5" stroke-dasharray="4 5" fill="none"/>
+</svg>

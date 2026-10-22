@@ -1,0 +1,263 @@
+﻿@model CoursesHub.Models.User
+@{
+    ViewBag.Title = "UserRegistration";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<script src="//code.jquery.com/jquery-2.2.4.min.js"></script>
+<script src="~/assets/js/toastr.min.js"></script>
+<link href="~/assets/css/toastr.min.css" rel="stylesheet" />
+
+@if (TempData["Message"] != null)
+{
+    <script>
+        $(document).ready(function () {
+            toastr.info('@TempData["Message"]');
+        });
+    </script>
+}
+<style>
+    :root {
+        --primary: #10b981; /* Emerald Green */
+        --bg-body: #f4f7f6;
+        --card-radius: 16px;
+    }
+
+    .content-wrapper {
+        background-color: var(--bg-body);
+    }
+
+    .form-card {
+        border: none !important;
+        border-radius: var(--card-radius) !important;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.04) !important;
+        background: #fff;
+    }
+
+    .form-control {
+        border-radius: 8px;
+        border: 1px solid #e2e8f0;
+        padding: 0.6rem 1rem;
+        transition: all 0.2s;
+    }
+
+        .form-control:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+        }
+
+    .btn-submit {
+        background-color: var(--primary);
+        border: none;
+        padding: 10px 30px;
+        border-radius: 8px;
+        font-weight: 600;
+        transition: transform 0.2s;
+    }
+
+        .btn-submit:hover {
+            background-color: #059669;
+            transform: translateY(-2px);
+        }
+
+    .custom-file-label {
+        border-radius: 8px;
+    }
+
+    label {
+        font-weight: 600;
+        color: #4a5568;
+        font-size: 0.9rem;
+        margin-bottom: 0.5rem;
+    }
+
+    /* Validation styling */
+    .invalid-feedback {
+        font-size: 0.8rem;
+        font-weight: 500;
+    }
+</style>
+
+<section class="content-header">
+    <div class="container-fluid py-3">
+        <h1 class="h3 font-weight-bold text-dark">User Registration</h1>
+        <p class="text-muted">Fill in the details below to create a new administrative user.</p>
+    </div>
+</section>
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="card form-card">
+            @using (Html.BeginForm("UserRegistration", "AdminLogin", FormMethod.Post, new { id = "UserRegistration", enctype = "multipart/form-data" }))
+            {
+                @Html.AntiForgeryToken()
+                <div class="card-body p-4 p-lg-5">
+                    <div class="row">
+                        <div class="col-lg-3 text-center border-right mb-4 mb-lg-0">
+                            <label class="d-block">Profile Photo</label>
+                            <div class="mb-3 d-flex justify-content-center">
+                                <img id="imgPreview" src="~/assets/img/default-avatar.png"
+                                     class="rounded-circle shadow-sm"
+                                     style="width: 140px; height: 140px; object-fit: cover; border: 3px solid #f8f9fa;" />
+                            </div>
+                            <div class="custom-file text-left">
+                                @Html.TextBoxFor(model => model.ProfileImage, new
+                                {
+                                    type = "file",
+                                    @class = "custom-file-input",
+                                    @id = "profilePicInput",
+                                    @accept = "image/*"
+                                })
+                                <label class="custom-file-label text-truncate" for="profilePicInput">Choose file</label>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-9 pl-lg-5">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <div class="form-group">
+                                        <label>Full Name</label>
+                                        @Html.TextBoxFor(model => model.Name, new { @class = "form-control", @placeholder = "e.g. John Doe" })
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <div class="form-group">
+                                        <label>Email Address</label>
+                                        @Html.TextBoxFor(model => model.EmailId, new { @class = "form-control", @placeholder = "name@company.com" })
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <div class="form-group">
+                                        <label>Mobile Number</label>
+                                        @Html.TextBoxFor(model => model.mobileNo, new { @class = "form-control", @maxlength = "10", @placeholder = "9876543210" })
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <div class="form-group">
+                                        <label>Account Role</label>
+                                        @Html.DropDownListFor(model => model.RoleID, (SelectList)ViewBag.Role, "Select Role", new { @class = "form-control" })
+                                    </div>
+                                </div>
+                                <div class="col-md-12 mb-4">
+                                    <div class="form-group">
+                                        <label>Security Password</label>
+                                        <div class="input-group">
+                                            @Html.PasswordFor(model => model.Password, new { @class = "form-control", @placeholder = "Min. 8 characters", @id = "Password" })
+                                            <div class="input-group-append">
+                                                <span class="input-group-text bg-white border-left-0" style="cursor: pointer;">
+                                                    <i class="fas fa-eye toggle-password" toggle="#Password"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="pt-3 border-top d-flex justify-content-end">
+                                <button type="reset" class="btn btn-light mr-2 rounded-lg">Reset</button>
+                                <button type="submit" class="btn btn-primary btn-submit">Create User Account</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+<script src="~/Areas/Admin/plugins/jquery/jquery.min.js"></script>
+<script src="~/Areas/Admin/plugins/bs-custom-file-input/bs-custom-file-input.min.js"></script>
+<script>
+    $(function () {
+        bsCustomFileInput.init();
+
+        $(".toggle-password").click(function () {
+            $(this).toggleClass("fa-eye fa-eye-slash");
+            var input = $($(this).attr("toggle"));
+            if (input.attr("type") == "password") {
+                input.attr("type", "text");
+            } else {
+                input.attr("type", "password");
+            }
+        });
+    });
+</script>
+<script>
+    $(function () {
+        $('#UserRegistration').validate({
+            rules: {
+                Name: {
+                    required: true,
+                },
+                EmailId: {
+                    required: true,
+                },
+
+                mobileNo: {
+                    required: true,
+                    digits: true,
+                    rangelength: [10, 10]
+                },
+                Password: {
+                    required: true,
+                },
+                ProfileImage: {
+                    required: true,
+                },
+            },
+            messages: {
+                Name: {
+                    required: "Enter Name",
+                },
+                EmailId: {
+                    required: "Enter Email ID",
+                },
+                mobileNo: {
+                    required: "Enter Mobile Number",
+                    digits: "Enter only numbers",
+                    rangelength: "Please enter 10 digits."
+                },
+                Password: {
+                    required: "Enter Password",
+                },
+                ProfileImage: {
+                    required: "Upload Image",
+                },
+            },
+            errorElement: 'span',
+            errorPlacement: function (error, element) {
+
+                error.addClass('invalid-feedback');
+                element.closest('.form-group').append(error);
+            },
+            highlight: function (element, errorClass, validClass) {
+                $(element).addClass('is-invalid');
+            },
+            unhighlight: function (element, errorClass, validClass) {
+                $(element).removeClass('is-invalid');
+            }
+        });
+    });
+
+    $(function () {
+        // Initialize the custom file input (updates the label text)
+        bsCustomFileInput.init();
+
+        // Image Preview Handler
+        $("#profilePicInput").on("change", function () {
+            const file = this.files[0];
+            const $preview = $("#imgPreview");
+
+            if (file) {
+                let reader = new FileReader();
+                reader.onload = function (event) {
+                    // Update the src with the uploaded image
+                    $preview.attr("src", event.target.result);
+                };
+                reader.readAsDataURL(file);
+            } else {
+                // If user cancels, reset to default image
+                $preview.attr("src", "/assets/img/default-avatar.png");
+            }
+        });
+    });
+</script>

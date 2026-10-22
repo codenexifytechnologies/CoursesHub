@@ -1,0 +1,164 @@
+﻿
+@{
+    ViewBag.Title = "Blog";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var Blogs = ViewBag.Blog as List<CoursesHub.Areas.Admin.Models.Blogs> ?? new List<CoursesHub.Areas.Admin.Models.Blogs>();
+    var featured = Blogs.FirstOrDefault();
+}
+
+<section class="bl-hero">
+    <span class="bl-hero-blob bl-hero-blob-1" aria-hidden="true"></span>
+    <span class="bl-hero-blob bl-hero-blob-2" aria-hidden="true"></span>
+    <div class="container">
+        <div class="row align-items-center g-4">
+            <div class="col-lg-7">
+                <ul class="page-list bl-crumbs">
+                    <li class="rbt-breadcrumb-item"><a href="@Url.Action("Index","Index")">Home</a></li>
+                    <li>
+                        <div class="icon-right"><i class="feather-chevron-right"></i></div>
+                    </li>
+                    <li class="rbt-breadcrumb-item active">All Blog</li>
+                </ul>
+                <span class="bl-eyebrow"><i class="feather-edit-3"></i> Courses Hub Blog</span>
+                <h1 class="bl-hero-title">All Blog</h1>
+                <p class="bl-hero-text">Blog that help beginner designers become true unicorns. </p>
+                <div class="bl-hero-meta">
+                    <span class="bl-pill"><i class="feather-file-text"></i> @Blogs.Count @(Blogs.Count == 1 ? "Article" : "Articles")</span>
+                    @if (Blogs.Count > 1)
+                    {
+                        <label class="bl-search" for="blogSearch">
+                            <i class="feather-search" aria-hidden="true"></i>
+                            <input id="blogSearch" type="search" placeholder="Search articles..." autocomplete="off" aria-label="Search articles">
+                        </label>
+                    }
+                </div>
+            </div>
+            <div class="col-lg-5 d-none d-lg-block">
+                <img class="bl-hero-art" src="@CoursesHub.AssetVersion.Url("~/assets/images/blog/blog-hero.svg")" alt="" aria-hidden="true">
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="bl-area rbt-section-gapBottom">
+    <div class="container">
+        @if (featured == null)
+        {
+            <div class="bl-empty bl-reveal">
+                <span class="bl-empty-icon"><i class="feather-file-text"></i></span>
+                <h4>No articles yet</h4>
+                <p>New articles will appear here soon.</p>
+            </div>
+        }
+        else
+        {
+            string featuredUrl = Url.RouteUrl("BlogDetailSEO", new { slug = featured.slug });
+            <article class="bl-featured bl-reveal" data-title="@((featured.BlogTitle ?? "").ToLower()) @((featured.SubTitle ?? "").ToLower())">
+                <a class="bl-featured-img" href="@featuredUrl" tabindex="-1" aria-hidden="true">
+                    <span class="bl-noimg"><i class="feather-image"></i></span>
+                    @if (!string.IsNullOrEmpty(featured.BlogThumbnailImagePath))
+                    {
+                        <img src="@featured.BlogThumbnailImagePath" alt="" onerror="this.remove()">
+                    }
+                    <span class="bl-badge"><i class="feather-star"></i> Featured</span>
+                </a>
+                <div class="bl-featured-body">
+                    @if (!string.IsNullOrWhiteSpace(featured.CreatedDate))
+                    {
+                        <span class="bl-date"><i class="feather-calendar"></i> @featured.CreatedDate.Split(' ')[0]</span>
+                    }
+                    <h2 class="bl-featured-title"><a href="@featuredUrl">@featured.BlogTitle</a></h2>
+                    @if (!string.IsNullOrWhiteSpace(featured.SubTitle))
+                    {
+                        <p class="bl-featured-text">@featured.SubTitle</p>
+                    }
+                    <a class="bl-btn" href="@featuredUrl">Learn More <i class="feather-arrow-right"></i></a>
+                </div>
+            </article>
+
+            if (Blogs.Count > 1)
+            {
+                <div class="bl-section-head bl-reveal">
+                    <h3>Latest Articles</h3>
+                    <span class="bl-line" aria-hidden="true"></span>
+                </div>
+                <div class="row g-4 bl-grid">
+                    @foreach (var item in Blogs.Skip(1))
+                    {
+                        string itemUrl = Url.RouteUrl("BlogDetailSEO", new { slug = item.slug });
+                        <div class="col-lg-4 col-md-6 bl-col" data-title="@((item.BlogTitle ?? "").ToLower()) @((item.SubTitle ?? "").ToLower())">
+                            <article class="bl-card bl-reveal">
+                                <a class="bl-card-img" href="@itemUrl" tabindex="-1" aria-hidden="true">
+                                    <span class="bl-noimg"><i class="feather-image"></i></span>
+                                    @if (!string.IsNullOrEmpty(item.BlogThumbnailImagePath))
+                                    {
+                                        <img loading="lazy" decoding="async" src="@item.BlogThumbnailImagePath" alt="" onerror="this.remove()">
+                                    }
+                                    @if (!string.IsNullOrWhiteSpace(item.CreatedDate))
+                                    {
+                                        <span class="bl-date-chip"><i class="feather-calendar"></i> @item.CreatedDate.Split(' ')[0]</span>
+                                    }
+                                </a>
+                                <div class="bl-card-body">
+                                    <h5 class="bl-card-title"><a href="@itemUrl">@item.BlogTitle</a></h5>
+                                    @if (!string.IsNullOrWhiteSpace(item.SubTitle))
+                                    {
+                                        <p class="bl-card-text">@item.SubTitle</p>
+                                    }
+                                    <a class="bl-link" href="@itemUrl">Read Article <i class="feather-arrow-right"></i></a>
+                                </div>
+                            </article>
+                        </div>
+                    }
+                </div>
+                <div class="bl-empty bl-no-match" hidden>
+                    <span class="bl-empty-icon"><i class="feather-search"></i></span>
+                    <h4>No matching articles</h4>
+                    <p>Try a different word.</p>
+                </div>
+            }
+        }
+    </div>
+</div>
+
+@section scripts{
+    <script src="@CoursesHub.AssetVersion.Url("~/assets/js/main.js")"></script>
+    <script>
+        (function () {
+            // Fade cards in as they scroll into view (everything shows anyway after 1.5s)
+            var items = document.querySelectorAll('.bl-reveal');
+            var showAll = function () { items.forEach(function (el) { el.classList.add('bl-in'); }); };
+            if ('IntersectionObserver' in window) {
+                var io = new IntersectionObserver(function (entries) {
+                    entries.forEach(function (e) {
+                        if (e.isIntersecting) { e.target.classList.add('bl-in'); io.unobserve(e.target); }
+                    });
+                }, { threshold: 0.12 });
+                items.forEach(function (el) { io.observe(el); });
+                setTimeout(showAll, 1500);
+            } else {
+                showAll();
+            }
+
+            // Search articles by title / subtitle
+            var input = document.getElementById('blogSearch');
+            if (!input) return;
+            var cols = document.querySelectorAll('.bl-col');
+            var featured = document.querySelector('.bl-featured');
+            var noMatch = document.querySelector('.bl-no-match');
+            input.addEventListener('input', function () {
+                var q = input.value.trim().toLowerCase();
+                var shown = 0;
+                cols.forEach(function (c) {
+                    var hit = !q || c.getAttribute('data-title').indexOf(q) !== -1;
+                    c.hidden = !hit;
+                    if (hit) { shown++; c.querySelector('.bl-reveal').classList.add('bl-in'); }
+                });
+                var fHit = !q || featured.getAttribute('data-title').indexOf(q) !== -1;
+                featured.hidden = !fHit;
+                if (fHit) { shown++; }
+                if (noMatch) { noMatch.hidden = shown !== 0; }
+            });
+        })();
+    </script>
+}

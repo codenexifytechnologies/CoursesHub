@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 308 250" width="308" height="250">
+  <title>Easy application process</title>
+  <rect width="308" height="250" fill="#FEF3EA"/>
+  <circle cx="290" cy="20" r="70" fill="#F79646" fill-opacity="0.18"/>
+  <circle cx="10" cy="240" r="60" fill="#158887" fill-opacity="0.1"/>
+
+  <!-- form card -->
+  <g transform="translate(44 28)">
+    <rect x="0" y="0" width="190" height="194" rx="14" fill="#FFFFFF"/>
+    <rect x="0" y="0" width="190" height="40" rx="14" fill="#158887"/>
+    <rect x="0" y="26" width="190" height="14" fill="#158887"/>
+    <rect x="16" y="14" width="90" height="10" rx="5" fill="#FFFFFF"/>
+
+    <g>
+      <circle cx="28" cy="66" r="11" fill="#158887"/>
+      <path d="M22 66 l4 4 8 -8" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+      <rect x="48" y="61" width="112" height="10" rx="5" fill="#DCE8E8"/>
+    </g>
+    <g transform="translate(0 34)">
+      <circle cx="28" cy="66" r="11" fill="#158887"/>
+      <path d="M22 66 l4 4 8 -8" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+      <rect x="48" y="61" width="96" height="10" rx="5" fill="#DCE8E8"/>
+    </g>
+    <g transform="translate(0 68)">
+      <circle cx="28" cy="66" r="11" fill="none" stroke="#F79646" stroke-width="3"/>
+      <rect x="48" y="61" width="104" height="10" rx="5" fill="#DCE8E8"/>
+    </g>
+    <rect x="16" y="154" width="158" height="28" rx="6" fill="#F79646"/>
+    <rect x="66" y="164" width="58" height="8" rx="4" fill="#0B3B3A"/>
+  </g>
+
+  <!-- send arrow -->
+  <g transform="translate(252 170)">
+    <circle r="26" fill="#0F3F42"/>
+    <path d="M-10 0 h18 M2 -8 l8 8 -8 8" fill="none" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>

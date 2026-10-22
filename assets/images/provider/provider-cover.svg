@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1290 245" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Courses Hub training provider panel">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0B3134"/>
+      <stop offset="0.5" stop-color="#0F3F42"/>
+      <stop offset="1" stop-color="#0E6B6A"/>
+    </linearGradient>
+    <linearGradient id="glow" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#F79646" stop-opacity="0"/>
+      <stop offset="1" stop-color="#F79646" stop-opacity="0.3"/>
+    </linearGradient>
+    <pattern id="grid" width="28" height="28" patternUnits="userSpaceOnUse">
+      <path d="M28 0 H0 V28" fill="none" stroke="#ffffff" stroke-opacity="0.06"/>
+    </pattern>
+    <style>
+      .rise{animation:rise 6s ease-in-out infinite}
+      .rise2{animation:rise 7s ease-in-out infinite 1s}
+      .flag{transform-origin:1040px 52px;animation:wave 2.6s ease-in-out infinite}
+      .bar{transform-origin:bottom;transform-box:fill-box;animation:bar 3.2s ease-in-out infinite}
+      .glowp{animation:gp 4s ease-in-out infinite}
+      @keyframes rise{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+      @keyframes wave{0%,100%{transform:skewY(0)}50%{transform:skewY(-8deg)}}
+      @keyframes bar{0%,100%{transform:scaleY(1)}50%{transform:scaleY(.7)}}
+      @keyframes gp{0%,100%{opacity:.4}50%{opacity:.9}}
+      @media (prefers-reduced-motion: reduce){.rise,.rise2,.flag,.bar,.glowp{animation:none}}
+    </style>
+  </defs>
+  <rect width="1290" height="245" fill="url(#bg)"/>
+  <rect width="1290" height="245" fill="url(#grid)"/>
+  <rect x="600" width="690" height="245" fill="url(#glow)"/>
+  <circle class="glowp" cx="1180" cy="40" r="60" fill="#158887" fill-opacity="0.45"/>
+  <circle class="glowp" cx="180" cy="210" r="80" fill="#158887" fill-opacity="0.25"/>
+  <!-- campus building -->
+  <g class="rise">
+    <polygon points="960,92 1040,60 1120,92" fill="#F79646"/>
+    <rect x="968" y="92" width="144" height="10" fill="#ffffff"/>
+    <rect x="976" y="102" width="128" height="86" fill="#E8F4F4"/>
+    <g fill="#158887">
+      <rect x="986" y="110" width="12" height="70"/>
+      <rect x="1010" y="110" width="12" height="70"/>
+      <rect x="1058" y="110" width="12" height="70"/>
+      <rect x="1082" y="110" width="12" height="70"/>
+    </g>
+    <rect x="1030" y="140" width="20" height="48" rx="10" fill="#0F3F42"/>
+    <rect x="960" y="188" width="160" height="10" fill="#ffffff"/>
+    <line x1="1040" y1="30" x2="1040" y2="62" stroke="#ffffff" stroke-width="3"/>
+    <path class="flag" d="M1040 32 h26 l-6 8 l6 8 h-26 z" fill="#F79646"/>
+  </g>
+  <!-- growth chart card -->
+  <g class="rise2">
+    <rect x="800" y="120" width="120" height="84" rx="10" fill="#ffffff" fill-opacity="0.96"/>
+    <rect class="bar" x="816" y="168" width="14" height="24" rx="3" fill="#9CC9C8"/>
+    <rect class="bar" x="838" y="152" width="14" height="40" rx="3" fill="#158887" style="animation-delay:.3s"/>
+    <rect class="bar" x="860" y="140" width="14" height="52" rx="3" fill="#0E6B6A" style="animation-delay:.6s"/>
+    <rect class="bar" x="882" y="128" width="14" height="64" rx="3" fill="#F79646" style="animation-delay:.9s"/>
+  </g>
+  <!-- certificate badge -->
+  <g class="rise">
+    <circle cx="1185" cy="150" r="30" fill="#F79646"/>
+    <circle cx="1185" cy="150" r="20" fill="none" stroke="#ffffff" stroke-width="3"/>
+    <path d="M1176 150 l6 6 l12 -12" stroke="#ffffff" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M1170 176 l-8 28 l12 -6 l6 10 l6 -26 z M1200 176 l8 28 l-12 -6 l-6 10 l-6 -26 z" fill="#E07B2C"/>
+  </g>
+  <g fill="#ffffff" class="glowp">
+    <path d="M720 60 l4 10 l10 4 l-10 4 l-4 10 l-4 -10 l-10 -4 l10 -4 z"/>
+    <path d="M940 44 l3 7 l7 3 l-7 3 l-3 7 l-3 -7 l-7 -3 l7 -3 z"/>
+  </g>
+</svg>

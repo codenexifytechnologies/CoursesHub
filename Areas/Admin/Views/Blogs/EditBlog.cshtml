@@ -1,0 +1,249 @@
+﻿@model CoursesHub.Areas.Admin.Models.Blogs
+@{
+    ViewBag.Title = "EditBlog";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+<script src="//code.jquery.com/jquery-2.2.4.min.js"></script>
+<script src="~/assets/js/toastr.min.js"></script>
+<link href="~/assets/css/toastr.min.css" rel="stylesheet" />
+<link href="@CoursesHub.AssetVersion.Url("~/assets/css/adminCustom.css")" rel="stylesheet" />
+<script src="https://cdn.ckeditor.com/ckeditor5/41.1.0/classic/ckeditor.js"></script>
+
+<style>
+    .edit-preview-img {
+        width: 100%;
+        max-height: 150px;
+        object-fit: cover;
+        border-radius: 8px;
+        border: 2px solid #e2e8f0;
+        margin-bottom: 10px;
+    }
+
+    .section-label {
+        color: #10b981;
+        font-weight: 700;
+        text-transform: uppercase;
+        font-size: 0.85rem;
+        letter-spacing: 1px;
+        display: block;
+        margin-bottom: 15px;
+    }
+
+    .blog-card {
+        border: none;
+        box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+        border-radius: 12px;
+    }
+</style>
+
+@if (TempData["Message"] != null || TempData["ErrorMessage"] != null)
+{
+    <script>
+        $(document).ready(function () {
+            var msg = '@(TempData["Message"] ?? TempData["ErrorMessage"])';
+            '@TempData["Message"]' != '' ? toastr.success(msg) : toastr.error(msg);
+        });
+    </script>
+}
+
+<section class="content-header">
+    <div class="container-fluid py-4">
+        <h1 class="font-weight-bold text-dark">Edit Blog Post</h1>
+        <p class="text-muted">Modify your content and update visuals.</p>
+    </div>
+</section>
+
+<section class="content">
+    @using (Html.BeginForm("EditBlog", "Blogs", FormMethod.Post, new { id = "EditBlog", enctype = "multipart/form-data" }))
+    {
+        @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(model => model.BlogThumbnailImagePath)
+        @Html.HiddenFor(model => model.BlogSmallThumbnail1ImagePath)
+        @Html.HiddenFor(model => model.BlogSmallThumbnail2ImagePath)
+        @Html.HiddenFor(model => model.BlogSmallThumbnail3ImagePath)
+
+
+
+
+        <div class="col-lg-12  detail-card" style="border-top: 4px solid var(--primary-color);">
+            <div class="card blog-card mb-4">
+                <div class="card-body p-4">
+                    <label class="section-label">Core Content</label>
+
+                    <div class="form-group mb-4">
+                        <b>@Html.LabelFor(m => m.BlogTitle, "Blog Title*")</b>
+                        @Html.TextBoxFor(model => model.BlogTitle, new { @class = "form-control form-control-lg", @placeholder = "Catchy title (max 30 chars)" })
+                    </div>
+
+                    <div class="form-group mb-4">
+                        <b>@Html.LabelFor(m => m.OnelinerDiscription, "Short Description")</b>
+                        @Html.TextBoxFor(model => model.OnelinerDiscription, new { @class = "form-control", @placeholder = "One liner for previews (60-70 chars)" })
+                    </div>
+
+                    <div class="form-group">
+                        <b>@Html.LabelFor(m => m.FullDiscription, "Detailed Content")</b>
+                        @Html.HiddenFor(model => model.FullDiscription)
+                        <div id="editor" style="min-height: 300px;"></div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+        @*<div class="col-lg-12  detail-card" style="border-top: 4px solid var(--primary-color);">
+                <div class="card blog-card">
+                    <div class="card-body p-4">
+                        <label class="section-label">Sub-Section Details</label>
+                        <div class="form-group mb-4">
+                            <b>@Html.LabelFor(m => m.SubTitle, "Sub Title")</b>
+                            @Html.TextBoxFor(model => model.SubTitle, new { @class = "form-control", @placeholder = "Section Heading" })
+                        </div>
+                        <div class="form-group">
+                            <b>@Html.LabelFor(m => m.SubTitleDiscription, "Sub-Section Content")</b>
+                            @Html.TextAreaFor(model => model.SubTitleDiscription, new { @rows = "4", @class = "form-control", @placeholder = "Detailed explanation for the sub-section..." })
+                        </div>
+                    </div>
+                </div>
+            </div>*@
+
+        <div class="col-lg-12  detail-card" style="border-top: 4px solid var(--primary-color);">
+            <div class="card blog-card">
+                <div class="card-body p-4">
+                    <label class="section-label">SEO-Section Details</label>
+                    <div class="form-group mb-4">
+                        <b>@Html.LabelFor(m => m.SEOTitle, "SEO Title")</b>
+                        @Html.TextBoxFor(model => model.SEOTitle, new { @class = "form-control", @placeholder = "SEO Section Heading" })
+                    </div>
+                    <div class="form-group">
+                        <b>@Html.LabelFor(m => m.SEOMetaDiscription, "SEO Meta Description")</b>
+                        @Html.TextAreaFor(model => model.SEOMetaDiscription, new { @rows = "4", @class = "form-control", @placeholder = "Detailed explanation for the Meta..." })
+                    </div>
+
+                    <div class="form-group">
+                        <b>@Html.LabelFor(m => m.SEOMetaKeywords, "SEO Meta Keywords")</b>
+                        @Html.TextAreaFor(model => model.SEOMetaKeywords, new { @rows = "4", @class = "form-control", @placeholder = "Detailed explanation for the Meta keywwords..." })
+                    </div>
+                    <div class="form-group">
+                        <b>@Html.LabelFor(m => m.WebsiteLink, "Website Link")</b>
+                        @Html.TextBoxFor(model => model.WebsiteLink, new { @class = "form-control", @placeholder = "Website Link..." })
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @*<div class="col-lg-12  detail-card" style="border-top: 4px solid var(--primary-color);">
+                <div class="card blog-card mb-4">
+                    <div class="card-body p-4">
+                        <label class="section-label">Quotes & Highlights</label>
+                        <div class="form-group">
+                            <b>@Html.LabelFor(m => m.Quote, "In-Article Quote")</b>
+                            @Html.TextAreaFor(model => model.Quote, new { @class = "form-control", @rows = "3", @placeholder = "Add a highlight quote..." })
+                        </div>
+                    </div>
+                </div>
+            </div>*@
+
+        <div class="col-lg-12  detail-card" style="border-top: 4px solid var(--primary-color);">
+            <div class="card blog-card">
+                <div class="card-body p-4">
+                    <label class="section-label">Visual Media</label>
+
+                    <div class="form-group mb-4">
+                        <small class="font-weight-bold d-block mb-2">Main Thumbnail</small>
+                        <img src="@(string.IsNullOrEmpty(Model.BlogThumbnailImagePath) ? "/assets/img/default.jpg" : Url.Content(Model.BlogThumbnailImagePath))"
+                             id="prev_main" class="edit-preview-img" />
+                        <div class="custom-file">
+                            @Html.TextBoxFor(model => model.BlogThumbnail, new { type = "file", @class = "custom-file-input preview-trigger", data_target = "#prev_main" })
+                            <label class="custom-file-label">Change Image</label>
+                        </div>
+                    </div>
+
+
+                    <hr />
+                    <small class="font-weight-bold text-dark d-block mb-3">Gallery/Small Thumbnails (255x143)</small>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group mb-2">
+                                <img src="@(string.IsNullOrEmpty(Model.BlogSmallThumbnail1ImagePath) ? "/assets/img/default.jpg" : Url.Content(Model.BlogSmallThumbnail1ImagePath))"
+                                     id="prev_s1" class="edit-preview-img" style="height:80px;" />
+                                <div class="custom-file">
+                                    @Html.TextBoxFor(model => model.BlogSmallThumbnail1, new { type = "file", @class = "custom-file-input preview-trigger", data_target = "#prev_s1" })
+                                    <label class="custom-file-label">Image 1</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group mb-2">
+                                <img src="@(string.IsNullOrEmpty(Model.BlogSmallThumbnail2ImagePath) ? "/assets/img/default.jpg" : Url.Content(Model.BlogSmallThumbnail2ImagePath))"
+                                     id="prev_s2" class="edit-preview-img" style="height:80px;" />
+                                <div class="custom-file">
+                                    @Html.TextBoxFor(model => model.BlogSmallThumbnail2, new { type = "file", @class = "custom-file-input preview-trigger", data_target = "#prev_s2" })
+                                    <label class="custom-file-label">Image 2</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <img src="@(string.IsNullOrEmpty(Model.BlogSmallThumbnail3ImagePath) ? "/assets/img/default.jpg" : Url.Content(Model.BlogSmallThumbnail2ImagePath))"
+                                     id="prev_s2" class="edit-preview-img" style="height:80px;" />
+                                <div class="custom-file">
+                                    @Html.TextBoxFor(model => model.BlogSmallThumbnail3, new { type = "file", @class = "custom-file-input preview-trigger", data_target = "#prev_s3" })
+                                    <label class="custom-file-label">Image 2</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <button type="submit" class="btn btn-emerald" onclick="return setHtmlBeforeSubmit();">
+            <i class="fas fa-check-circle mr-2"></i> Update Changes
+        </button>
+    }
+</section>
+
+<script src="~/Areas/Admin/plugins/bs-custom-file-input/bs-custom-file-input.min.js"></script>
+<script>
+    $(function () {
+        bsCustomFileInput.init();
+
+        // Initialize CKEditor
+        ClassicEditor
+            .create(document.querySelector('#editor'), {
+                toolbar: ['heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote', 'undo', 'redo']
+            })
+            .then(editor => {
+                window.editorInstance = editor;
+                editor.setData($("#FullDiscription").val());
+            });
+
+        // Instant Image Preview Logic
+        $('.preview-trigger').on('change', function () {
+            const target = $(this).data('target');
+            const file = this.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    $(target).attr('src', e.target.result);
+                }
+                reader.readAsDataURL(file);
+            }
+            // Update Label text
+            let fileName = $(this).val().split('\\').pop();
+            $(this).next('.custom-file-label').html(fileName);
+        });
+    });
+
+    function setHtmlBeforeSubmit() {
+        var content = window.editorInstance.getData();
+        if ($.trim(content) === "") {
+            toastr.warning("Blog description is required.");
+            return false;
+        }
+        $("#FullDiscription").val(content);
+        return true;
+    }
+</script>

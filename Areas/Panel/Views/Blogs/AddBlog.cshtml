@@ -1,0 +1,309 @@
+﻿
+@{
+    ViewBag.Title = "AddBlog";
+    Layout = "~/Areas/Panel/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        overflow-x: hidden;
+    }
+
+    .section {
+        height: 33.33vh;
+        padding: 20px;
+    }
+
+    .first {
+        background-color: #f1f1f1;
+    }
+
+    .second {
+        position: fixed;
+        top: 33.33vh; /* Positioned over where the second div would be */
+        right: -100%;
+        width: 105%;
+        height: 33.33vh;
+        background-color: #333;
+        color: white;
+        transition: right 0.3s ease;
+        z-index: 1000;
+        padding: 20px;
+    }
+
+        .second.open {
+            right: 0;
+        }
+
+    .third {
+        background-color: #eaeaea;
+    }
+
+    .toggle-button {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        background-color: var(--primary-color);
+        color: white;
+        padding: 10px 15px;
+        border: none;
+        cursor: pointer;
+    }
+</style>
+<div class="rbt-create-course-area bg-color-white">
+    <div class="container">
+        <div class="row g-5">
+            <div class="col-lg-12">
+                <div class="rbt-accordion-style rbt-accordion-01 rbt-accordion-06 accordion">
+                    <div id="slider" class="slider">
+                        <button class="toggle-button" onclick="toggleSlider()"><i class="feather-info"></i></button>
+                        <div class="col-lg-12">
+                            <div class="rbt-create-course-sidebar course-sidebar sticky-top rbt-shadow-box rbt-gradient-border">
+                                <div class="inner">
+                                    <div class="section-title mb--30">
+                                        <h4 class="title">Blog Upload Tips</h4>
+                                    </div>
+                                    <div class="rbt-course-upload-tips">
+                                        <ul class="rbt-list-style-1">
+                                            <li>
+                                                <i class="feather-check"></i> Set the Blog Price option or make it free.
+                                            </li>
+                                            <li>
+                                                <i class="feather-check"></i> Standard size for the Blog thumbnail is
+                                                700x430.
+                                            </li>
+                                            <li>
+                                                <i class="feather-check"></i> Video section controls the Blog overview
+                                                video.
+                                            </li>
+                                            <li>
+                                                <i class="feather-check"></i> Blog Builder is where you create & organize
+                                                a course.
+                                            </li>
+                                            <li>
+                                                <i class="feather-check"></i> Add Topics in the Blog Builder section to
+                                                create lessons, quizzes, and assignments.
+                                            </li>
+                                            <li>
+                                                <i class="feather-check"></i> Prerequisites refers to the fundamental
+                                                courses to complete before taking this particular course.
+                                            </li>
+                                            <li>
+                                                <i class="feather-check"></i> Information from the Additional Data section
+                                                shows up on the Blog single page.
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion" id="tutionaccordionExamplea1">
+                        <div class="accordion-item card">
+                            <h2 class="accordion-header card-header" id="accOne">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#accCollapseOne" aria-expanded="true" aria-controls="accCollapseOne">
+                                    Blog Info
+                                </button>
+                            </h2>
+                            <div id="accCollapseOne" class="accordion-collapse collapse show" aria-labelledby="accOne" data-bs-parent="#tutionaccordionExamplea1">
+                                <div class="accordion-body card-body">
+                                    <div class="rbt-course-field-wrapper rbt-default-form">
+                                        <div class="course-field mb--15">
+                                            <label for="field-1">Blog Title*</label>
+                                            <input id="field-1" type="text">
+                                            <small class="d-block mt_dec--5">
+                                                <i class="feather-info"></i> Title
+                                                should be 30 charecter.
+                                            </small>
+                                        </div>
+                                        <div class="course-field mb--15">
+                                            <label for="field-2">One liner Discription</label>
+                                            <input id="field-2" type="text">
+                                            <small class="d-block mt_dec--5">
+                                                <i class="feather-info"></i>
+                                                One liner Discription should be 60-70 charecter.
+                                            </small>
+                                        </div>
+                                        <div class="course-field mb--15">
+                                            <label for="field-2">Quote</label>
+                                            <input id="field-2" type="text">
+                                            <small class="d-block mt_dec--5">
+                                                <i class="feather-info"></i>
+                                                Quote should be 60-70 charecter.
+                                            </small>
+                                        </div>
+
+                                        <div class="course-field mb--15">
+                                            <label for="aboutCourse">Full Discription</label>
+                                            <textarea id="aboutCourse" rows="10"></textarea>
+                                            <small class="d-block mt_dec--5">
+                                                <i class="feather-info"></i> HTML
+                                                or plain text allowed, no emoji This field is used for search,
+                                                so please be descriptive!
+                                            </small>
+                                        </div>
+
+                                        <div class="course-field mb--15">
+                                            <label for="field-2">Sub Title</label>
+                                            <input id="field-2" type="text">
+                                            <small class="d-block mt_dec--5">
+                                                <i class="feather-info"></i>
+                                                Quote should be 60-70 charecter.
+                                            </small>
+                                        </div>
+
+                                        <div class="course-field mb--15">
+                                            <label for="aboutCourse">Sub Title Discription</label>
+                                            <textarea id="aboutCourse" rows="10"></textarea>
+                                            <small class="d-block mt_dec--5">
+                                                <i class="feather-info"></i> HTML
+                                                or plain text allowed, no emoji This field is used for search,
+                                                so please be descriptive!
+                                            </small>
+                                        </div>
+
+                                        <div class="course-field mb--20">
+                                            <h6>Blog Thumbnail</h6>
+                                            <div class="rbt-create-course-thumbnail upload-area">
+                                                <div class="upload-area">
+                                                    <div class="brows-file-wrapper" data-black-overlay="9">
+                                                        <input name="createinputfile" id="createinputfile" type="file" class="inputfile" />
+                                                        <img id="createfileImage" src="~/assets/images/others/thumbnail-placeholder.svg" alt="file image">
+                                                        <label class="d-flex" for="createinputfile" title="No File Choosen">
+                                                            <i class="feather-upload"></i>
+                                                            <span class="text-center">Choose a File</span>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <small>
+                                                <i class="feather-info"></i> <b>Size:</b> 1085X645 pixels, 255X143
+                                                <b>
+                                                    File
+                                                    Support:
+                                                </b> JPG, JPEG, PNG, GIF
+                                            </small>
+                                        </div>
+
+                                        <div class="course-field mb--20">
+                                            <h6>Blog Small Thumbnail</h6>
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <div class="rbt-create-course-thumbnail upload-area">
+                                                        <div class="upload-area">
+                                                            <div class="brows-file-wrapper" data-black-overlay="9">
+                                                                <input name="createinputfile" id="createinputfile" type="file" class="inputfile" />
+                                                                <img id="createfileImage" src="~/assets/images/others/thumbnail-placeholder.svg" alt="file image">
+                                                                <label class="d-flex" for="createinputfile" title="No File Choosen">
+                                                                    <i class="feather-upload"></i>
+                                                                    <span class="text-center">Choose a File</span>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-4">
+                                                    <div class="rbt-create-course-thumbnail upload-area">
+                                                        <div class="upload-area">
+                                                            <div class="brows-file-wrapper" data-black-overlay="9">
+                                                                <input name="createinputfile" id="createinputfile" type="file" class="inputfile" />
+                                                                <img id="createfileImage" src="~/assets/images/others/thumbnail-placeholder.svg" alt="file image">
+                                                                <label class="d-flex" for="createinputfile" title="No File Choosen">
+                                                                    <i class="feather-upload"></i>
+                                                                    <span class="text-center">Choose a File</span>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-4">
+                                                    <div class="rbt-create-course-thumbnail upload-area">
+                                                        <div class="upload-area">
+                                                            <div class="brows-file-wrapper" data-black-overlay="9">
+                                                                <input name="createinputfile" id="createinputfile" type="file" class="inputfile" />
+                                                                <img id="createfileImage" src="~/assets/images/others/thumbnail-placeholder.svg" alt="file image">
+                                                                <label class="d-flex" for="createinputfile" title="No File Choosen">
+                                                                    <i class="feather-upload"></i>
+                                                                    <span class="text-center">Choose a File</span>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                            <small>
+                                                <i class="feather-info"></i> <b>Size:</b>  255X143 pixels,
+                                                <b>
+                                                    File
+                                                    Support:
+                                                </b> JPG, JPEG, PNG, GIF
+                                            </small>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden;
+    }
+
+    .slider {
+        position: fixed;
+        top: 0;
+        right: -300px; /* Start hidden */
+        width: 300px;
+        height: 100%;
+        background-color: #333;
+        color: white;
+        transition: right 0.3s ease;
+        box-shadow: -2px 0 5px rgba(0,0,0,0.5);
+        z-index: 1000;
+    }
+
+        .slider.open {
+            right: 0;
+        }
+
+    .toggle-button {
+        position: absolute;
+        top: 120px;
+        left: -50px; /* Move the button outside the slider */
+        background-color: var(--primary-color);
+        color: white;
+        padding: 10px 15px;
+        border: none;
+        cursor: pointer;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+</style>
+
+
+<script>
+    function toggleSlider() {
+        document.getElementById('slider').classList.toggle('open');
+    }
+</script>
+
+

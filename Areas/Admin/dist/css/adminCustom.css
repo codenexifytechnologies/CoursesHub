@@ -1,0 +1,312 @@
+﻿/* Root Variables for easy theme changes */
+:root {
+    --primary: #10b981; /* Emerald Green */
+    --sidebar-bg: #111827; /* Deep Slate */
+    --bg-body: #f4f7f6; /* Soft Light Gray */
+    --card-radius: 16px;
+    --shadow: 0 10px 30px rgba(0,0,0,0.04);
+}
+
+/* Page & Layout */
+body {
+    background-color: var(--bg-body);
+    font-family: 'Inter', sans-serif;
+}
+
+/*.main-sidebar {
+    background-color: var(--sidebar-bg) !important;
+}*/
+
+/* Modern Card Styling */
+.form-card, .stat-card-modern {
+    border: none !important;
+    border-radius: var(--card-radius) !important;
+    box-shadow: var(--shadow) !important;
+    background: #fff;
+    margin-bottom: 20px;
+}
+
+/* Inputs & Forms */
+.form-control {
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+    padding: 0.65rem 1rem;
+}
+
+    .form-control:focus {
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+    }
+
+/* Buttons */
+.btn-primary, .btn-update, .btn-submit {
+    background-color: var(--primary) !important;
+    border: none !important;
+    border-radius: 8px !important;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        opacity: 0.9;
+    }
+
+/* Profile Circle Preview */
+.rounded-circle-preview {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border: 4px solid #fff;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.profile-img-container {
+    position: relative;
+    display: inline-block;
+}
+
+#imgPreview {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border: 4px solid #fff;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+.btn-update {
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    padding: 12px 35px;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+    .btn-update:hover {
+        background-color: #059669;
+        transform: translateY(-2px);
+    }
+
+/* Modernized Card and Headers */
+.blog-card {
+    border: none;
+    border-radius: 12px;
+    box-shadow: var(--card-shadow);
+}
+
+.section-label {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #10b981;
+    margin-bottom: 0.75rem;
+    display: block;
+}
+
+/* Emerald Buttons */
+.btn-emerald {
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    padding: 10px 30px;
+    font-weight: 600;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+}
+
+    .btn-emerald:hover {
+        background-color: var(--primary-hover);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+    }
+
+/* CKEditor Customization to match theme */
+.ck-editor__animated-border {
+    border-radius: 8px !important;
+}
+
+.ck-focused {
+    border-color: var(--primary) !important;
+}
+
+.edit-preview-img {
+    width: 100%;
+    max-height: 150px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 2px solid #e2e8f0;
+    margin-bottom: 10px;
+}
+
+.section-label {
+    color: #10b981;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+    display: block;
+    margin-bottom: 15px;
+}
+
+.blog-card {
+    border: none;
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+    border-radius: 12px;
+}
+
+/*menumanagement*/
+
+.section-label {
+    color: #10b981;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+    display: block;
+    margin-bottom: 15px;
+}
+
+.blog-card {
+    border: none;
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+    border-radius: 12px;
+}
+
+/* Modern Checkbox List Styling */
+
+.menu-item {
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
+    margin-bottom: 8px;
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    transition: all 0.2s;
+}
+
+    .menu-item:hover {
+        border-color: #10b981;
+        background: #f0fdf4;
+    }
+
+    .menu-item input[type="checkbox"] {
+        width: 18px;
+        height: 18px;
+        accent-color: #10b981;
+        cursor: pointer;
+    }
+
+    .menu-item label {
+        margin-left: 12px;
+        margin-bottom: 0;
+        cursor: pointer;
+        font-weight: 500;
+        color: #334155;
+        flex-grow: 1;
+    }
+
+#btnSubmit {
+    display: none;
+    transition: all 0.3s;
+}
+
+.module-card {
+    background: #fff;
+    border: 1px solid #eef2f6;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    height: 100%;
+}
+
+    .module-card:hover {
+        box-shadow: 0 10px 15px -3px rgba(16, 185, 129, 0.1);
+        border-color: #10b981;
+    }
+
+.module-header {
+    background: #f8fafc;
+    padding: 12px 15px;
+    border-bottom: 1px solid #eef2f6;
+    border-radius: 12px 12px 0 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.module-title {
+    font-weight: 700;
+    color: #1e293b;
+    margin: 0;
+    font-size: 0.95rem;
+}
+
+/* Toggle Switch Styling */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 40px;
+    height: 22px;
+}
+
+    .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #cbd5e1;
+    transition: .4s;
+    border-radius: 34px;
+}
+
+    .slider:before {
+        position: absolute;
+        content: "";
+        height: 16px;
+        width: 16px;
+        left: 3px;
+        bottom: 3px;
+        background-color: white;
+        transition: .4s;
+        border-radius: 50%;
+    }
+
+input:checked + .slider {
+    background-color: #10b981;
+}
+
+    input:checked + .slider:before {
+        transform: translateX(18px);
+    }
+
+.permission-row {
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+    .permission-row:last-child {
+        border-bottom: none;
+    }
+
+.permission-name {
+    flex-grow: 1;
+    font-size: 0.9rem;
+    color: #475569;
+}
+
+.main-sidebar .nav-link p {
+    font-size: .95rem !important;
+    font-weight: 500 !important;
+    white-space: nowrap !important;
+}

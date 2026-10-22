@@ -1,0 +1,309 @@
+﻿@model CoursesHub.Areas.Admin.Models.MenuManagement
+@{
+    ViewBag.Title = "MenuManagement";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<script src="//code.jquery.com/jquery-2.2.4.min.js"></script>
+<script src="~/assets/js/toastr.min.js"></script>
+<link href="~/assets/css/toastr.min.css" rel="stylesheet" />
+<link href="@CoursesHub.AssetVersion.Url("~/assets/css/adminCustom.css")" rel="stylesheet" />
+
+<style>
+    .section-label {
+        color: #10b981;
+        font-weight: 700;
+        text-transform: uppercase;
+        font-size: 0.85rem;
+        letter-spacing: 1px;
+        display: block;
+        margin-bottom: 15px;
+    }
+
+    .blog-card {
+        border: none;
+        box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+        border-radius: 12px;
+    }
+
+    /* Modern Checkbox List Styling */
+
+    .menu-item {
+        display: flex;
+        align-items: center;
+        padding: 10px 15px;
+        margin-bottom: 8px;
+        background: #fff;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        transition: all 0.2s;
+    }
+
+        .menu-item:hover {
+            border-color: #10b981;
+            background: #f0fdf4;
+        }
+
+        .menu-item input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: #10b981;
+            cursor: pointer;
+        }
+
+        .menu-item label {
+            margin-left: 12px;
+            margin-bottom: 0;
+            cursor: pointer;
+            font-weight: 500;
+            color: #334155;
+            flex-grow: 1;
+        }
+
+    #btnSubmit {
+        display: none;
+        transition: all 0.3s;
+    }
+
+    .module-card {
+        background: #fff;
+        border: 1px solid #eef2f6;
+        border-radius: 12px;
+        transition: all 0.3s ease;
+        height: 100%;
+    }
+
+        .module-card:hover {
+            box-shadow: 0 10px 15px -3px rgba(16, 185, 129, 0.1);
+            border-color: #10b981;
+        }
+
+    .module-header {
+        background: #f8fafc;
+        padding: 12px 15px;
+        border-bottom: 1px solid #eef2f6;
+        border-radius: 12px 12px 0 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .module-title {
+        font-weight: 700;
+        color: #1e293b;
+        margin: 0;
+        font-size: 0.95rem;
+    }
+
+    /* Toggle Switch Styling */
+    .switch {
+        position: relative;
+        display: inline-block;
+        width: 40px;
+        height: 22px;
+    }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+    .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #cbd5e1;
+        transition: .4s;
+        border-radius: 34px;
+    }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+    input:checked + .slider {
+        background-color: #10b981;
+    }
+
+        input:checked + .slider:before {
+            transform: translateX(18px);
+        }
+
+    .permission-row {
+        display: flex;
+        align-items: center;
+        padding: 10px 15px;
+        border-bottom: 1px solid #f1f5f9;
+    }
+
+        .permission-row:last-child {
+            border-bottom: none;
+        }
+
+    .permission-name {
+        flex-grow: 1;
+        font-size: 0.9rem;
+        color: #475569;
+    }
+
+    .main-sidebar .nav-link p {
+        font-size: .95rem !important;
+        font-weight: 500 !important;
+        white-space: nowrap !important;
+    }
+</style>
+
+@if (TempData["AddMenuSuccessMsg"] != null)
+{
+    <script>$(document).ready(function () { toastr.success('@TempData["AddMenuSuccessMsg"]'); });</script>
+}
+
+<section class="content-header">
+    <div class="container-fluid py-4">
+        <h1 class="font-weight-bold text-dark">User Access Control</h1>
+        <p class="text-muted">Select a user to manage their sidebar menu permissions.</p>
+    </div>
+</section>
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card blog-card">
+                    <div class="card-body p-4">
+                        <div class="row align-items-end mb-4">
+                            <div class="col-md-4">
+                                <label class="section-label">1. Select Administrator</label>
+                                @Html.DropDownListFor(model => model.UserId, ViewBag.UserData as SelectList, new { @class = "form-control form-control-lg", @id = "ddlEmp", @onchange = "onDropdownChange()" })
+                            </div>
+                            <div class="col-md-4">
+                                <button type="button" id="btnSubmit" class="btn btn-emerald btn-lg px-5 font-weight-bold" style="display:none;">
+                                    <i class="fas fa-save mr-2"></i> Save All Changes
+                                </button>
+                            </div>
+                        </div>
+
+                        <hr />
+
+                        <label class="section-label mt-4">2. Define Access Levels</label>
+                        <div id="MenuContainer" class="row mt-3">
+                            <div class="col-12 text-center py-5">
+                                <div class="bg-light d-inline-block p-4 rounded-circle mb-3">
+                                    <i class="fas fa-shield-alt fa-3x text-emerald"></i>
+                                </div>
+                                <h4 class="text-dark">Ready to Manage Access</h4>
+                                <p class="text-muted">Select a user account above to view and edit their specific menu permissions.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    function onDropdownChange() {
+    var selectedValue = $("#ddlEmp").val();
+    if (!selectedValue) return;
+
+    $("#MenuContainer").empty();
+    if (window.CHLoader) { CHLoader.show('Loading\u2026'); }
+
+    $.ajax({
+        url: '@Url.Action("BindEmpMenu", "MenuManagement")',
+        type: "GET",
+        data: { id: selectedValue },
+        complete: function () { if (window.CHLoader) { CHLoader.hide(); } },
+        success: function (response) {
+            var container = $("#MenuContainer");
+            container.empty();
+
+            // Logic: Grouping by MainMenu
+            var grouped = {};
+            $.each(response.lstMenu, function(i, item) {
+                if(!grouped[item.MainMenu]) grouped[item.MainMenu] = [];
+                grouped[item.MainMenu].push(item);
+            });
+
+            // Create a "Tile" for each Main Menu category
+            $.each(grouped, function(mainName, subItems) {
+                var cardHtml = `
+                    <div class="col-xl-4 col-md-6 mb-4">
+                        <div class="module-card shadow-sm">
+                            <div class="module-header">
+                                <h5 class="module-title"><i class="fas fa-folder-open mr-2 text-emerald"></i> ${mainName}</h5>
+                                <span class="badge badge-pill badge-light text-muted">${subItems.length} items</span>
+                            </div>
+                            <div class="module-body">`;
+
+                $.each(subItems, function(j, sub) {
+                    var displayName = sub.SubMenu || "Main Access";
+                    cardHtml += `
+                        <div class="permission-row">
+                            <span class="permission-name">${displayName}</span>
+                            <label class="switch">
+                                <input type="checkbox" id="${sub.id}" class="chk">
+                                <span class="slider"></span>
+                            </label>
+                        </div>`;
+                });
+
+                cardHtml += `</div></div></div>`;
+                container.append(cardHtml);
+            });
+
+            // Check the ones the user already has
+            $.each(response.lstUserMenuMapping, function (index, mapping) {
+                $('#' + mapping.MenuId).prop("checked", true);  
+            });
+
+            $("#btnSubmit").fadeIn();
+        }
+    });
+}
+
+    $(document).ready(function () {
+        $("#btnSubmit").click(function () {
+            var selectedValue = $("#ddlEmp").val();
+            let checkboxData = [];
+
+            $('.chk').each(function () {
+                checkboxData.push({
+                    ID: $(this).attr('id'),
+                    Checked: $(this).is(':checked')
+                });
+            });
+
+            $(this).prop('disabled', true);
+            if (window.CHLoader) { CHLoader.show('Loading\u2026'); }
+
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("SaveMenuRole", "MenuManagement")',
+                data: { lst: checkboxData, EmpId: selectedValue },
+                complete: function () { if (window.CHLoader) { CHLoader.hide(); } },
+                success: function (result) {
+                    toastr.success("Permissions updated successfully!");
+                    $("#btnSubmit").html('<i class="fas fa-save mr-2"></i> Update Permissions').prop('disabled', false);
+                },
+                error: function() {
+                    toastr.error("Error saving data.");
+                    $("#btnSubmit").html('<i class="fas fa-save mr-2"></i> Update Permissions').prop('disabled', false);
+                }
+            });
+        });
+    });
+</script>

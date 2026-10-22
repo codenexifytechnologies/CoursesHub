@@ -1,0 +1,104 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 350" width="1600" height="350" preserveAspectRatio="xMidYMid slice">
+  <title>About CoursesHub</title>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0F3F42"/>
+      <stop offset="0.6" stop-color="#13615F"/>
+      <stop offset="1" stop-color="#158887"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#3FA3A2" stop-opacity="0.5"/>
+      <stop offset="1" stop-color="#3FA3A2" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="dots" width="22" height="22" patternUnits="userSpaceOnUse">
+      <circle cx="3" cy="3" r="2.2" fill="#FFFFFF" fill-opacity="0.16"/>
+    </pattern>
+  </defs>
+
+  <rect width="1600" height="350" fill="url(#bg)"/>
+  <circle cx="1040" cy="175" r="260" fill="url(#glow)"/>
+  <circle cx="-30" cy="380" r="170" fill="none" stroke="#FFFFFF" stroke-opacity="0.07" stroke-width="36"/>
+  <circle cx="1580" cy="-20" r="130" fill="none" stroke="#F79646" stroke-opacity="0.2" stroke-width="24"/>
+  <rect x="620" y="36" width="132" height="88" fill="url(#dots)"/>
+  <rect x="1450" y="236" width="120" height="100" fill="url(#dots)"/>
+
+  <!-- Copy -->
+  <g font-family="'Euclid Circular', 'Segoe UI', Arial, Helvetica, sans-serif">
+    <text x="50" y="104" fill="#F79646" font-size="20" font-weight="700" letter-spacing="4">ABOUT US</text>
+    <text x="50" y="166" fill="#FFFFFF" font-size="46" font-weight="700">Courses<tspan fill="#F79646">Hub</tspan></text>
+    <text x="50" y="214" fill="#FFFFFF" font-size="25" font-weight="600">Your gateway to the right course</text>
+    <text x="50" y="254" fill="#FFFFFF" fill-opacity="0.82" font-size="18">Connecting learners with trusted training providers across Australia</text>
+  </g>
+
+  <!-- Illustration: learners connected to a central hub -->
+  <g transform="translate(1040 175)">
+    <!-- connection lines -->
+    <g stroke="#FFFFFF" stroke-opacity="0.35" stroke-width="3" stroke-dasharray="6 8" fill="none">
+      <path d="M0 0 L-190 -80"/>
+      <path d="M0 0 L-200 70"/>
+      <path d="M0 0 L190 -85"/>
+      <path d="M0 0 L200 65"/>
+      <path d="M0 0 L0 -140"/>
+    </g>
+    <!-- orbit -->
+    <circle r="120" fill="none" stroke="#FFFFFF" stroke-opacity="0.18" stroke-width="2"/>
+
+    <!-- central hub: graduation cap -->
+    <circle r="66" fill="#FFFFFF"/>
+    <circle r="66" fill="none" stroke="#F79646" stroke-width="5"/>
+    <g transform="translate(0 -4)">
+      <path d="M-40 0 L0 -18 L40 0 L0 18 Z" fill="#158887"/>
+      <path d="M-23 9 v15 c0 9 46 9 46 0 v-15 L0 18 Z" fill="#0F3F42"/>
+      <path d="M33 3 v20" stroke="#F79646" stroke-width="4" stroke-linecap="round"/>
+      <circle cx="33" cy="27" r="5" fill="#F79646"/>
+    </g>
+
+    <!-- satellites -->
+    <g>
+      <!-- learner -->
+      <g transform="translate(-190 -80)">
+        <circle r="34" fill="#E8F4F4"/>
+        <circle cy="-8" r="10" fill="#158887"/>
+        <path d="M-17 18 c0 -14 34 -14 34 0" fill="#158887"/>
+      </g>
+      <!-- book -->
+      <g transform="translate(-200 70)">
+        <circle r="34" fill="#F79646"/>
+        <g fill="none" stroke="#0B3B3A" stroke-width="3.5" stroke-linejoin="round">
+          <path d="M-18 -10 c8 -5 16 -5 18 0 v22 c-2 -5 -10 -5 -18 0 z"/>
+          <path d="M18 -10 c-8 -5 -16 -5 -18 0 v22 c2 -5 10 -5 18 0 z"/>
+        </g>
+      </g>
+      <!-- building / provider -->
+      <g transform="translate(190 -85)">
+        <circle r="34" fill="#E8F4F4"/>
+        <g fill="#158887">
+          <path d="M-18 -4 L0 -18 L18 -4 Z"/>
+          <rect x="-15" y="-2" width="5" height="16"/>
+          <rect x="-2.5" y="-2" width="5" height="16"/>
+          <rect x="10" y="-2" width="5" height="16"/>
+          <rect x="-19" y="15" width="38" height="4"/>
+        </g>
+      </g>
+      <!-- location pin (Australia) -->
+      <g transform="translate(200 65)">
+        <circle r="34" fill="#FFFFFF" fill-opacity="0.95"/>
+        <path d="M0 18 C -14 2 -14 -4 -14 -6 a14 14 0 0 1 28 0 c0 2 0 8 -14 24z" fill="#F79646"/>
+        <circle cy="-6" r="5" fill="#FFFFFF"/>
+      </g>
+      <!-- certificate -->
+      <g transform="translate(0 -140)">
+        <circle r="28" fill="#FFFFFF" fill-opacity="0.95"/>
+        <rect x="-14" y="-11" width="28" height="20" rx="3" fill="none" stroke="#158887" stroke-width="3"/>
+        <circle cx="6" cy="9" r="5" fill="#F79646"/>
+      </g>
+    </g>
+
+    <!-- sparkles -->
+    <g fill="#FFFFFF">
+      <path d="M-290 -10 l5 13 13 5 -13 5 -5 13 -5 -13 -13 -5 13 -5z" fill-opacity="0.8"/>
+      <path d="M300 -10 l4 10 10 4 -10 4 -4 10 -4 -10 -10 -4 10 -4z" fill-opacity="0.6"/>
+      <circle cx="-110" cy="130" r="5" fill="#F79646"/>
+    </g>
+  </g>
+</svg>

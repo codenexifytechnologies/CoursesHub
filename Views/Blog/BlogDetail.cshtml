@@ -1,0 +1,429 @@
+﻿@model CoursesHub.Areas.Admin.Models.Blogs
+
+@{
+    ViewBag.Title = Model.SEOTitle;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var Blogs = (CoursesHub.Areas.Admin.Models.Blogs)ViewBag.BlogDetails;
+}
+@section MetaTags {
+    <meta name="description" content="@Model.SEOMetaDiscription">
+    <meta name="keywords" content="@Model.SEOMetaKeywords">
+    <meta name="cannonical" content="https://courseshub.com.au/@Model.WebsiteLink">
+}
+<style>
+    .wp-block-gallery {
+        display: flex;
+        justify-content: center;
+    }
+
+    .blocks-gallery-grid {
+        display: flex;
+        justify-content: center;
+        padding: 0;
+    }
+
+    /* ======================================================================
+       Blog detail - CoursesHub brand theme + motion
+       ====================================================================== */
+
+    /* Reading progress bar (pure CSS, scroll-driven where supported) */
+    @@supports (animation-timeline: scroll()) {
+        .blog-detail-page::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            z-index: 10001;
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+            transform-origin: 0 50%;
+            transform: scaleX(0);
+            animation: blogProgress linear both;
+            animation-timeline: scroll(root);
+        }
+    }
+
+    @@keyframes blogProgress {
+        to { transform: scaleX(1); }
+    }
+
+    /* Header: animated brand gradient instead of the template image */
+    .blog-detail-page .breadcrumb-image-container .breadcrumb-image-wrapper {
+        background: linear-gradient(120deg, #E8F4F4 0%, #FFFFFF 35%, #FEF3EA 65%, #D3ECEB 100%);
+        background-size: 220% 220%;
+        animation: blogGradient 14s ease-in-out infinite alternate;
+        overflow: hidden;
+    }
+
+        .blog-detail-page .breadcrumb-image-container .breadcrumb-image-wrapper::before,
+        .blog-detail-page .breadcrumb-image-container .breadcrumb-image-wrapper::after {
+            content: "";
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .blog-detail-page .breadcrumb-image-container .breadcrumb-image-wrapper::before {
+            width: 340px;
+            height: 340px;
+            left: 6%;
+            top: 18%;
+            background: radial-gradient(circle, rgba(var(--primary-rgb), 0.28) 0%, rgba(var(--primary-rgb), 0) 70%);
+            animation: blogFloat 9s ease-in-out infinite alternate;
+        }
+
+        .blog-detail-page .breadcrumb-image-container .breadcrumb-image-wrapper::after {
+            width: 260px;
+            height: 260px;
+            right: 8%;
+            top: 30%;
+            border: 34px solid rgba(var(--accent-rgb), 0.22);
+            animation: blogFloat 11s ease-in-out infinite alternate-reverse;
+        }
+
+    @@keyframes blogGradient {
+        0% { background-position: 0% 50%; }
+        100% { background-position: 100% 50%; }
+    }
+
+    @@keyframes blogFloat {
+        0% { transform: translate(0, 0) scale(1); }
+        100% { transform: translate(24px, -28px) scale(1.08); }
+    }
+
+    /* Header card */
+    .blog-detail-page .breadcrumb-image-container {
+        border-top: 4px solid var(--primary-color);
+        border-radius: var(--radius-big) var(--radius-big) 0 0;
+        box-shadow: 0 -10px 40px rgba(15, 63, 66, 0.08);
+        animation: blogFadeUp 0.8s cubic-bezier(.2, .7, .2, 1) both;
+    }
+
+    .blog-detail-page .breadcrumb-content-top .meta-list .list-item {
+        background: var(--primary-light);
+        border-radius: 999px;
+        padding: 6px 14px;
+        margin: 4px;
+        color: var(--heading-color);
+    }
+
+        .blog-detail-page .breadcrumb-content-top .meta-list .list-item i {
+            color: var(--primary-color);
+        }
+
+    .blog-detail-page .breadcrumb-content-top .meta-list .author-thumbnail {
+        width: 32px;
+        height: 32px;
+        overflow: hidden;
+        border: 2px solid #fff;
+        box-shadow: 0 0 0 2px var(--primary-color);
+    }
+
+        .blog-detail-page .breadcrumb-content-top .meta-list .author-thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+    .blog-detail-page .breadcrumb-content-top .title {
+        color: var(--heading-color);
+        position: relative;
+        display: inline-block;
+        padding-bottom: 18px;
+        margin-bottom: 18px;
+    }
+
+        .blog-detail-page .breadcrumb-content-top .title::after {
+            content: "";
+            position: absolute;
+            left: 50%;
+            bottom: 0;
+            width: 90px;
+            height: 4px;
+            margin-left: -45px;
+            border-radius: 2px;
+            background: linear-gradient(90deg, var(--primary-color) 0 60%, var(--accent-color) 60% 100%);
+            transform-origin: center;
+            animation: blogGrow 0.9s 0.5s cubic-bezier(.2, .7, .2, 1) both;
+        }
+
+    .blog-detail-page .breadcrumb-content-top p {
+        color: var(--text-color);
+        font-size: 18px;
+        max-width: 720px;
+        margin: 0 auto;
+        animation: blogFadeUp 0.8s 0.25s cubic-bezier(.2, .7, .2, 1) both;
+    }
+
+    @@keyframes blogFadeUp {
+        from { opacity: 0; transform: translateY(24px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    @@keyframes blogGrow {
+        from { transform: scaleX(0); }
+        to { transform: scaleX(1); }
+    }
+
+    /* Article card */
+    .blog-detail-page .rbt-article-content-wrapper {
+        border-radius: 0 0 var(--radius-big) var(--radius-big);
+        box-shadow: 0 20px 50px rgba(15, 63, 66, 0.1);
+        animation: blogFadeUp 0.9s 0.35s cubic-bezier(.2, .7, .2, 1) both;
+    }
+
+    .blog-detail-page .rbt-article-content-wrapper .content {
+        color: var(--text-color);
+        font-size: 17px;
+        line-height: 1.85;
+    }
+
+    /* Featured image */
+    .blog-detail-page .post-thumbnail figure {
+        margin: 0;
+    }
+
+        .blog-detail-page .post-thumbnail figure img {
+            width: 100%;
+            border-radius: var(--radius-big);
+            box-shadow: 0 16px 36px rgba(15, 63, 66, 0.16);
+            transition: transform 0.6s cubic-bezier(.2, .7, .2, 1), box-shadow 0.6s;
+        }
+
+        .blog-detail-page .post-thumbnail figure:hover img {
+            transform: scale(1.02);
+            box-shadow: 0 22px 46px rgba(var(--primary-rgb), 0.22);
+        }
+
+        .blog-detail-page .post-thumbnail figure figcaption {
+            margin-top: 14px;
+            padding-left: 14px;
+            border-left: 3px solid var(--accent-color);
+            color: var(--text-color);
+            font-style: italic;
+            text-align: left;
+        }
+
+    /* Rich text from the editor */
+    .blog-detail-page .content h2,
+    .blog-detail-page .content h3,
+    .blog-detail-page .content h4,
+    .blog-detail-page .content h5 {
+        color: var(--heading-color);
+        margin-top: 1.6em;
+    }
+
+    .blog-detail-page .content h2,
+    .blog-detail-page .content h3 {
+        padding-left: 14px;
+        border-left: 4px solid var(--primary-color);
+    }
+
+    .blog-detail-page .content a {
+        color: var(--primary-dark);
+        text-decoration: none;
+        background-image: linear-gradient(var(--accent-color), var(--accent-color));
+        background-size: 0% 2px;
+        background-position: 0 100%;
+        background-repeat: no-repeat;
+        transition: background-size 0.3s ease, color 0.3s ease;
+    }
+
+        .blog-detail-page .content a:hover {
+            color: var(--accent-dark);
+            background-size: 100% 2px;
+        }
+
+    .blog-detail-page .content ul li::marker {
+        color: var(--accent-color);
+    }
+
+    .blog-detail-page .content ol li::marker {
+        color: var(--primary-color);
+        font-weight: 700;
+    }
+
+    .blog-detail-page .content blockquote {
+        margin: 30px 0;
+        padding: 20px 26px;
+        background: var(--primary-light);
+        border-left: 5px solid var(--primary-color);
+        border-radius: 0 var(--radius-10) var(--radius-10) 0;
+        color: var(--heading-color);
+        font-style: italic;
+    }
+
+        .blog-detail-page .content blockquote::before {
+            display: none;
+        }
+
+    .blog-detail-page .content img {
+        max-width: 100%;
+        height: auto;
+        border-radius: var(--radius-10);
+    }
+
+    /* Gallery */
+    .blog-detail-page .blocks-gallery-grid {
+        gap: 16px;
+        flex-wrap: wrap;
+        margin: 30px 0;
+    }
+
+    .blog-detail-page .blocks-gallery-item {
+        list-style: none;
+        flex: 1 1 180px;
+        max-width: calc((100% - 32px) / 3);
+        margin: 0;
+    }
+
+        .blog-detail-page .blocks-gallery-item figure {
+            margin: 0;
+            overflow: hidden;
+            border-radius: var(--radius-10);
+            box-shadow: 0 10px 24px rgba(15, 63, 66, 0.12);
+            transition: transform 0.35s ease, box-shadow 0.35s ease;
+        }
+
+            .blog-detail-page .blocks-gallery-item figure img {
+                width: 100%;
+                aspect-ratio: 4 / 3;
+                object-fit: cover;
+                display: block;
+                transition: transform 0.6s cubic-bezier(.2, .7, .2, 1);
+            }
+
+            .blog-detail-page .blocks-gallery-item figure:hover {
+                transform: translateY(-6px);
+                box-shadow: 0 18px 36px rgba(var(--primary-rgb), 0.2);
+            }
+
+                .blog-detail-page .blocks-gallery-item figure:hover img {
+                    transform: scale(1.08);
+                }
+
+    /* Closing sub-section */
+    .blog-detail-page .content > h4 {
+        display: inline-block;
+        padding: 10px 18px;
+        background: var(--color-secondary-alt);
+        border-left: 4px solid var(--accent-color);
+        border-radius: 0 var(--radius-10) var(--radius-10) 0;
+    }
+
+    @@media only screen and (max-width: 767px) {
+        .blog-detail-page .breadcrumb-image-container .breadcrumb-image-wrapper::before,
+        .blog-detail-page .breadcrumb-image-container .breadcrumb-image-wrapper::after {
+            display: none;
+        }
+
+        .blog-detail-page .breadcrumb-content-top p {
+            font-size: 16px;
+        }
+
+        .blog-detail-page .blocks-gallery-item {
+            max-width: 100%;
+        }
+    }
+
+    @@media (prefers-reduced-motion: reduce) {
+        .blog-detail-page *,
+        .blog-detail-page *::before,
+        .blog-detail-page *::after,
+        .blog-detail-page::before {
+            animation: none !important;
+            transition: none !important;
+        }
+
+        .blog-detail-page::before {
+            display: none;
+        }
+    }
+</style>
+
+<div class="rbt-overlay-page-wrapper blog-detail-page">
+    <div class="breadcrumb-image-container breadcrumb-style-max-width">
+        <div class="breadcrumb-image-wrapper">
+            <div class="breadcrumb-dark"></div>
+        </div>
+        <div class="breadcrumb-content-top text-center">
+            <ul class="meta-list justify-content-center mb--10">
+                <li class="list-item">
+                    <div class="author-thumbnail">
+                        <img src="@CoursesHub.AssetVersion.Url("~/assets/images/favicon.png")" alt="blog-image">
+                    </div>
+                    <div class="author-info">
+                        <strong>Courses Hub</strong>
+                    </div>
+                </li>
+                <li class="list-item">
+                    <i class="feather-clock"></i>
+                    <span>@Convert.ToDateTime(Blogs.CreatedDate).ToShortDateString()</span>
+                </li>
+            </ul>
+            <h1 class="title">@Blogs.BlogTitle</h1>
+            <p>@Blogs.OnelinerDiscription</p>
+        </div>
+    </div>
+
+    <div class="rbt-blog-details-area rbt-section-gapBottom breadcrumb-style-max-width">
+        <div class="blog-content-wrapper rbt-article-content-wrapper">
+            <div class="content">
+                <div class="post-thumbnail mb--30 position-relative wp-block-image alignwide">
+                    <figure>
+                        @if (!string.IsNullOrEmpty(Blogs.BlogThumbnailImagePath))
+                        {
+                            <img src="@Blogs.BlogThumbnailImagePath" alt="Blog Images" onerror="this.remove()">
+                        }
+                        <figcaption>@Blogs.OnelinerDiscription</figcaption>
+                    </figure>
+                </div>
+                <div>
+                    @Html.Raw(Blogs.FullDiscription)
+                </div>
+                @*<blockquote class="wp-block-quote">
+                        <p>
+                            @Blogs.Quote
+                        </p>
+                    </blockquote>*@
+
+
+                <div class="wp-block-gallery columns-3 is-cropped">
+                    <ul class="blocks-gallery-grid">
+                        @if (!string.IsNullOrEmpty(Blogs.BlogSmallThumbnail1ImagePath))
+                        {
+                            <li class="blocks-gallery-item">
+                                <figure>
+                                    <img class="radius-4" src="@Blogs.BlogSmallThumbnail1ImagePath" alt="Blog Images" onerror="var li=this.closest('li'); if (li) { li.remove(); } else { this.remove(); }">
+                                </figure>
+                            </li>
+                        }
+                        @if (!string.IsNullOrEmpty(Blogs.BlogSmallThumbnail2ImagePath))
+                        {
+                            <li class="blocks-gallery-item">
+                                <figure>
+                                    <img class="radius-4" src="@Blogs.BlogSmallThumbnail2ImagePath" alt="Blog Images" onerror="var li=this.closest('li'); if (li) { li.remove(); } else { this.remove(); }">
+                                </figure>
+                            </li>
+                        }
+                        @if (!string.IsNullOrEmpty(Blogs.BlogSmallThumbnail3ImagePath))
+                        {
+                            <li class="blocks-gallery-item">
+                                <figure>
+                                    <img class="radius-4" src="@Blogs.BlogSmallThumbnail3ImagePath" alt="Blog Images" onerror="var li=this.closest('li'); if (li) { li.remove(); } else { this.remove(); }">
+                                </figure>
+                            </li>
+                        }
+                    </ul>
+                </div>
+
+                <h4>@Blogs.SubTitle</h4>
+
+                <p>
+                    @Blogs.SubTitleDiscription
+                </p>
+            </div>
+        </div>
+    </div>
+</div>

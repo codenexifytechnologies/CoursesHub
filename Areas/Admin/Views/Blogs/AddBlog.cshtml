@@ -1,0 +1,196 @@
+﻿@model CoursesHub.Areas.Admin.Models.Blogs
+@{
+    ViewBag.Title = "AddBlog";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<script src="//code.jquery.com/jquery-2.2.4.min.js"></script>
+<script src="~/assets/js/toastr.min.js"></script>
+<link href="~/assets/css/toastr.min.css" rel="stylesheet" />
+<link href="@CoursesHub.AssetVersion.Url("~/assets/css/adminCustom.css")" rel="stylesheet" />
+<script src="https://cdn.ckeditor.com/ckeditor5/41.1.0/classic/ckeditor.js"></script>
+
+@if (TempData["Message"] != null)
+{
+    <script>
+        $(document).ready(function () {
+            toastr.info('@TempData["Message"]');
+        });
+    </script>
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <script>
+        $(document).ready(function () {
+            toastr.error('@TempData["ErrorMessage"]');
+        });
+    </script>
+}
+
+<section class="content-header">
+    <div class="container-fluid py-4">
+        <h1 class="font-weight-bold text-dark">Create New Blog</h1>
+        <p class="text-muted">Draft and publish engaging content for your audience.</p>
+    </div>
+</section>
+
+<section class="content">
+    @using (Html.BeginForm("AddBlog", "Blogs", FormMethod.Post, new { id = "AddBlog", enctype = "multipart/form-data" }))
+    {
+   
+        <div class="col-lg-12  detail-card" style="border-top: 4px solid var(--primary-color);">
+            <div class="card blog-card mb-4">
+                <div class="card-body p-4">
+                    <label class="section-label">Core Content</label>
+
+                    <div class="form-group mb-4">
+                        <b>@Html.LabelFor(m => m.BlogTitle, "Blog Title*")</b>
+                        @Html.TextBoxFor(model => model.BlogTitle, new { @class = "form-control form-control-lg", @placeholder = "Catchy title (max 30 chars)" })
+                    </div>
+
+                    <div class="form-group mb-4">
+                        <b>@Html.LabelFor(m => m.OnelinerDiscription, "Short Description")</b>
+                        @Html.TextBoxFor(model => model.OnelinerDiscription, new { @class = "form-control", @placeholder = "One liner for previews (60-70 chars)" })
+                    </div>
+
+                    <div class="form-group">
+                        <b>@Html.LabelFor(m => m.FullDiscription, "Detailed Content")</b>
+                        @Html.HiddenFor(model => model.FullDiscription)
+                        <div id="editor" style="min-height: 300px;"></div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+        <div class="col-lg-12  detail-card" style="border-top: 4px solid var(--primary-color);">
+            <div class="card blog-card">
+                <div class="card-body p-4">
+                    <label class="section-label">SEO-Section Details</label>
+                    <div class="form-group mb-4">
+                        <b>@Html.LabelFor(m => m.SEOTitle, "SEO Title")</b>
+                        @Html.TextBoxFor(model => model.SEOTitle, new { @class = "form-control", @placeholder = "SEO Section Heading" })
+                    </div>
+                    <div class="form-group">
+                        <b>@Html.LabelFor(m => m.SEOMetaDiscription, "SEO Meta Description")</b>
+                        @Html.TextAreaFor(model => model.SEOMetaDiscription, new { @rows = "4", @class = "form-control", @placeholder = "Detailed explanation for the Meta..." })
+                    </div>
+
+                    <div class="form-group">
+                        <b>@Html.LabelFor(m => m.SEOMetaKeywords, "SEO Meta Keywords")</b>
+                        @Html.TextAreaFor(model => model.SEOMetaKeywords, new { @rows = "4", @class = "form-control", @placeholder = "Detailed explanation for the Meta keywwords..." })
+                    </div>
+                    <div class="form-group">
+                        <b>@Html.LabelFor(m => m.WebsiteLink, "Website Link")</b>
+                        @Html.TextBoxFor(model => model.WebsiteLink, new { @class = "form-control", @placeholder = "Website Link..." })
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @*<div class="col-lg-12  detail-card" style="border-top: 4px solid var(--primary-color);">
+            <div class="card blog-card mb-4">
+                <div class="card-body p-4">
+                    <label class="section-label">Quotes & Highlights</label>
+                    <div class="form-group">
+                        <b>@Html.LabelFor(m => m.Quote, "In-Article Quote")</b>
+                        @Html.TextAreaFor(model => model.Quote, new { @class = "form-control", @rows = "3", @placeholder = "Add a highlight quote..." })
+                    </div>
+                </div>
+            </div>
+        </div>*@
+
+        <div class="col-lg-12  detail-card" style="border-top: 4px solid var(--primary-color);">
+            <div class="card blog-card">
+                <div class="card-body p-4">
+                    <label class="section-label">Visual Media</label>
+
+                    <div class="form-group mb-4">
+                        <small class="font-weight-bold text-dark d-block mb-2">Main Thumbnail (1085x645)</small>
+                        <div class="custom-file">
+                            @Html.TextBoxFor(model => model.BlogThumbnail, new { type = "file", @class = "custom-file-input", @accept = "image/*" })
+                            <label class="custom-file-label">Main Image</label>
+                        </div>
+                    </div>
+
+                    <hr />
+                    <small class="font-weight-bold text-dark d-block mb-3">Gallery/Small Thumbnails (255x143)</small>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group mb-2">
+                                <div class="custom-file">
+                                    @Html.TextBoxFor(model => model.BlogSmallThumbnail1, new { type = "file", @class = "custom-file-input", @accept = "image/*" })
+                                    <label class="custom-file-label">Image 1</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group mb-2">
+                                <div class="custom-file">
+                                    @Html.TextBoxFor(model => model.BlogSmallThumbnail2, new { type = "file", @class = "custom-file-input", @accept = "image/*" })
+                                    <label class="custom-file-label">Image 2</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <div class="custom-file">
+                                    @Html.TextBoxFor(model => model.BlogSmallThumbnail3, new { type = "file", @class = "custom-file-input", @accept = "image/*" })
+                                    <label class="custom-file-label">Image 3</label>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+  
+        <button type="submit" class="btn btn-emerald" onclick="return setHtmlBeforeSubmit();">
+            <i class="fas fa-paper-plane mr-2"></i> Publish Blog
+        </button>
+    }
+</section>
+
+<script src="~/Areas/Admin/plugins/bs-custom-file-input/bs-custom-file-input.min.js"></script>
+<script>
+    $(function () {
+        bsCustomFileInput.init();
+    });
+</script>
+
+<script>
+    $(function () {
+        bsCustomFileInput.init();
+
+        // Elegant CKEditor Setup
+        ClassicEditor
+            .create(document.querySelector('#editor'), {
+                toolbar: ['heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote', 'undo', 'redo']
+            })
+            .then(editor => {
+                window.editorInstance = editor;
+                editor.setData($("#FullDiscription").val());
+            });
+
+        // Update file input labels with file names dynamically
+        $('.custom-file-input').on('change', function () {
+            let fileName = $(this).val().split('\\').pop();
+            $(this).next('.custom-file-label').addClass("selected").html(fileName);
+        });
+    });
+
+    function setHtmlBeforeSubmit() {
+        var content = window.editorInstance.getData();
+        if ($.trim(content) === "") {
+            toastr.warning("Blog description cannot be empty.");
+            return false;
+        }
+        $("#FullDiscription").val(content);
+        return true;
+    }
+</script>
+

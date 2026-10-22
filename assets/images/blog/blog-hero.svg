@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 300" role="img" aria-label="Courses Hub articles and news">
+  <defs>
+    <style>
+      .bob{animation:bob 4.5s ease-in-out infinite}
+      .bob2{animation:bob 5.5s ease-in-out infinite .8s}
+      .bob3{animation:bob 5s ease-in-out infinite 1.6s}
+      .write{stroke-dasharray:120;stroke-dashoffset:120;animation:write 4s ease-in-out infinite}
+      .pen{animation:pen 4s ease-in-out infinite}
+      .spin{transform-origin:330px 70px;transform-box:view-box;animation:spin 20s linear infinite}
+      .blink{animation:blink 2.2s ease-in-out infinite}
+      @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+      @keyframes write{0%{stroke-dashoffset:120}55%,100%{stroke-dashoffset:0}}
+      @keyframes pen{0%{transform:translateX(0)}55%{transform:translateX(96px)}100%{transform:translateX(0)}}
+      @keyframes spin{to{transform:rotate(360deg)}}
+      @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+      @media (prefers-reduced-motion: reduce){.bob,.bob2,.bob3,.pen,.spin,.blink{animation:none}.write{animation:none;stroke-dashoffset:0}}
+    </style>
+  </defs>
+  <ellipse cx="210" cy="282" rx="160" ry="12" fill="#0F3F42" fill-opacity="0.25"/>
+  <circle cx="210" cy="150" r="118" fill="#ffffff" fill-opacity="0.08"/>
+  <g class="spin">
+    <circle cx="330" cy="70" r="34" fill="none" stroke="#F79646" stroke-width="2.5" stroke-dasharray="6 10"/>
+  </g>
+  <!-- laptop with article -->
+  <g class="bob">
+    <rect x="104" y="72" width="212" height="142" rx="12" fill="#0B3134"/>
+    <rect x="114" y="82" width="192" height="122" rx="6" fill="#ffffff"/>
+    <rect x="114" y="82" width="192" height="44" rx="6" fill="#E8F4F4"/>
+    <circle cx="140" cy="104" r="12" fill="#158887"/>
+    <path d="M134 108 l5 -7 l4 5 l3 -3 l5 5 z" fill="#ffffff"/>
+    <rect x="160" y="96" width="92" height="7" rx="3.5" fill="#0F3F42"/>
+    <rect x="160" y="108" width="64" height="5" rx="2.5" fill="#9CC9C8"/>
+    <rect x="126" y="138" width="166" height="5" rx="2.5" fill="#DCE8E8"/>
+    <rect x="126" y="150" width="150" height="5" rx="2.5" fill="#DCE8E8"/>
+    <path class="write" d="M126 166 h120" stroke="#F79646" stroke-width="5" stroke-linecap="round"/>
+    <g class="pen">
+      <path d="M128 180 l8 -18 l6 3 l-8 18 z" fill="#F79646"/>
+      <path d="M128 180 l2 -5 l3 1.5 z" fill="#0F3F42"/>
+    </g>
+    <path d="M86 214 h248 l-14 12 h-220 z" fill="#158887"/>
+  </g>
+  <!-- floating cards -->
+  <g class="bob2">
+    <rect x="22" y="58" width="92" height="56" rx="10" fill="#ffffff"/>
+    <rect x="32" y="68" width="34" height="24" rx="4" fill="#F79646"/>
+    <rect x="72" y="70" width="32" height="5" rx="2.5" fill="#0F3F42"/>
+    <rect x="72" y="80" width="24" height="5" rx="2.5" fill="#9CC9C8"/>
+    <rect x="32" y="98" width="72" height="5" rx="2.5" fill="#DCE8E8"/>
+  </g>
+  <g class="bob3">
+    <path d="M326 150 h66 a10 10 0 0 1 10 10 v30 a10 10 0 0 1 -10 10 h-40 l-14 12 v-12 h-12 a10 10 0 0 1 -10 -10 v-30 a10 10 0 0 1 10 -10 z" fill="#ffffff"/>
+    <circle class="blink" cx="342" cy="175" r="5" fill="#158887"/>
+    <circle class="blink" style="animation-delay:.3s" cx="359" cy="175" r="5" fill="#158887"/>
+    <circle class="blink" style="animation-delay:.6s" cx="376" cy="175" r="5" fill="#F79646"/>
+  </g>
+  <g class="bob2">
+    <circle cx="62" cy="200" r="22" fill="#F79646"/>
+    <path d="M52 200 h20 M52 193 h20 M52 207 h12" stroke="#0B3B3A" stroke-width="3" stroke-linecap="round"/>
+  </g>
+  <g fill="#ffffff" class="blink">
+    <path d="M250 34 l3 7 l7 3 l-7 3 l-3 7 l-3 -7 l-7 -3 l7 -3 z"/>
+    <path d="M384 108 l2.5 6 l6 2.5 l-6 2.5 l-2.5 6 l-2.5 -6 l-6 -2.5 l6 -2.5 z"/>
+  </g>
+</svg>

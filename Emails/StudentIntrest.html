@@ -1,0 +1,75 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Student Interest Notification</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+</head>
+<body style="margin:0;padding:0;background:#eef5f5;font-family:Segoe UI, Roboto, Helvetica, Arial, sans-serif;">
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+        <tr>
+            <td align="center" style="padding:24px 16px;">
+                <table role="presentation" width="600" style="max-width:600px;background:#ffffff;border-radius:12px;padding:28px;border-top:5px solid #158887;box-shadow:0 4px 14px rgba(14,107,106,0.10);">
+                    <!-- Header -->
+                    <tr>
+                        <td style="font-weight:700;font-size:22px;letter-spacing:0.2px;color:#158887;padding-bottom:14px;border-bottom:2px solid #F79646;">
+                            Courses <span style="color:#F79646;">Hub</span>
+                        </td>
+                    </tr>
+
+                    <!-- Title -->
+                    <tr>
+                        <td>
+                            <h1 style="font-size:20px;margin:18px 0 12px 0;color:#0F3F42;">
+                                New Student Interest Received
+                            </h1>
+
+                            <!-- Body -->
+                            <div style="color:#3f5656;line-height:1.6;">
+                                Hello Admin,<br><br>
+
+                                A student has shown interest in one of the course categories.
+                                Below are the details:<br><br>
+
+                                <strong>Student Name:</strong> {{student_name}}<br>
+                                <strong>Email Address:</strong> {{student_email}}<br>
+                                <strong>Contact Number:</strong> {{student_contact}}<br>
+                                <strong>Interested Category:</strong> {{category_name}}<br><br>
+                                <strong>Study Method:</strong> {{study_method}}<br><br>
+                                <strong>Course Level:</strong> {{course_level}}<br><br>
+                                <strong>Education:</strong> {{education}}<br><br>
+
+                                Please review and take the necessary action.
+                            </div>
+
+                            <!-- CTA Button -->
+                            <!--<p style="text-align:center; margin:22px 0;">
+                                <a href="{{admin_dashboard_link}}"
+                                   style="display:inline-block;padding:12px 22px;border-radius:8px;text-decoration:none;font-weight:600;color:#ffffff;background:#0E6B6A;border-bottom:3px solid #F79646;"
+                                   target="_blank" rel="noopener noreferrer">
+                                    View Student Details
+                                </a>
+                            </p>-->
+
+                            <hr style="border:none;border-top:1px solid #DCE8E8;margin:20px 0;">
+
+                            <p style="margin-top:16px;">
+                                Thank you,<br>
+                                <strong>Courses Hub System</strong>
+                            </p>
+                        </td>
+                    </tr>
+
+                    <!-- Footer -->
+                    <tr>
+                        <td style="text-align:center;color:#6b8585;font-size:12px;padding-top:18px;border-top:1px solid #DCE8E8;">
+                            Courses Hub • 123 Learning St • Education City
+                        </td>
+                    </tr>
+
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

@@ -1,0 +1,112 @@
+@*
+    Header account icon: login options when signed out, profile menu when signed in.
+    ViewData["MenuClass"] adds extra classes to the <li> (e.g. "right-align-dropdown" in the mobile header).
+*@
+@{
+    var registration = Session["Registration"] as CoursesHub.Models.Registration;
+    string menuClass = ViewData["MenuClass"] as string ?? string.Empty;
+
+    bool isStudent = registration != null && registration.LoginType == "Student" && registration.objStudentRegistration != null;
+    bool isProvider = registration != null && !isStudent && registration.objUniversityRegistration != null;
+
+    string displayName = string.Empty, email = string.Empty, userId = string.Empty, logo = string.Empty;
+    if (isStudent)
+    {
+        var s = registration.objStudentRegistration;
+        displayName = ((s.FirstName ?? "") + " " + (s.LastName ?? "")).Trim();
+        email = s.EmailId;
+        userId = s.Id.ToString();
+    }
+    else if (isProvider)
+    {
+        var u = registration.objUniversityRegistration;
+        displayName = (u.Legal_Name_Organisation ?? "").Trim();
+        email = u.Email;
+        userId = u.Id.ToString();
+        logo = u.Logo;
+    }
+
+    string initials = string.Concat(displayName.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)
+                                               .Take(2).Select(w => char.ToUpperInvariant(w[0])));
+    if (string.IsNullOrEmpty(initials)) { initials = "?"; }
+}
+
+@if (isStudent || isProvider)
+{
+    <li class="access-icon rbt-user-wrapper header-account @menuClass">
+        <a class="rbt-round-btn header-avatar" href="#" role="button" aria-haspopup="true" aria-label="Account menu for @displayName" title="@displayName">
+            @if (!string.IsNullOrEmpty(logo))
+            {
+                <img src="@logo" alt="">
+            }
+            else
+            {
+                <span aria-hidden="true">@initials</span>
+            }
+        </a>
+        <div class="rbt-user-menu-list-wrapper">
+            <div class="inner">
+                <div class="header-account-profile">
+                    <span class="header-account-avatar" aria-hidden="true">
+                        @if (!string.IsNullOrEmpty(logo))
+                        {
+                            <img src="@logo" alt="">
+                        }
+                        else
+                        {
+                            @initials
+                        }
+                    </span>
+                    <span class="header-account-info">
+                        <span class="header-account-name">@displayName</span>
+                        @if (!string.IsNullOrEmpty(email))
+                        {
+                            <span class="header-account-email">@email</span>
+                        }
+                        <span class="header-account-role">@(isStudent ? "Student" : "Training Provider")</span>
+                    </span>
+                </div>
+                <ul class="user-list-wrapper">
+                    @if (isStudent)
+                    {
+                        <li><a href="@Url.Action("ViewProfile", "Student", new { area = "Student", Id = userId })"><i class="feather-user"></i><span>My Profile</span></a></li>
+                        <li><a href="@Url.Action("StudentDashboard", "Student", new { area = "Student" })"><i class="feather-home"></i><span>Dashboard</span></a></li>
+                        <li><a href="@Url.Action("AppliedCourses", "AppliedCourses", new { area = "Student" })"><i class="feather-plus-square"></i><span>Applied Courses</span></a></li>
+                    }
+                    else
+                    {
+                        <li><a href="@Url.Action("ViewProfile", "University", new { area = "Panel", Id = userId })"><i class="feather-user"></i><span>My Profile</span></a></li>
+                        <li><a href="@Url.Action("UniversityDashboard", "University", new { area = "Panel" })"><i class="feather-home"></i><span>Dashboard</span></a></li>
+                    }
+                </ul>
+                <a class="header-account-logout" href="@Url.Action("LogOff", "Login", new { area = "" })"><i class="feather-log-out"></i><span>Logout</span></a>
+            </div>
+        </div>
+    </li>
+}
+else
+{
+    <li class="access-icon rbt-user-wrapper @menuClass">
+        <a class="rbt-round-btn" href="#" role="button" aria-haspopup="true" aria-label="Login options">
+            <i class="feather-user"></i>
+        </a>
+        <div class="rbt-user-menu-list-wrapper">
+            <div class="inner">
+                <ul class="user-list-wrapper">
+                    <li>
+                        <a href="@Url.Action("Login", "Login", new { area = "", type = "Student" })">
+                            <i class="feather-user"></i>
+                            <span>Student Login</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Login", "Login", new { area = "", type = "TrainingProvider" })">
+                            <i class="feather-home"></i>
+                            <span>Training Provider Login</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </li>
+}

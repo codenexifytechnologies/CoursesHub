@@ -1,0 +1,118 @@
+﻿@model CoursesHub.Areas.Panel.Models.CourseDetails
+@using System.Text.RegularExpressions
+
+@functions{
+    public string StripHtml(string input)
+    {
+        return Regex.Replace(input ?? "", "<.*?>", string.Empty);
+    }
+}
+
+@{
+    var category = (Model.CategoryName ?? "")
+                    .Trim().Replace(' ', '-')
+                    .ToLower();
+
+    var about = StripHtml(Model.AboutCourse).ToLower();
+
+    // "CHC43015 Certificate IV in Ageing Support" -> code "CHC43015" + title "Certificate IV in Ageing Support"
+    var courseCode = CoursesHub.Models.CourseFilterHelper.CourseCode(Model.CourseName);
+    var courseTitle = CoursesHub.Models.CourseFilterHelper.CourseTitle(Model.CourseName);
+
+    var detailsUrl = Url.Action("CourseDetails", "Courses", new { CourseId = Model.Id });
+    var summary = System.Net.WebUtility.HtmlDecode(StripHtml(Model.AboutCourse)).Trim();
+    var outcomes = Regex.Replace(System.Net.WebUtility.HtmlDecode(StripHtml(Model.CourseOutcomes)), @"\s+", " ").Trim();
+    // Short preview (about 20 characters, cut at a word where possible); full text is in the tooltip
+    var outcomesShort = outcomes;
+    if (outcomesShort.Length > 20)
+    {
+        int cut = outcomesShort.LastIndexOf(' ', 20);
+        outcomesShort = outcomesShort.Substring(0, cut >= 15 ? cut : 20).TrimEnd(' ', ',', '.', ':', ';') + "…";
+    }
+    var qualification = CoursesHub.Models.CourseFilterHelper.Qualification(Model);
+}
+
+<div class="course-grid-3 course-card"
+     data-categorytype="@Model.CategoryType"
+     data-category="@category"
+     data-name="@((Model.CourseName ?? "").ToLower())"
+     data-provider="@((Model.CourseProvider ?? "").ToLower())"
+     data-about="@about"
+     data-start="@Model.CourseStartDate"
+     data-duration="@Model.CourseDuration"
+     data-f-institution="@CoursesHub.Models.CourseFilterHelper.Key(Model.UniversityName)"
+     data-f-studyarea="@CoursesHub.Models.CourseFilterHelper.Key(Model.CategoryName)"
+     data-f-qualification="@CoursesHub.Models.CourseFilterHelper.Key(CoursesHub.Models.CourseFilterHelper.Qualification(Model))"
+     data-f-location="@CoursesHub.Models.CourseFilterHelper.Keys(Model.State)"
+     data-f-studymethod="@CoursesHub.Models.CourseFilterHelper.Keys(Model.StudyMethod)"
+     data-f-studenttype="@CoursesHub.Models.CourseFilterHelper.Key(CoursesHub.Models.CourseFilterHelper.StudentTypeLabel(Model.StudentType))"
+     data-f-funding="@CoursesHub.Models.CourseFilterHelper.Key(CoursesHub.Models.CourseFilterHelper.Funding(Model.GovernmentFunding))"
+     data-f-duration="@CoursesHub.Models.CourseFilterHelper.Key(CoursesHub.Models.CourseFilterHelper.DurationBand(Model.CourseDuration))">
+
+    <div class="ac-card">
+        <div class="ac-card-media">
+            <a href="@detailsUrl" class="ac-card-img" tabindex="-1" aria-hidden="true">
+                <img loading="lazy" decoding="async" src="@(string.IsNullOrEmpty(Model.CoursePhoto) ? "/assets/images/course/course-online-01.jpg" : Model.CoursePhoto)" alt="" />
+            </a>
+            @if (!string.IsNullOrEmpty(Model.UniversityLogo))
+            {
+                <span class="ac-card-logo" title="@Model.UniversityName">
+                    <img loading="lazy" decoding="async" src="@Model.UniversityLogo" alt="@Model.UniversityName logo">
+                </span>
+            }
+        </div>
+
+        <div class="ac-card-body">
+            <div class="ac-card-tags">
+                @if (!string.IsNullOrEmpty(courseCode))
+                {
+                    <span class="ac-code">@courseCode</span>
+                }
+                @if (!string.IsNullOrEmpty(qualification))
+                {
+                    <span class="ac-tag ac-tag-level">@qualification</span>
+                }
+                @if (!string.IsNullOrEmpty(Model.CategoryName))
+                {
+                    <span class="ac-tag">@Model.CategoryName</span>
+                }
+            </div>
+
+            <h4 class="rbt-card-title ac-card-title">
+                <a href="@detailsUrl">@courseTitle</a>
+            </h4>
+            @if (!string.IsNullOrEmpty(Model.UniversityName))
+            {
+                <div class="ac-provider"><i class="feather-home"></i> @Model.UniversityName</div>
+            }
+
+            @if (!string.IsNullOrEmpty(summary))
+            {
+                <p class="ac-card-text">@summary</p>
+            }
+
+            <div class="ac-info-grid">
+                <div class="ac-info">
+                    <span class="ac-info-icon"><i class="feather-monitor"></i></span>
+                    <span class="ac-info-label">Study Mode</span>
+                    <span class="ac-info-value">@(string.IsNullOrEmpty(Model.StudyMethod) ? "N/A" : Model.StudyMethod)</span>
+                </div>
+                <div class="ac-info">
+                    <span class="ac-info-icon"><i class="feather-map-pin"></i></span>
+                    <span class="ac-info-label">Location</span>
+                    <span class="ac-info-value">@(string.IsNullOrEmpty(Model.State) ? "N/A" : Model.State)</span>
+                </div>
+                <div class="ac-info" title="@outcomes">
+                    <span class="ac-info-icon"><i class="feather-target"></i></span>
+                    <span class="ac-info-label">Outcomes</span>
+                    <span class="ac-info-value">@(string.IsNullOrEmpty(outcomes) ? "N/A" : outcomesShort)</span>
+                </div>
+            </div>
+
+            <div class="ac-card-footer">
+                <a class="ac-card-btn" href="@detailsUrl">View Course Details <i class="feather-arrow-right"></i></a>
+            </div>
+        </div>
+    </div>
+
+</div>

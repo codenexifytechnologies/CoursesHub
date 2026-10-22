@@ -1,0 +1,265 @@
+﻿
+@{
+    ViewBag.Title = "_Faq";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="rbt-breadcrumb-default ptb--100 ptb_md--50 ptb_sm--30 bg-gradient-1 faq-page faq-hero">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="breadcrumb-inner text-center">
+                    <h2 class="title">FAQ</h2>
+                    <ul class="page-list">
+                        <li class="rbt-breadcrumb-item"><a href="@Url.Action("Index","Index", new { area="" })">Home</a></li>
+                        <li>
+                            <div class="icon-right"><i class="feather-chevron-right"></i></div>
+                        </li>
+                        <li class="rbt-breadcrumb-item active">FAQ</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="rbt-accordion-area accordion-style-1 bg-color-white rbt-section-gap faq-page faq-list">
+    <div class="container">
+        <div class="row g-5">
+            <div class="col-lg-6">
+                <div class="rbt-accordion-style accordion">
+                    @*<div class="section-title text-start mb--60">
+                            <h4 class="title">Purchases & Refunds</h4>
+                        </div>*@
+                    <div class="rbt-accordion-style rbt-accordion-04 accordion">
+                        <div class="accordion" id="accordionExamplec3">
+                            <div class="accordion-item card">
+                                <h2 class="accordion-header card-header" id="headingThree1">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree1" aria-expanded="true" aria-controls="collapseThree1">
+                                        What is CoursesHub?
+                                    </button>
+                                </h2>
+                                <div id="collapseThree1" class="accordion-collapse collapse show" aria-labelledby="headingThree1" data-bs-parent="#accordionExamplec3">
+                                    <div class="accordion-body card-body">
+                                        CoursesHub is an online platform that helps students discover, compare, and apply for Training Provider courses across Australia. We partner with accredited universities to offer a wide range of programs in various fields of study, making it easier for you to find and apply to the course that aligns with your academic and career goals.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item card">
+                                <h2 class="accordion-header card-header" id="headingThree2">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree2" aria-expanded="false" aria-controls="collapseThree2">
+                                        How do I use CoursesHub?
+                                    </button>
+                                </h2>
+                                <div id="collapseThree2" class="accordion-collapse collapse" aria-labelledby="headingThree2" data-bs-parent="#accordionExamplec3">
+                                    <div class="accordion-body card-body">
+                                        Simply browse our website to explore available courses, read detailed information about universities and programs, and compare different options. When you find a course you’re interested in, you can apply directly through our platform. Our team is also available to guide you throughout the application process.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item card">
+                                <h2 class="accordion-header card-header" id="headingThree3">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree3" aria-expanded="false" aria-controls="collapseThree3">
+                                        How do I apply for a course through CoursesHub?
+                                    </button>
+                                </h2>
+                                <div id="collapseThree3" class="accordion-collapse collapse" aria-labelledby="headingThree3" data-bs-parent="#accordionExamplec3">
+                                    <div class="accordion-body card-body">
+                                        To apply for a Training Provider course through CoursesHub:
+                                        <ul>
+                                            <li>Create an account on our platform.</li>
+                                            <li>Browse the courses listed by universities.</li>
+                                            <li>Select the course you want to apply for.</li>
+                                            <li>Submit the necessary documents, such as your academic transcripts and identification.</li>
+                                            <li>Follow the application instructions for the selected program.</li>
+                                            We will guide you through every step of the process to ensure your application is submitted correctly.
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item card">
+                                <h2 class="accordion-header card-header" id="headingThree4">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree4" aria-expanded="false" aria-controls="collapseThree4">
+                                        Is CoursesHub free to use?
+                                    </button>
+                                </h2>
+                                <div id="collapseThree4" class="accordion-collapse collapse" aria-labelledby="headingThree4" data-bs-parent="#accordionExamplec3">
+                                    <div class="accordion-body card-body">
+                                        CoursesHub is free to use for browsing courses and exploring universities. However, we may charge a small fee for additional services such as application assistance or consultation. These fees will be clearly outlined before you proceed.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item card">
+                                <h2 class="accordion-header card-header" id="headingThree5">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree5" aria-expanded="false" aria-controls="collapseThree5">
+                                        How do I know which course is right for me?
+                                    </button>
+                                </h2>
+                                <div id="collapseThree5" class="accordion-collapse collapse" aria-labelledby="headingThree5" data-bs-parent="#accordionExamplec3">
+                                    <div class="accordion-body card-body">
+                                        We understand that choosing the right course can be overwhelming. That’s why we provide detailed course information, including program structure, entry requirements, career outcomes, and more. If you need guidance, our support team is happy to help you choose the best program based on your interests, career goals, and academic background.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item card">
+                                <h2 class="accordion-header card-header" id="headingThree6">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree6" aria-expanded="false" aria-controls="collapseThree6">
+                                        Can I apply to multiple universities at once?
+                                    </button>
+                                </h2>
+                                <div id="collapseThree6" class="accordion-collapse collapse" aria-labelledby="headingThree6" data-bs-parent="#accordionExamplec3">
+                                    <div class="accordion-body card-body">
+                                        Yes, you can apply to multiple universities through CoursesHub. Our platform allows you to compare different programs, and you can submit applications to as many universities as you like, making the process more efficient and convenient.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item card">
+                                <h2 class="accordion-header card-header" id="headingThree7">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree7" aria-expanded="false" aria-controls="collapseThree7">
+                                        Are the courses listed on CoursesHub accredited?
+                                    </button>
+                                </h2>
+                                <div id="collapseThree7" class="accordion-collapse collapse" aria-labelledby="headingThree7" data-bs-parent="#accordionExamplec3">
+                                    <div class="accordion-body card-body">
+                                        Yes, all courses listed on CoursesHub are offered by accredited universities and educational institutions in Australia. We work with trusted and reputable universities to ensure that the programs meet high academic and industry standards.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item card">
+                                <h2 class="accordion-header card-header" id="headingThree8">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree8" aria-expanded="false" aria-controls="collapseThree8">
+                                        What documents do I need to apply for a Training Provider course?
+                                    </button>
+                                </h2>
+                                <div id="collapseThree8" class="accordion-collapse collapse" aria-labelledby="headingThree8" data-bs-parent="#accordionExamplec3">
+                                    <div class="accordion-body card-body">
+                                        The documents required to apply for a Training Provider course may vary by program, but typically include:
+                                        <ul>
+                                            <li>Academic transcripts (high school or previous Training Provider education).</li>
+                                            <li>Proof of identification (e.g., passport, driver’s license).</li>
+                                            <li>English language proficiency (for international students, if applicable).</li>
+                                            <li>Any additional documents requested by the Training Provider (e.g., personal statement, reference letters, or resume).</li>
+                                        </ul>
+                                        We provide detailed instructions for each course application, so you know exactly what’s required.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="rbt-accordion-style accordion">
+                    @*<div class="section-title text-start mb--60">
+                            <h4 class="title">Making Courses</h4>
+                        </div>*@
+                    <div class="rbt-accordion-style rbt-accordion-04 accordion">
+                        <div class="accordion" id="faqs-accordionExamplec3">
+                            <div class="accordion-item card">
+                                <h2 class="accordion-header card-header" id="faqs-headingThree1">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faqs-collapseThree1" aria-expanded="true" aria-controls="faqs-collapseThree1">
+                                        What are the entry requirements for Training Provider courses?
+                                    </button>
+                                </h2>
+
+                                <div id="faqs-collapseThree1" class="accordion-collapse collapse show" aria-labelledby="faqs-headingThree1" data-bs-parent="#faqs-accordionExamplec3">
+                                    <div class="accordion-body card-body">
+                                        Each Training Provider and course has specific entry requirements, which may include academic qualifications, test scores, language proficiency, or work experience. You can view the entry requirements for each course directly on the CoursesHub platform, where we provide up-to-date details for every program listed.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="accordion-item card">
+                                <h2 class="accordion-header card-header" id="faqs-headingThree2">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqs-collapseThree2" aria-expanded="false" aria-controls="faqs-collapseThree2">
+                                        How do I track the status of my application?
+                                    </button>
+                                </h2>
+                                <div id="faqs-collapseThree2" class="accordion-collapse collapse" aria-labelledby="faqs-headingThree2" data-bs-parent="#faqs-accordionExamplec3">
+                                    <div class="accordion-body card-body">
+                                        Once your application is submitted through CoursesHub, you will receive updates on your application status from the Training Provider. You can also track the status of your applications via your CoursesHub account, where we provide notifications about important deadlines, interview requests, and acceptance offers.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="accordion-item card">
+                                <h2 class="accordion-header card-header" id="faqs-headingThree3">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqs-collapseThree3" aria-expanded="false" aria-controls="faqs-collapseThree3">
+                                        Can I apply for scholarships through CoursesHub?
+                                    </button>
+                                </h2>
+                                <div id="faqs-collapseThree3" class="accordion-collapse collapse" aria-labelledby="faqs-headingThree3" data-bs-parent="#faqs-accordionExamplec3">
+                                    <div class="accordion-body card-body">
+                                        CoursesHub helps you find information about scholarships available for various Training Provider programs. While we don’t directly manage scholarship applications, we provide details on available scholarships and guide you on how to apply for them, ensuring you don’t miss out on potential funding opportunities.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item card">
+                                <h2 class="accordion-header card-header" id="faqs-headingThree4">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqs-collapseThree4" aria-expanded="false" aria-controls="faqs-collapseThree4">
+                                        What if I need help with my application?
+                                    </button>
+                                </h2>
+                                <div id="faqs-collapseThree4" class="accordion-collapse collapse" aria-labelledby="faqs-headingThree4" data-bs-parent="#faqs-accordionExamplec3">
+                                    <div class="accordion-body card-body">
+                                        If you need help with your application, our support team is here to assist you! You can contact us at [support@courseshub.com] for guidance on the application process, entry requirements, or any other questions you may have. We also offer additional services such as application reviews and personalized advice for a small fee.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item card">
+                                <h2 class="accordion-header card-header" id="faqs-headingThree5">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqs-collapseThree5" aria-expanded="false" aria-controls="faqs-collapseThree5">
+                                        How long does the application process take?
+                                    </button>
+                                </h2>
+                                <div id="faqs-collapseThree5" class="accordion-collapse collapse" aria-labelledby="faqs-headingThree5" data-bs-parent="#faqs-accordionExamplec3">
+                                    <div class="accordion-body card-body">
+                                        The application process can vary depending on the university and course you are applying for. Generally, it can take anywhere from a few weeks to a couple of months. Be sure to check the specific deadlines and timelines for each course and Training Provider, as these can differ.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item card">
+                                <h2 class="accordion-header card-header" id="faqs-headingThree6">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqs-collapseThree6" aria-expanded="false" aria-controls="faqs-collapseThree6">
+                                        Can I withdraw my application once it’s submitted?
+                                    </button>
+                                </h2>
+                                <div id="faqs-collapseThree6" class="accordion-collapse collapse" aria-labelledby="faqs-headingThree6" data-bs-parent="#faqs-accordionExamplec3">
+                                    <div class="accordion-body card-body">
+                                        Once your application is submitted through CoursesHub, it is sent directly to the Training Provider. You should contact the university’s admissions department if you wish to withdraw your application. Withdrawal policies may vary depending on the institution.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item card">
+                                <h2 class="accordion-header card-header" id="faqs-headingThree7">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqs-collapseThree7" aria-expanded="false" aria-controls="faqs-collapseThree7">
+                                        What happens if I am accepted into a course?
+                                    </button>
+                                </h2>
+                                <div id="faqs-collapseThree7" class="accordion-collapse collapse" aria-labelledby="faqs-headingThree7" data-bs-parent="#faqs-accordionExamplec3">
+                                    <div class="accordion-body card-body">
+                                        If you are accepted into a course, you will receive an offer letter from the Training Provider. You will need to follow the instructions in the offer letter to accept the offer and complete any additional steps, such as payment of tuition fees, visa application (for international students), and orientation registration.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item card">
+                                <h2 class="accordion-header card-header" id="faqs-headingThree8">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqs-collapseThree8" aria-expanded="false" aria-controls="faqs-collapseThree8">
+                                        Do I need to provide proof of English proficiency?
+                                    </button>
+                                </h2>
+                                <div id="faqs-collapseThree8" class="accordion-collapse collapse" aria-labelledby="faqs-headingThree8" data-bs-parent="#faqs-accordionExamplec3">
+                                    <div class="accordion-body card-body">
+                                        If you're an international student or applying for a program that requires English language proficiency, you may need to provide proof of your English skills through standardized tests like IELTS or TOEFL. Specific requirements vary by Training Provider and program, and you can find these details on the CoursesHub platform for each course.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="@CoursesHub.AssetVersion.Url("~/assets/js/main.js")"></script>
+}

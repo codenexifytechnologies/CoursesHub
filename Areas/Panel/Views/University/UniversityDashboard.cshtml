@@ -1,0 +1,67 @@
+﻿@model CoursesHub.Areas.Panel.Models.UniversityDetails
+@{
+    ViewBag.Title = "Training Provider Dashboard";
+    Layout = "~/Areas/Panel/Views/Shared/_Layout.cshtml";
+    var objRegistration = Session["Registration"] as CoursesHub.Models.Registration;
+}
+@if (TempData["ChangePasswordSuccessMessage"] != null)
+{
+    <script src="//code.jquery.com/jquery-2.2.4.min.js"></script>
+    <script src="~/assets/js/toastr.min.js"></script>
+     <link href="~/assets/css/toastr.min.css" rel="stylesheet" />
+    <script>
+     $(document).ready(function () {
+         toastr.success('@TempData["ChangePasswordSuccessMessage"]');
+     });
+    </script>
+}
+<div class="sd-page">
+    <section class="sd-hero sd-reveal">
+        <div class="sd-hero-text">
+            <span class="sd-eyebrow">Dashboard</span>
+            <h3 class="sd-hero-title">Welcome, <span>@(objRegistration != null && objRegistration.objUniversityRegistration != null ? objRegistration.objUniversityRegistration.Legal_Name_Organisation : "")</span></h3>
+            <p>Manage your courses, follow up on student leads and keep your organisation profile up to date.</p>
+            <div class="sd-hero-actions">
+                <a class="sd-btn" href="@Url.Action("AddCourse", "Courses", new { area = "Panel" })"><i class="feather-plus-square"></i> Add Course</a>
+                <a class="sd-btn sd-btn-ghost" href="@Url.Action("ViewLead", "Lead", new { area = "Panel" })"><i class="feather-users"></i> View Leads</a>
+            </div>
+        </div>
+        <img class="sd-hero-art" src="@CoursesHub.AssetVersion.Url("~/assets/images/provider/provider-welcome.svg")" alt="" aria-hidden="true">
+    </section>
+
+    <section class="sd-stats pp-stats" aria-label="Summary">
+        <a class="sd-stat sd-reveal" href="@Url.Action("ViewCourses", "Courses", new {area="Panel"})">
+            <span class="sd-stat-icon"><i class="feather-book"></i></span>
+            <span class="sd-stat-num">@Model.EnrollCourses</span>
+            <span class="sd-stat-label">Enrolled Courses</span>
+        </a>
+        <a class="sd-stat sd-stat-accent sd-reveal" href="@Url.Action("ViewCourses", "Courses", new {area="Panel"})">
+            <span class="sd-stat-icon"><i class="feather-book-open"></i></span>
+            <span class="sd-stat-num">@Model.ActiveCourses</span>
+            <span class="sd-stat-label">ACTIVE COURSES</span>
+        </a>
+        <a class="sd-stat sd-reveal" href="@Url.Action("ViewLead", "Lead", new {area="Panel"})">
+            <span class="sd-stat-icon"><i class="feather-award"></i></span>
+            <span class="sd-stat-num">@Model.PremiumLead</span>
+            <span class="sd-stat-label">Premium Leads</span>
+        </a>
+        <a class="sd-stat sd-stat-accent sd-reveal" href="@Url.Action("ViewLead", "Lead", new {area="Panel"})">
+            <span class="sd-stat-icon"><i class="feather-star"></i></span>
+            <span class="sd-stat-num">@Model.NormalLead</span>
+            <span class="sd-stat-label">Normal Leads</span>
+        </a>
+    </section>
+
+    <section class="sd-card sd-reveal">
+        <div class="sd-card-head">
+            <h4 class="sd-card-title"><i class="feather-zap"></i> Quick Actions</h4>
+        </div>
+        <div class="sd-quick pp-quick">
+            <a href="@Url.Action("ViewCourses", "Courses", new { area = "Panel" })"><i class="feather-book-open"></i><span>View Course</span></a>
+            <a href="@Url.Action("AddCourse", "Courses", new { area = "Panel" })"><i class="feather-plus-square"></i><span>Add Course</span></a>
+            <a href="@Url.Action("ViewLead", "Lead", new { area = "Panel" })"><i class="feather-users"></i><span>View Leads</span></a>
+            <a href="@Url.Action("ViewProfile", "University", new { area = "Panel", Id = objRegistration != null && objRegistration.objUniversityRegistration != null ? objRegistration.objUniversityRegistration.Id.ToString() : "" })"><i class="feather-user"></i><span>Profile</span></a>
+        </div>
+    </section>
+</div>
+

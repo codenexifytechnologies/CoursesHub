@@ -1,0 +1,207 @@
+﻿@model CoursesHub.Areas.Admin.Models.MenuManagement
+
+@{
+    List<int> MenuId = new List<int>();
+    for (int i = 0; i < Model.lstUserMenuMapping.Count; i++)
+    {
+        MenuId.Add(Model.lstUserMenuMapping[i].MenuId);
+    }
+
+    var Type = Request.QueryString["Type"];
+    var Status = Request.QueryString["Status"];
+
+}
+<style>
+    .active {
+        background-color: var(--primary-color) !important;
+        color: #fff !important;
+    }
+
+    .badge-notification {
+        /*position: absolute;*/
+        top: 6px;
+        right: 10px;
+        background-color: red;
+        color: white;
+        font-size: 12px;
+        font-weight: bold;
+        padding: 3px 5px;
+        border-radius: 50px;
+        min-width: 18px;
+        text-align: center;
+    }
+</style>
+
+<ul class="nav nav-pills nav-sidebar flex-column nav-child-indent" data-widget="treeview" role="menu" data-accordion="false">
+    @if (Model.lstUserMenuMapping != null)
+    {
+        if (MenuId.Contains(1))
+        {
+            <li class="nav-item" id="liDashboard">
+                <a href="@Url.Action("Index", "Dashboard")" class="@(TempData["controller"].ToString() == "Dashboard" ? "active nav-link" : "nav-link")">
+                    <i class="nav-icon fas fa-tachometer-alt"></i>
+                    <p>
+                        Dashboard
+                    </p>
+                </a>
+            </li>
+        }
+        if (MenuId.Contains(9))
+        {
+            <li class="nav-item" id="liUniversity">
+                <a href="@Url.Action("ViewLead", "Lead")" class="@(TempData["controller"].ToString() == "Lead" ? "active nav-link" : "nav-link")">
+                    <i class="nav-icon fas fa-database"></i>
+                    <p>
+                        Leads
+                    </p>
+                </a>
+            </li>
+        }
+        if (MenuId.Contains(2))
+        {
+            <li class="nav-item" id="liUniversity">
+                <a href="@Url.Action("ViewUniversity", "University")" class="@(TempData["controller"].ToString() == "University" &&  TempData["action"].ToString() == "ViewUniversity"? "active nav-link" : "nav-link")">
+                    <i class="nav-icon fas fa-university"></i>
+                    <p>
+                        Training Provider Details
+                    </p>
+                    @if (ViewBag.UniversityCount != 0)
+                    {
+                        <span class="badge-notification">@ViewBag.UniversityCount</span>
+                    }
+
+                </a>
+            </li>
+        }
+        if (MenuId.Contains(3))
+        {
+            <li class="nav-item" id="liStudent">
+                <a href="@Url.Action("ViewStudent", "Student")" class="@(TempData["controller"].ToString() == "Student" ? "active nav-link" : "nav-link")">
+                    <i class="nav-icon fas fa-user"></i>
+                    <p>
+                        Student Details
+                    </p>
+                </a>
+            </li>
+        }
+        if (MenuId.Contains(4))
+        {
+            <li class="nav-item" id="liCourses">
+                <a href="@Url.Action("ViewCourses", "Courses")" class="@(TempData["controller"].ToString() == "Courses" ? "active nav-link" : "nav-link")">
+                    <i class="nav-icon fas fa-book"></i>
+                    <p>
+                        Courses
+                    </p>
+                    @if (ViewBag.CourseCount != 0)
+                    {
+                        <span class="badge-notification">@ViewBag.CourseCount</span>
+                    }
+                </a>
+
+            </li>
+        }
+        if (MenuId.Contains(5))
+        {
+            <li class="nav-item" id="liTestimonial">
+                <a href="@Url.Action("ViewTestimonial", "Testimonial")" class="@(TempData["controller"].ToString() == "Testimonial" ? "active nav-link" : "nav-link")">
+                    <i class="nav-icon fas fa-sticky-note"></i>
+                    <p>
+                        Testimonials
+                    </p>
+                </a>
+            </li>
+        }
+        if (MenuId.Contains(6))
+        {
+            <li class="nav-item" id="liMenuManagement">
+                <a href="@Url.Action("MenuManagement", "MenuManagement")" class="@(TempData["controller"].ToString() == "MenuManagement" ? "active nav-link" : "nav-link")">
+                    <i class="nav-icon fas fa-bars"></i>
+                    <p>
+                        Menu Management
+                    </p>
+                </a>
+            </li>
+        }
+        if (MenuId.Contains(7))
+        {
+            <li class="nav-item" id="liUserRegistration">
+                <a href="@Url.Action("UserRegistrationList", "AdminLogin")" class="@(TempData["controller"].ToString() == "AdminLogin" ? "active nav-link" : "nav-link")">
+                    <i class="nav-icon fas fa-user"></i>
+                    <p>
+                        User Registration
+                    </p>
+                </a>
+            </li>
+        }
+
+        if (MenuId.Contains(8))
+        {
+            <li class="nav-item" id="liBlogs">
+                <a href="#" class="@(TempData["controller"].ToString() == "Blogs" && (TempData["action"].ToString() == "AddBlog" || TempData["action"].ToString() == "ViewBlogs") ? "active nav-link" : "nav-link")">
+                    <i class="nav-icon fas fa-blog"></i>
+                    <p>
+                        Blogs
+                        <i class="fas fa-angle-left right"></i>
+                    </p>
+                </a>
+                @*<ul class="nav nav-treeview" style="@(TempData[" action"].ToString()= ="AddBlog" || TempData["action"].ToString()= ="ViewBlogs" ) ? "display :block" : """ )">*@
+                <ul class="nav nav-treeview"
+                    style="@(TempData["action"]?.ToString() == "AddBlog"
+          || TempData["action"]?.ToString() == "ViewBlogs"
+          ? "display:block;"
+          : "display:none;")">
+
+                    <li class="nav-item" id="liAddBlogs">
+                        <a href="@Url.Action("AddBlog", "Blogs")" class="@(TempData["controller"].ToString() == "Blogs"  &&  TempData["action"].ToString() == "AddBlog"? "active nav-link" : "nav-link")">
+                            <i class="nav-icon fa fa-plus"></i>
+                            <p>
+                                Add Blogs
+                            </p>
+                        </a>
+                    </li>
+
+                    <li class="nav-item" id="liViewBlogs">
+                        <a href="@Url.Action("ViewBlogs", "Blogs")" class="@(TempData["controller"].ToString() == "Blogs" && TempData["action"].ToString() == "ViewBlogs" ? "active nav-link" : "nav-link")">
+                            <i class="nav-icon fa fa-eye"></i>
+                            <p>
+                                View Blogs
+                            </p>
+                        </a>
+                    </li>
+
+                </ul>
+            </li>
+        }
+        if (MenuId.Contains(9))
+        {
+            <li class="nav-item" id="liArchUniversity">
+                <a href="@Url.Action("ViewArchiveUniversity", "University")" class="@(TempData["controller"].ToString() == "University" &&  TempData["action"].ToString() == "ViewArchiveUniversity"? "active nav-link" : "nav-link")">
+                    <i class="nav-icon fas fa-archive"></i>
+                    <p>
+                        Archived University
+                    </p>
+                </a>
+            </li>
+        }
+        if (MenuId.Contains(10))
+        {
+            <li class="nav-item" id="liNewsletterSubscribers">
+                <a href="@Url.Action("Index", "NewsletterSubscribers")" class="@(TempData["controller"].ToString() == "NewsletterSubscribers" &&  TempData["action"].ToString() == "Index"? "active nav-link" : "nav-link")">
+                    <i class="nav-icon fas fa-envelope-open-text"></i>
+                    <p>
+                        Newsletter Subscribers
+                    </p>
+                </a>
+            </li>
+        }
+        <li class="nav-item">
+            <a href="@Url.Action("LogOff", "AdminLogin")" class="nav-link">
+                <i class="nav-icon fas fa-power-off"></i>
+                <p>
+                    Logout
+                </p>
+            </a>
+        </li>
+
+    }
+</ul>

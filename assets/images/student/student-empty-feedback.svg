@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 180" role="img" aria-label="No feedback yet">
+  <defs>
+    <style>
+      .bob{animation:bob 4s ease-in-out infinite}
+      .bob2{animation:bob 4.6s ease-in-out infinite .6s}
+      .twinkle{animation:tw 2.2s ease-in-out infinite}
+      @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+      @keyframes tw{0%,100%{opacity:1}50%{opacity:.3}}
+      @media (prefers-reduced-motion: reduce){.bob,.bob2,.twinkle{animation:none}}
+    </style>
+  </defs>
+  <ellipse cx="120" cy="166" rx="90" ry="9" fill="#0E6B6A" fill-opacity="0.12"/>
+  <circle cx="120" cy="88" r="72" fill="#E8F4F4"/>
+  <g class="bob">
+    <path d="M50 52 h100 a12 12 0 0 1 12 12 v48 a12 12 0 0 1 -12 12 h-62 l-22 18 v-18 h-16 a12 12 0 0 1 -12 -12 v-48 a12 12 0 0 1 12 -12 z" fill="#158887"/>
+    <g fill="#F79646">
+      <path class="twinkle" d="M72 74 l4.5 9 l10 1.5 l-7.2 7 l1.7 10 l-9 -4.7 l-9 4.7 l1.7 -10 l-7.2 -7 l10 -1.5 z"/>
+      <path class="twinkle" style="animation-delay:.3s" d="M100 74 l4.5 9 l10 1.5 l-7.2 7 l1.7 10 l-9 -4.7 l-9 4.7 l1.7 -10 l-7.2 -7 l10 -1.5 z"/>
+      <path class="twinkle" style="animation-delay:.6s" d="M128 74 l4.5 9 l10 1.5 l-7.2 7 l1.7 10 l-9 -4.7 l-9 4.7 l1.7 -10 l-7.2 -7 l10 -1.5 z" fill="#ffffff"/>
+    </g>
+  </g>
+  <g class="bob2">
+    <path d="M150 104 h46 a10 10 0 0 1 10 10 v26 a10 10 0 0 1 -10 10 h-8 v14 l-16 -14 h-22 a10 10 0 0 1 -10 -10 v-26 a10 10 0 0 1 10 -10 z" fill="#ffffff" stroke="#DCE8E8" stroke-width="2"/>
+    <rect x="152" y="118" width="40" height="6" rx="3" fill="#BFDDDC"/>
+    <rect x="152" y="130" width="28" height="6" rx="3" fill="#F79646"/>
+  </g>
+</svg>

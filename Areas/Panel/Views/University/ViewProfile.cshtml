@@ -1,0 +1,127 @@
+﻿@model CoursesHub.Models.Registration
+@using System.Configuration
+@{
+    ViewBag.Title = "ViewProfile";
+    Layout = "~/Areas/Panel/Views/Shared/_Layout.cshtml";
+    var LoginType = ((CoursesHub.Models.Registration)Session["Registration"]).LoginType;
+    var baseUrl = ConfigurationManager.AppSettings["BaseURL"];
+}
+<style>
+    .switch {
+        position: relative;
+        display: inline-block;
+        width: 30px;
+        height: 14px;
+    }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+    .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        transition: 0.4s;
+        border-radius: 24px;
+    }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 8px;
+            width: 8px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: 0.4s;
+            border-radius: 50%;
+        }
+
+    input[type="checkbox"]:checked ~ .slider {
+        background-color: var(--primary-color);
+    }
+
+        input[type="checkbox"]:checked ~ .slider:before {
+            transform: translateX(14px);
+        }
+</style>
+@{
+    var u = Model.objUniversityRegistration;
+    var profileFields = new List<Tuple<string, string, string>>
+    {
+        Tuple.Create("RTO ID", u.RTO_ID, "feather-hash"),
+        Tuple.Create("RTO Status", u.RTO_Status == true ? "Active" : "Expire", "feather-activity"),
+        Tuple.Create("CRICOS Code", u.CRICOS_Code, "feather-globe"),
+        Tuple.Create("Legal Name Organisation", u.Legal_Name_Organisation, "feather-briefcase"),
+        Tuple.Create("Trading Name", u.Trading_Name, "feather-tag"),
+        Tuple.Create("ABN ACN", u.ABN_ACN, "feather-file-text"),
+        Tuple.Create("Business Address", u.Business_Address, "feather-map-pin"),
+        Tuple.Create("Postal Address", u.Postal_Address, "feather-mail"),
+        Tuple.Create("Website", u.Website, "feather-link"),
+        Tuple.Create("Contact Number", u.Contact_Number, "feather-phone"),
+        Tuple.Create("General Contact Email", u.General_Contact_Email, "feather-at-sign"),
+        Tuple.Create("Full Name", u.Full_Name, "feather-user"),
+        Tuple.Create("Position", u.Position, "feather-award"),
+        Tuple.Create("Direct Phone", u.Direct_Phone, "feather-smartphone"),
+        Tuple.Create("Relevant Courses", u.Relevant_Courses_String, "feather-book-open")
+    };
+}
+<div class="sd-page">
+    <section class="sd-profile-hero sd-reveal">
+        @if (!string.IsNullOrEmpty(u.Logo))
+        {
+            <span class="sd-profile-avatar sd-profile-logo"><img src="@u.Logo" alt="@u.Legal_Name_Organisation logo"></span>
+        }
+        else
+        {
+            <span class="sd-profile-avatar" aria-hidden="true"><i class="feather-home"></i></span>
+        }
+        <div class="sd-profile-intro">
+            <span class="sd-eyebrow">My Profile</span>
+            <h3 class="sd-profile-name">@u.Legal_Name_Organisation</h3>
+            <span class="sd-profile-mail"><i class="feather-hash"></i> RTO ID: @u.RTO_ID &nbsp; · &nbsp; <span class="pp-rto-status @(u.RTO_Status == true ? "is-active" : "")">@(u.RTO_Status == true ? "Active" : "Expire")</span></span>
+        </div>
+        <img class="sd-profile-art" src="@CoursesHub.AssetVersion.Url("~/assets/images/provider/provider-org.svg")" alt="" aria-hidden="true">
+    </section>
+
+    <div class="sd-card sd-reveal">
+        <div class="sd-page-head">
+            <span class="sd-page-icon"><i class="feather-briefcase"></i></span>
+            <div>
+                <h4 class="sd-page-title">Organisation Details</h4>
+                <p class="sd-page-sub">The details saved on your Courses Hub training provider account.</p>
+            </div>
+        </div>
+                <div id="University">
+                    @Html.HiddenFor(m => m.objUniversityRegistration.Id)
+                    <div class="sd-detail-grid">
+                        @for (int i = 0; i < profileFields.Count; i++)
+                        {
+                            var f = profileFields[i];
+                            <div class="sd-detail @(f.Item1 == "Relevant Courses" || f.Item1.EndsWith("Address") ? "sd-detail-wide" : "")">
+                                <span class="sd-detail-icon @(i % 2 == 1 ? "sd-detail-icon-accent" : "")"><i class="@f.Item3"></i></span>
+                                <span class="sd-detail-label">@f.Item1</span>
+                                <span class="sd-detail-value">@(string.IsNullOrWhiteSpace(f.Item2) ? "—" : f.Item2)</span>
+                            </div>
+                        }
+                    </div>
+                    <div class="pp-media-grid">
+                        <figure class="pp-media">
+                            <figcaption>Signature</figcaption>
+                            <img src="@($"{Model.objUniversityRegistration.Signature}")" alt="Signature Image" />
+                        </figure>
+                        <figure class="pp-media">
+                            <figcaption>Logo</figcaption>
+                            <img src="@($"{Model.objUniversityRegistration.Logo}")" alt="Logo Image" />
+                        </figure>
+                    </div>
+                </div>
+    </div>
+</div>

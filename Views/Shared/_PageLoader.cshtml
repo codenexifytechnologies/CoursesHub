@@ -1,0 +1,30 @@
+﻿@* Courses Hub page loader: shown while a form submits or a save/delete request runs (see assets/js/ch-loader.js) *@
+<link rel="stylesheet" href="@CoursesHub.AssetVersion.Url("~/assets/css/ch-loader.css")">
+<div id="pageLoader" class="ch-loader" role="status" aria-live="polite" aria-hidden="true">
+    <div class="ch-loader-card">
+        <div class="ch-loader-art" aria-hidden="true">
+            <svg viewBox="0 0 120 120" width="120" height="120" focusable="false">
+                <circle cx="60" cy="60" r="52" fill="none" stroke="#E8F4F4" stroke-width="7" />
+                <circle class="ch-ring-teal" cx="60" cy="60" r="52" fill="none" stroke="#158887" stroke-width="7" stroke-linecap="round" stroke-dasharray="90 237" />
+                <circle class="ch-ring-orange" cx="60" cy="60" r="40" fill="none" stroke="#F79646" stroke-width="5" stroke-linecap="round" stroke-dasharray="46 205" />
+                <g class="ch-book">
+                    <path d="M60 50 C52 45 42 44 34 46 V76 C42 74 52 75 60 80 Z" fill="#158887" />
+                    <path d="M60 50 C68 45 78 44 86 46 V76 C78 74 68 75 60 80 Z" fill="#0E6B6A" />
+                    <path d="M60 50 V80" stroke="#0B3134" stroke-width="2" />
+                    <path class="ch-page" d="M60 51 C67 47 75 46 83 48 V74 C75 73 67 74 60 78 Z" fill="#ffffff" />
+                    <path d="M40 54 h14 M40 60 h14 M40 66 h10" stroke="#ffffff" stroke-opacity="0.7" stroke-width="2" stroke-linecap="round" />
+                </g>
+                <g class="ch-cap">
+                    <polygon points="60,26 76,33 60,40 44,33" fill="#0F3F42" />
+                    <path d="M51 36 v5 c5 3 13 3 18 0 v-5 l-9 4 z" fill="#0F3F42" />
+                    <line x1="74" y1="34" x2="74" y2="42" stroke="#F79646" stroke-width="2" />
+                    <circle cx="74" cy="43" r="2" fill="#F79646" />
+                </g>
+            </svg>
+        </div>
+        <div class="ch-loader-brand">Courses<span>Hub</span></div>
+        <p class="ch-loader-text">Loading&hellip;</p>
+        <div class="ch-loader-bar"><span></span></div>
+    </div>
+</div>
+<script src="@CoursesHub.AssetVersion.Url("~/assets/js/ch-loader.js")"></script>

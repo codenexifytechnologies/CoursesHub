@@ -1,0 +1,43 @@
+﻿@model CoursesHub.Areas.Panel.Models.CourseDetails
+@{
+    var detailsUrl = Url.Action("CourseDetails", "Courses", new { area = "", CourseId = Model.Id });
+    var provider = string.IsNullOrWhiteSpace(Model.UniversityName) ? Model.CourseProvider : Model.UniversityName;
+    var studentType = CoursesHub.Models.CourseFilterHelper.StudentTypeLabel(Model.StudentType);
+}
+<article class="fp-card">
+    <div class="fp-card-head">
+        <span class="fp-logo">
+            @if (!string.IsNullOrWhiteSpace(Model.UniversityLogo))
+            {
+                <img src="@Model.UniversityLogo" alt="@provider logo" loading="lazy" onerror="this.parentNode.innerHTML='&lt;i class=&quot;feather-home&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;';">
+            }
+            else
+            {
+                <i class="feather-home" aria-hidden="true"></i>
+            }
+        </span>
+        <h3 class="fp-provider">@provider</h3>
+    </div>
+    <dl class="fp-facts">
+        <div>
+            <dt>Study mode</dt>
+            <dd>@(string.IsNullOrWhiteSpace(Model.StudyMethod) ? "Contact provider" : Model.StudyMethod)</dd>
+        </div>
+        <div>
+            <dt>Duration</dt>
+            <dd>@(string.IsNullOrWhiteSpace(Model.CourseDuration) ? "Contact provider" : Model.CourseDuration + " Weeks")</dd>
+        </div>
+        <div>
+            <dt>Location</dt>
+            <dd>@(string.IsNullOrWhiteSpace(Model.State) ? "Contact provider" : Model.State)</dd>
+        </div>
+        @if (!string.IsNullOrEmpty(studentType))
+        {
+            <div>
+                <dt>Open to</dt>
+                <dd>@studentType</dd>
+            </div>
+        }
+    </dl>
+    <a class="ht-btn fp-enquire" href="@detailsUrl">Enquire now</a>
+</article>

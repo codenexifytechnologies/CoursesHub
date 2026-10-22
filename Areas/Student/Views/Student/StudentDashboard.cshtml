@@ -1,0 +1,105 @@
+﻿
+@{
+    ViewBag.Title = "StudentDashboard";
+    Layout = "~/Areas/Student/Views/Shared/_Layout.cshtml";
+
+    var registration = Session["Registration"] as CoursesHub.Models.Registration;
+    var student = registration != null ? registration.objStudentRegistration : null;
+    string firstName = student != null ? student.FirstName : "";
+    string userId = student != null ? student.Id.ToString() : "";
+
+    int appliedCount = ViewBag.AppliedCount ?? 0;
+    int feedbackCount = ViewBag.FeedbackCount ?? 0;
+    int verifiedCount = ViewBag.VerifiedFeedbackCount ?? 0;
+    var recentApplied = ViewBag.RecentApplied as List<CoursesHub.Areas.Panel.Models.CourseDetails> ?? new List<CoursesHub.Areas.Panel.Models.CourseDetails>();
+    string notice = TempData["ChangePasswordSuccessMessage"] as string;
+}
+
+<div class="sd-page">
+    @if (!string.IsNullOrEmpty(notice))
+    {
+        <div class="sd-alert" role="status"><i class="feather-info"></i> @notice</div>
+    }
+
+    <section class="sd-hero sd-reveal">
+        <div class="sd-hero-text">
+            <span class="sd-eyebrow">Student Dashboard</span>
+            <h3 class="sd-hero-title">Hello, <span>@firstName</span>!</h3>
+            <p>Track the courses you have applied for, share feedback and keep your profile up to date, all in one place.</p>
+            <div class="sd-hero-actions">
+                <a class="sd-btn" href="@Url.Action("AllCourses", "Courses", new { area = "" })"><i class="feather-search"></i> Explore Courses</a>
+                <a class="sd-btn sd-btn-ghost" href="@Url.Action("AppliedCourses", "AppliedCourses", new { area = "Student" })"><i class="feather-book-open"></i> My Applications</a>
+            </div>
+        </div>
+        <img class="sd-hero-art" src="@CoursesHub.AssetVersion.Url("~/assets/images/student/student-welcome.svg")" alt="" aria-hidden="true">
+    </section>
+
+    <section class="sd-stats" aria-label="Summary">
+        <a class="sd-stat sd-reveal" href="@Url.Action("AppliedCourses", "AppliedCourses", new { area = "Student" })">
+            <span class="sd-stat-icon"><i class="feather-book-open"></i></span>
+            <span class="sd-stat-num">@appliedCount</span>
+            <span class="sd-stat-label">Applied Courses</span>
+        </a>
+        <a class="sd-stat sd-stat-accent sd-reveal" href="@Url.Action("ViewFeedback", "Feedback", new { area = "Student" })">
+            <span class="sd-stat-icon"><i class="feather-message-square"></i></span>
+            <span class="sd-stat-num">@feedbackCount</span>
+            <span class="sd-stat-label">Feedback Given</span>
+        </a>
+        <a class="sd-stat sd-reveal" href="@Url.Action("ViewFeedback", "Feedback", new { area = "Student" })">
+            <span class="sd-stat-icon"><i class="feather-check-circle"></i></span>
+            <span class="sd-stat-num">@verifiedCount</span>
+            <span class="sd-stat-label">Verified Feedback</span>
+        </a>
+    </section>
+
+    <div class="row g-4">
+        <div class="col-xl-7">
+            <section class="sd-card sd-reveal">
+                <div class="sd-card-head">
+                    <h4 class="sd-card-title"><i class="feather-clock"></i> Recent Applications</h4>
+                    @if (appliedCount > 0)
+                    {
+                        <a class="sd-link" href="@Url.Action("AppliedCourses", "AppliedCourses", new { area = "Student" })">View all <i class="feather-arrow-right"></i></a>
+                    }
+                </div>
+                @if (recentApplied.Count == 0)
+                {
+                    <div class="sd-empty sd-empty-sm">
+                        <img src="@CoursesHub.AssetVersion.Url("~/assets/images/student/student-empty-courses.svg")" alt="" aria-hidden="true">
+                        <p>You haven't applied for any courses yet.</p>
+                        <a class="sd-btn" href="@Url.Action("AllCourses", "Courses", new { area = "" })">Find a course</a>
+                    </div>
+                }
+                else
+                {
+                    <ul class="sd-recent">
+                        @foreach (var item in recentApplied)
+                        {
+                            <li>
+                                <span class="sd-recent-icon"><i class="feather-book"></i></span>
+                                <span class="sd-recent-text">
+                                    <a href="@Url.Action("CourseDetails", "Courses", new { area = "", CourseId = item.Id })">@item.CourseName</a>
+                                    <small>@item.UniversityName</small>
+                                </span>
+                                <i class="feather-chevron-right sd-recent-go"></i>
+                            </li>
+                        }
+                    </ul>
+                }
+            </section>
+        </div>
+        <div class="col-xl-5">
+            <section class="sd-card sd-reveal">
+                <div class="sd-card-head">
+                    <h4 class="sd-card-title"><i class="feather-zap"></i> Quick Actions</h4>
+                </div>
+                <div class="sd-quick">
+                    <a href="@Url.Action("ViewProfile", "Student", new { area = "Student", Id = userId })"><i class="feather-user"></i><span>My Profile</span></a>
+                    <a href="@Url.Action("ViewFeedback", "Feedback", new { area = "Student" })"><i class="feather-message-square"></i><span>My Feedback</span></a>
+                    <a href="@Url.Action("ChangePassword", "Student", new { area = "Student", Id = userId })"><i class="feather-lock"></i><span>Change Password</span></a>
+                    <a href="@Url.Action("AllCourses", "Courses", new { area = "" })"><i class="feather-compass"></i><span>Browse Courses</span></a>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
