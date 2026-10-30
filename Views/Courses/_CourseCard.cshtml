@@ -52,7 +52,7 @@
     <div class="ac-card">
         <div class="ac-card-media">
             <a href="@detailsUrl" class="ac-card-img" tabindex="-1" aria-hidden="true">
-                <img loading="lazy" decoding="async" src="@(string.IsNullOrEmpty(Model.CoursePhoto) ? "/assets/images/course/course-online-01.jpg" : Model.CoursePhoto)" alt="" />
+                <img loading="lazy" decoding="async" src="@(string.IsNullOrEmpty(Model.CoursePhoto) ? "/assets/images/course/course-online-01.jpg" : Model.CoursePhoto)" alt="" onerror="this.onerror=null;this.src='/assets/images/course/course-online-01.jpg';" />
             </a>
             @if (!string.IsNullOrEmpty(Model.UniversityLogo))
             {

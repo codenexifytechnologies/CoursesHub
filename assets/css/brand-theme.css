@@ -6116,6 +6116,13 @@ a.sd-item-value:hover {
 }
 
 /* All Courses: course cards */
+/* Every row takes the height of the tallest visible card, so all images on a page get the same size and crop */
+.rbt-course-grid-column.active-list-view {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-auto-rows: 1fr;
+}
+
 .rbt-course-grid-column.active-list-view .course-card {
     width: 100%;
     max-width: 100%;
@@ -6127,6 +6134,7 @@ a.sd-item-value:hover {
     position: relative;
     display: flex;
     align-items: stretch;
+    height: 100%;
     background: #fff;
     border: 1px solid var(--border-color);
     border-radius: 16px;
@@ -6181,6 +6189,19 @@ a.sd-item-value:hover {
 
 .ac-card:hover .ac-card-img img {
     transform: scale(1.06);
+}
+
+/* "No image" placeholder: saved as a normal course photo, so it is shown whole instead of cropped.
+   Bottom padding keeps its text clear of the logo; the background matches the edge of the image. */
+.ac-card-img img[src$="/NoImage.jpg"],
+.hf-media img[src$="/NoImage.jpg"],
+.cd-page .cd-sidebar-thumb img[src$="/NoImage.jpg"] {
+    object-fit: contain;
+    background: #eaeaea;
+}
+
+.ac-card-img img[src$="/NoImage.jpg"] {
+    padding: 14px 14px 106px;
 }
 
 .ac-card-logo {
@@ -6421,6 +6442,10 @@ a.sd-item-value:hover {
         max-width: 100%;
         min-height: 0;
         aspect-ratio: 16 / 9;
+    }
+
+    .ac-card-img img[src$="/NoImage.jpg"] {
+        padding: 10px 10px 50px;
     }
 
     .ac-card-logo {
