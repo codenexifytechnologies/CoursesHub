@@ -1,5 +1,6 @@
 ﻿using CoursesHub.Areas.Admin.Models;
 using CoursesHub.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,15 +38,24 @@ namespace CoursesHub.Controllers
 
         public ActionResult BlogDetail(string slug)
         {
-            Blogs objBlogs = new Blogs();
+            Common.SaveRequestResponse("BlogDetail", slug, "start");
+            Blogs objBlogs = null;
             try
             {
-                slug = slug.Replace("-", " ");
-                objBlogs = objBlogOperations.ViewBlogs(0, "User", slug).FirstOrDefault();
+                // Match on the same slug the blog list builds its links from (WebsiteLink),
+                // not BlogTitle, otherwise the lookup never finds the post.
+                objBlogs = objBlogOperations.GetBlogs()
+                    .FirstOrDefault(b => string.Equals(b.slug, slug, StringComparison.OrdinalIgnoreCase));
+                Common.SaveRequestResponse("BlogDetail", slug,JsonConvert.SerializeObject(objBlogs));
+
             }
             catch (Exception Ex)
             {
                 Common.errorlog(Convert.ToString(Ex.Message) + " Inner Msg:" + Convert.ToString(Ex.StackTrace), "BlogDetail", "BlogOperations");
+            }
+            if (objBlogs == null)
+            {
+                return HttpNotFound();
             }
             ViewBag.BlogDetails = objBlogs;
             return View(objBlogs);

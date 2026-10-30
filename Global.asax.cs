@@ -1,4 +1,5 @@
 using CoursesHub.App_Start;
+using CoursesHub.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,7 +22,21 @@ namespace CoursesHub
         {
             Exception exception = Server.GetLastError();
             Server.ClearError();
-            Response.Redirect("~/Index/Error");
+            if (exception != null)
+            {
+                Common.errorlog(Convert.ToString(exception.Message) + " Inner Msg:" + Convert.ToString(exception.StackTrace), Request.RawUrl, "Application_Error");
+            }
+
+            // The error page is attribute-routed at /Error. If the error page itself fails,
+            // don't redirect back to it, otherwise the browser loops on "too many redirects".
+            if (Request.Path.Equals("/Error", StringComparison.OrdinalIgnoreCase))
+            {
+                Response.StatusCode = 500;
+                Response.ContentType = "text/plain";
+                Response.Write("Sorry, an unexpected error occurred. Please try again later.");
+                return;
+            }
+            Response.Redirect("~/Error");
         }
     }
 }
