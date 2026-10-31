@@ -51,8 +51,11 @@
 
     <div class="ac-card">
         <div class="ac-card-media">
+            @{ var cardPhoto = string.IsNullOrEmpty(Model.CoursePhoto) ? "/assets/images/course/course-online-01.jpg" : Model.CoursePhoto; }
             <a href="@detailsUrl" class="ac-card-img" tabindex="-1" aria-hidden="true">
-                <img loading="lazy" decoding="async" src="@(string.IsNullOrEmpty(Model.CoursePhoto) ? "/assets/images/course/course-online-01.jpg" : Model.CoursePhoto)" alt="" onerror="this.onerror=null;this.src='/assets/images/course/course-online-01.jpg';" />
+                @* blurred copy of the photo fills the space around it, so the whole image is shown without cropping *@
+                <span class="ac-card-img-bg" style="background-image:url('@cardPhoto')"></span>
+                <img loading="lazy" decoding="async" src="@cardPhoto" alt="" onerror="this.onerror=null;this.src='/assets/images/course/course-online-01.jpg';" />
             </a>
             @if (!string.IsNullOrEmpty(Model.UniversityLogo))
             {

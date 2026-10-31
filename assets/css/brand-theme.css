@@ -9864,3 +9864,23 @@ body.fp-open {
         aspect-ratio: 1600 / 949;
         object-fit: contain;
     }
+
+/* All Courses cards: show the whole photo (no cropping); a blurred copy fills the space around it */
+.ac-card-img img {
+    position: relative;
+    z-index: 1;
+    object-fit: contain;
+}
+
+.ac-card-img-bg {
+    position: absolute;
+    inset: -14px;
+    background-position: center;
+    background-size: cover;
+    filter: blur(14px) saturate(1.05);
+    opacity: 0.55;
+}
+
+.ac-card:hover .ac-card-img img {
+    transform: scale(1.03);
+}
