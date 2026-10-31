@@ -9824,3 +9824,43 @@ body.fp-open {
 .course-filter-toggle {
     border-radius: 999px;
 }
+
+/* Course card images: show the whole photo (course photos are mostly square); blurred copy fills the sides */
+.hf-media {
+    aspect-ratio: 4 / 3;
+}
+
+    .hf-media::after {
+        display: none;
+    }
+
+    .hf-media img {
+        position: relative;
+        z-index: 1;
+        object-fit: contain;
+    }
+
+.hf-media-bg {
+    position: absolute;
+    inset: -14px;
+    background-position: center;
+    background-size: cover;
+    filter: blur(14px) saturate(1.05);
+    opacity: 0.55;
+}
+
+.hf-card:hover .hf-media img {
+    transform: scale(1.04);
+}
+
+/* Home blog cards: the box matches the banner shape (about 1600 x 949), and the whole image is shown */
+.home-blogs .rbt-card.event-grid-card .rbt-card-img a {
+    display: block;
+    background: var(--primary-light);
+    overflow: hidden;
+}
+
+    .home-blogs .rbt-card.event-grid-card .rbt-card-img a img {
+        aspect-ratio: 1600 / 949;
+        object-fit: contain;
+    }

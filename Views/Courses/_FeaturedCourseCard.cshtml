@@ -20,6 +20,8 @@
 }
 <article class="hf-card @("hf-" + priority.ToLowerInvariant())" style="--hf-i:@(index % 12)"@salAttributes>
     <a class="hf-media" href="@url" tabindex="-1" aria-hidden="true">
+        @* blurred copy of the photo fills the sides, so a square or tall image is shown whole without empty bars *@
+        <span class="hf-media-bg" style="background-image:url('@photo')"></span>
         <img loading="lazy" decoding="async" src="@photo" alt="" onerror="this.onerror=null;this.src='/assets/images/event/grid-type-01.jpg';">
         @if (showRibbon)
         {
