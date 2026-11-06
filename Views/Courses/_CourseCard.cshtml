@@ -55,7 +55,14 @@
             <a href="@detailsUrl" class="ac-card-img" tabindex="-1" aria-hidden="true">
                 @* blurred copy of the photo fills the space around it, so the whole image is shown without cropping *@
                 <span class="ac-card-img-bg" style="background-image:url('@cardPhoto')"></span>
-                <img loading="lazy" decoding="async" src="@cardPhoto" alt="" onerror="this.onerror=null;this.src='/assets/images/course/course-online-01.jpg';" />
+                @if (!string.IsNullOrEmpty(Model.CoursePhoto) && Model.CoursePhoto == "/Uploads/NoImage.jpg")
+                {
+                    <span class="bl-noimg"><i class="feather-image"></i></span>
+                }
+                else
+                {
+                    <img loading="lazy" decoding="async" src="@cardPhoto" alt="" onerror="this.onerror=null;this.src='/assets/images/course/course-online-01.jpg';" />
+                }
             </a>
             @if (!string.IsNullOrEmpty(Model.UniversityLogo))
             {
